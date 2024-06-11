@@ -57,7 +57,7 @@ section {
 
 /* Hover effect for sections */
 section:hover {
-  background-color: #e6f7ff;
+  background-color: lightblue;
   transform: scale(1.02);
 }
 
