@@ -1,0 +1,79 @@
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading styles */
+h1 {
+  color: #444;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+}
+
+/* Button styles */
+button {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Section styles */
+section {
+  background-color: white;
+  padding: 20px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* Hover effect for sections */
+section:hover {
+  background-color: #e6f7ff;
+  transform: scale(1.02);
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+  h1 {
+      font-size: 2em;
+  }
+
+  button {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.9em;
+  }
+
+  section {
+      font-size: 1em;
+  }
+}
