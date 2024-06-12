@@ -1,4 +1,1 @@
-John Doe, 25
-Jane Smith, 35
-Alice Johnson, 29
-Bob Brown, 40
+This is some sample data loaded from the data.txt file.
