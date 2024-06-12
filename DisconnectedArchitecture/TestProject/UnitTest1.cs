@@ -23,7 +23,7 @@ namespace DisconnectedArchitecture.Tests
         private string databaseName;
         private string tableName;
         private Type? _instrumentType;
-        private int lastInsertedEmployeeId; // Store the ID of the last inserted Employee
+        private int lastInsertedCustomerId; // Store the ID of the last inserted Customer
 
         [OneTimeSetUp]
         public void LoadAssembly()
@@ -45,14 +45,14 @@ namespace DisconnectedArchitecture.Tests
             // Set up the connection string and other variables
             connectionString = ConnectionStringProvider.ConnectionString;
             databaseName = "appdb";
-            tableName = "Employees";
+            tableName = "Customers";
 
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
-            DeleteEmployee1(lastInsertedEmployeeId);
+            DeleteCustomer1(lastInsertedCustomerId);
         }
 
         [Test]
@@ -76,68 +76,68 @@ namespace DisconnectedArchitecture.Tests
         }
 
         [Test]
-        public void Test_EmployeeClassExists()
+        public void Test_CustomerClassExists()
         {
-            string className = "DisconnectedArchitecture.Models.Employee";
-            Type employeeType = assembly.GetType(className);
-            Assert.NotNull(employeeType, $"The class '{className}' does not exist in the assembly.");
+            string className = "DisconnectedArchitecture.Models.Customer";
+            Type CustomerType = assembly.GetType(className);
+            Assert.NotNull(CustomerType, $"The class '{className}' does not exist in the assembly.");
         }
 
         [Test]
-        public void Test_EmployeeIDPropertyDataType_Int()
+        public void Test_CustomerIDPropertyDataType_Int()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("EmployeeID");
-            Assert.AreEqual("System.Int32", property.PropertyType.FullName, "The 'EmployeeID' property should be of type int.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("CustomerID");
+            Assert.AreEqual("System.Int32", property.PropertyType.FullName, "The 'CustomerID' property should be of type int.");
         }
 
         [Test]
         public void Test_FirstNamePropertyDataType_string()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("FirstName");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("FirstName");
             Assert.AreEqual("System.String", property.PropertyType.FullName, "The 'FirstName' property should be of type string.");
         }
 
         [Test]
         public void Test_LastNamePropertyDataType_string()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("LastName");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("LastName");
             Assert.AreEqual("System.String", property.PropertyType.FullName, "The 'LastName' property should be of type string.");
         }
 
         [Test]
-        public void Test_DepartmentPropertyDataType_string()
+        public void Test_EmailPropertyDataType_string()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("Department");
-            Assert.AreEqual("System.String", property.PropertyType.FullName, "The 'Department' property should be of type string.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("Email");
+            Assert.AreEqual("System.String", property.PropertyType.FullName, "The 'Email' property should be of type string.");
         }
 
         [Test]
-        public void Test_SalaryPropertyDataType_decimal()
+        public void Test_PhoneNumberPropertyDataType_string()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("Salary");
-            Assert.AreEqual("System.Decimal", property.PropertyType.FullName, "The 'Salary' property should be of type decimal.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("PhoneNumber");
+            Assert.AreEqual("System.String", property.PropertyType.FullName, "The 'PhoneNumber' property should be of type string.");
         }
 
 
         [Test]
-        public void Test_EmployeeID_PropertyGetterSetter()
+        public void Test_CustomerID_PropertyGetterSetter()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("EmployeeID");
-            Assert.IsTrue(property.CanRead, "The 'EmployeeID' property should have a getter.");
-            Assert.IsTrue(property.CanWrite, "The 'EmployeeID' property should have a setter.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("CustomerID");
+            Assert.IsTrue(property.CanRead, "The 'CustomerID' property should have a getter.");
+            Assert.IsTrue(property.CanWrite, "The 'CustomerID' property should have a setter.");
         }
 
         [Test]
         public void Test_FirstName_PropertyGetterSetter()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("FirstName");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("FirstName");
             Assert.IsTrue(property.CanRead, "The 'FirstName' property should have a getter.");
             Assert.IsTrue(property.CanWrite, "The 'FirstName' property should have a setter.");
         }
@@ -145,164 +145,165 @@ namespace DisconnectedArchitecture.Tests
         [Test]
         public void Test_LastName_PropertyGetterSetter()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("LastName");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("LastName");
             Assert.IsTrue(property.CanRead, "The 'LastName' property should have a getter.");
             Assert.IsTrue(property.CanWrite, "The 'LastName' property should have a setter.");
         }
 
         [Test]
-        public void Test_Department_PropertyGetterSetter()
+        public void Test_Email_PropertyGetterSetter()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("Department");
-            Assert.IsTrue(property.CanRead, "The 'Department' property should have a getter.");
-            Assert.IsTrue(property.CanWrite, "The 'Department' property should have a setter.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("Email");
+            Assert.IsTrue(property.CanRead, "The 'Email' property should have a getter.");
+            Assert.IsTrue(property.CanWrite, "The 'Email' property should have a setter.");
         }
 
         [Test]
-        public void Test_Salary_PropertyGetterSetter()
+        public void Test_PhoneNumber_PropertyGetterSetter()
         {
-            Type employeeType = assembly.GetType("DisconnectedArchitecture.Models.Employee");
-            PropertyInfo property = employeeType.GetProperty("Salary");
-            Assert.IsTrue(property.CanRead, "The 'Salary' property should have a getter.");
-            Assert.IsTrue(property.CanWrite, "The 'Salary' property should have a setter.");
+            Type customerType = assembly.GetType("DisconnectedArchitecture.Models.Customer");
+            PropertyInfo property = customerType.GetProperty("PhoneNumber");
+            Assert.IsTrue(property.CanRead, "The 'PhoneNumber' property should have a getter.");
+            Assert.IsTrue(property.CanWrite, "The 'PhoneNumber' property should have a setter.");
         }
 
+
         [Test]
-        public void Test_AddEmployee_ShouldAddEmployee_ToDatabase()
+        public void Test_AddCustomer_ShouldAddCustomer_ToDatabase()
         {
-            MethodInfo addEmployeeMethod = programType.GetMethod("AddEmployee", BindingFlags.Public | BindingFlags.Static);
-            if (addEmployeeMethod == null)
+            MethodInfo addCustomerMethod = programType.GetMethod("AddCustomer", BindingFlags.Public | BindingFlags.Static);
+            if (addCustomerMethod == null)
             {
-                Assert.Fail("AddEmployee method not found. Skipping the test.");
+                Assert.Fail("AddCustomer method not found. Skipping the test.");
             }
             else
             {
 
                 // Arrange
                 //InstrumentService instrumentService = new InstrumentService(connectionString);
-                Employee testInstrument = new Employee
+                Customer testInstrument = new Customer
                 {
-                    EmployeeID = 999, // Replace with a unique ID that doesn't already exist in the database
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Department = "IT",
-                    Salary = 50000
+                    CustomerID = 999, // Replace with a unique ID that doesn't already exist in the database
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "jane.smith@example.com",
+                    PhoneNumber = "9876543210"
                 };
-                lastInsertedEmployeeId = testInstrument.EmployeeID;
+                lastInsertedCustomerId = testInstrument.CustomerID;
                 // Act
-                //Program.AddEmployee(testInstrument);
-                addEmployeeMethod.Invoke(null, new object[] { testInstrument });
+                //Program.AddCustomer(testInstrument);
+                addCustomerMethod.Invoke(null, new object[] { testInstrument });
 
-                //Employee addedInstrument =  (testInstrument.InstrumentId);
+                //Customer addedInstrument =  (testInstrument.InstrumentId);
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM Employees where EmployeeID = @InstrumentId";
+                    string query = "SELECT * FROM Customers where CustomerID = @InstrumentId";
 
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@InstrumentId", testInstrument.EmployeeID);
+                    command.Parameters.AddWithValue("@InstrumentId", testInstrument.CustomerID);
                     int inserted = (int)command.ExecuteScalar();
                     Console.WriteLine(inserted);
                     Assert.AreEqual(999, inserted);
                 }
 
-                DeleteEmployee1(testInstrument.EmployeeID);
+                DeleteCustomer1(testInstrument.CustomerID);
             }
         }
 
         [Test]
-        public void Test_UpdateSalary_By_EmployeeID_ShouldUpdateEmployeeInDatabase()
+        public void Test_UpdateEmail_By_CustomerID_ShouldUpdateCustomerInDatabase()
         {
-            MethodInfo addEmployeeMethod = programType.GetMethod("AddEmployee", BindingFlags.Public | BindingFlags.Static);
-            MethodInfo updateEmployeeMethod1 = programType.GetMethod("UpdateEmployeeSalary", BindingFlags.Public | BindingFlags.Static);
-            if (addEmployeeMethod == null && updateEmployeeMethod1 == null)
+            MethodInfo addCustomerMethod = programType.GetMethod("AddCustomer", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo updateCustomerMethod1 = programType.GetMethod("UpdateCustomerEmail", BindingFlags.Public | BindingFlags.Static);
+            if (addCustomerMethod == null && updateCustomerMethod1 == null)
             {
-                Assert.Fail("AddEmployee & UpdateEmployeeSalary methods not found.");
+                Assert.Fail("AddCustomer & UpdateCustomerEmail methods not found.");
             }
             else
             {
                 // Arrange
                 //InstrumentService instrumentService = new InstrumentService(connectionString);
-                Employee testEmployee = new Employee
+                Customer testCustomer = new Customer
                 {
-                    EmployeeID = 9993, // Replace with a unique ID that doesn't already exist in the database
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Department = "IT",
-                    Salary = 50000
+                    CustomerID = 999, // Replace with a unique ID that doesn't already exist in the database
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "jane.smith@example.com",
+                    PhoneNumber = "9876543210"
                 };
-                lastInsertedEmployeeId = testEmployee.EmployeeID;
+                lastInsertedCustomerId = testCustomer.CustomerID;
 
-                // Add the employee to the database initially
-                addEmployeeMethod.Invoke(null, new object[] { testEmployee });
+                // Add the Customer to the database initially
+                addCustomerMethod.Invoke(null, new object[] { testCustomer });
 
-                // Modify the testEmployee with updated values
-                testEmployee.Salary = 55000;
+                // Modify the testCustomer with updated values
+                testCustomer.Email = "jan.smith@example.com";
 
                 // Act
-                updateEmployeeMethod1.Invoke(null, new object[] { testEmployee.EmployeeID, testEmployee.Salary });
+                updateCustomerMethod1.Invoke(null, new object[] { testCustomer.CustomerID, testCustomer.Email });
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT Salary FROM Employees WHERE EmployeeID = @EmployeeID";
+                    string query = "SELECT Email FROM Customers WHERE CustomerID = @CustomerID";
 
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@EmployeeID", testEmployee.EmployeeID);
-                    decimal updatedSalary = (decimal)command.ExecuteScalar();
+                    command.Parameters.AddWithValue("@CustomerID", testCustomer.CustomerID);
+                    decimal updatedEmail = (decimal)command.ExecuteScalar();
 
                     // Assert
-                    Assert.AreEqual(testEmployee.Salary, updatedSalary, "Employee salary should be updated in the database.");
+                    Assert.AreEqual(testCustomer.Email, updatedEmail, "Customer Email should be updated in the database.");
                 }
 
-                DeleteEmployee1(testEmployee.EmployeeID);
+                DeleteCustomer1(testCustomer.CustomerID);
             }
         }
 
 
 
         [Test]
-        public void Test_DeleteEmployee_ShouldDeleteEmployeeFromDatabase()
+        public void Test_DeleteCustomer_ShouldDeleteCustomerFromDatabase()
         {
 
-            MethodInfo addEmployeeMethod = programType.GetMethod("AddEmployee", BindingFlags.Public | BindingFlags.Static);
-            MethodInfo deleteEmployeeMethod1 = programType.GetMethod("DeleteEmployee", BindingFlags.Public | BindingFlags.Static);
-            if (addEmployeeMethod == null && deleteEmployeeMethod1 == null)
+            MethodInfo addCustomerMethod = programType.GetMethod("AddCustomer", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo deleteCustomerMethod1 = programType.GetMethod("DeleteCustomer", BindingFlags.Public | BindingFlags.Static);
+            if (addCustomerMethod == null && deleteCustomerMethod1 == null)
             {
-                Assert.Fail("AddEmployee & UpdateEmployeeSalary methods not found.");
+                Assert.Fail("AddCustomer & UpdateCustomerEmail methods not found.");
             }
             else
             {
                 // Arrange
                 //InstrumentService instrumentService = new InstrumentService(connectionString);
-                Employee testInstrument = new Employee
+                Customer testInstrument = new Customer
                 {
-                    EmployeeID = 9993, // Replace with a unique ID that doesn't already exist in the database
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Department = "IT",
-                    Salary = 50000
+                    CustomerID = 999, // Replace with a unique ID that doesn't already exist in the database
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "jane.smith@example.com",
+                    PhoneNumber = "9876543210"
                 };
-                lastInsertedEmployeeId = testInstrument.EmployeeID;
+                lastInsertedCustomerId = testInstrument.CustomerID;
 
                 // Add the instrument to the database initially
-                //Program.AddEmployee(testInstrument);
-                addEmployeeMethod.Invoke(null, new object[] { testInstrument });
+                //Program.AddCustomer(testInstrument);
+                addCustomerMethod.Invoke(null, new object[] { testInstrument });
 
 
                 // Act
-                //Program.DeleteEmployee(testInstrument.EmployeeID);
-                deleteEmployeeMethod1.Invoke(null,new object[] { testInstrument.EmployeeID });
+                //Program.DeleteCustomer(testInstrument.CustomerID);
+                deleteCustomerMethod1.Invoke(null,new object[] { testInstrument.CustomerID });
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM Employees where EmployeeID = @InstrumentId";
+                    string query = "SELECT * FROM Customers where CustomerID = @InstrumentId";
 
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@InstrumentId", testInstrument.EmployeeID);
+                    command.Parameters.AddWithValue("@InstrumentId", testInstrument.CustomerID);
                     if (command.ExecuteScalar() == null)
                     {
                         Assert.Pass();
@@ -313,27 +314,27 @@ namespace DisconnectedArchitecture.Tests
         }
 
         [Test]
-        public void TestAddEmployeeMethod()
+        public void TestAddCustomerMethod()
         {
-            AssertMethodExists("AddEmployee");
+            AssertMethodExists("AddCustomer");
         }
 
         [Test]
-        public void TestListEmployeesMethod()
+        public void TestListCustomersMethod()
         {
-            AssertMethodExists("ListEmployees");
+            AssertMethodExists("ListCustomers");
         }
 
         [Test]
-        public void TestUpdateEmployeeSalaryMethod()
+        public void TestUpdateCustomerEmailMethod()
         {
-            AssertMethodExists("UpdateEmployeeSalary");
+            AssertMethodExists("UpdateCustomerEmail");
         }
 
         [Test]
-        public void TestDeleteEmployeeMethod()
+        public void TestDeleteCustomerMethod()
         {
-            AssertMethodExists("DeleteEmployee");
+            AssertMethodExists("DeleteCustomer");
         }
 
         private void AssertMethodExists(string methodName)
@@ -343,7 +344,7 @@ namespace DisconnectedArchitecture.Tests
         }
 
 
-        private void DeleteEmployee1(int EmployeeId)
+        private void DeleteCustomer1(int CustomerId)
         {
             try
             {
@@ -353,8 +354,8 @@ namespace DisconnectedArchitecture.Tests
                     connection.ChangeDatabase(databaseName);
 
                     SqlCommand command = connection.CreateCommand();
-                    command.CommandText = $"DELETE FROM {tableName} WHERE EmployeeID = @ID";
-                    command.Parameters.AddWithValue("@ID", EmployeeId);
+                    command.CommandText = $"DELETE FROM {tableName} WHERE CustomerID = @ID";
+                    command.Parameters.AddWithValue("@ID", CustomerId);
 
                     command.ExecuteNonQuery();
                 }
