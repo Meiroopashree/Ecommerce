@@ -1,12 +1,15 @@
 $(document).ready(function() {
-    // Ajax call to load data from books.json
+    // Ajax call to load data from data.txt
     $('#btnLoadBooks').click(function() {
-        $.get('books.json', function(data) {
-            let books = JSON.parse(data);
+        $.get('data.txt', function(data) {
+            let lines = data.split('\n');
             let bookContainer = $('#bookContainer');
             bookContainer.empty();
-            books.forEach(book => {
-                bookContainer.append(`<p><strong>${book.title}</strong> by ${book.author}</p>`);
+            lines.forEach(line => {
+                let [title, author] = line.split(' by ');
+                if (title && author) {
+                    bookContainer.append(`<p><strong>${title}</strong> by ${author}</p>`);
+                }
             });
             alert("Books loaded successfully!");
         }).fail(function(xhr, status, error) {

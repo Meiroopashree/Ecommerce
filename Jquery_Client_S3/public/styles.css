@@ -1,17 +1,33 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 20px;
+  background-color: #f0f8ff; /* AliceBlue background */
+  color: #333; /* Dark text color */
 }
 
 button {
   margin: 10px 0;
   padding: 10px 15px;
   font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
 
 #bookContainer p {
   margin: 5px 0;
   font-size: 14px;
+  padding: 10px;
+  background-color: #e7f3fe; /* Light blue background */
+  border-left: 4px solid #2196F3; /* Blue border */
+  border-radius: 3px;
 }
 
 ul {
@@ -20,10 +36,36 @@ ul {
 }
 
 ul li {
-  padding: 5px;
+  padding: 10px;
   font-size: 16px;
+  margin: 5px 0;
+  background-color: #fff3cd; /* Light yellow background */
+  border: 1px solid #ffeeba; /* Yellow border */
+  border-radius: 5px;
+}
+
+ul li:hover {
+  background-color: #ffeeba; /* Darker yellow on hover */
 }
 
 .highlighted {
-  background-color: yellow;
+  background-color: #ffeb3b; /* Bright yellow for highlighting */
+  color: #333; /* Dark text color for contrast */
 }
+
+#btnLoadBooks {
+  background-color: #2196F3; /* Blue background */
+}
+
+#btnLoadBooks:hover {
+  background-color: #1e88e5; /* Darker blue on hover */
+}
+
+#btnHighlightBooks {
+  background-color: #ff9800; /* Orange background */
+}
+
+#btnHighlightBooks:hover {
+  background-color: #fb8c00; /* Darker orange on hover */
+}
+  
