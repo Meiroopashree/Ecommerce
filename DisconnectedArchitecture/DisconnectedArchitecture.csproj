@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <!-- Add Entity Framework Core Design package -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0" />
+    <!-- Add any other packages your project needs here -->
   </ItemGroup>
 
 </Project>
