@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using DisconnectArchitecture.Models;
+using DisconnectedArchitecture.Models;
 
-namespace DisconnectArchitecture
+namespace DisconnectedArchitecture
 {
     public static class ConnectionStringProvider
     {

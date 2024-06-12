@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DisconnectArchitecture.Models
+namespace DisconnectedArchitecture.Models
 {
     public class Employee
     {
