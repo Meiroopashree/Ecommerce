@@ -1,22 +1,25 @@
 $(document).ready(function() {
-    $('#btnLoadWeather').click(function() {
-        $('#weatherContainer').load('data.txt', function(response, status, xhr) {
-            console.log("Status:", status);
-            console.log("Response:", response);
-            console.log("XHR:", xhr);
-
-            if (status === "success" && response.trim() !== "") {
-                alert("Weather data loaded successfully!");
-                $('#weatherContainer').html(response); // Display the data in the container
-            } else if (status === "success" && response.trim() === "") {
-                alert("Weather data loaded successfully");
-            } else {
-                alert("Error loading weather data: " + xhr.status + " " + xhr.statusText);
-            }
+    // Ajax call to load data from books.json
+    $('#btnLoadBooks').click(function() {
+        $.get('books.json', function(data) {
+            let books = JSON.parse(data);
+            let bookContainer = $('#bookContainer');
+            bookContainer.empty();
+            books.forEach(book => {
+                bookContainer.append(`<p><strong>${book.title}</strong> by ${book.author}</p>`);
+            });
+            alert("Books loaded successfully!");
+        }).fail(function(xhr, status, error) {
+            alert("An error occurred: " + xhr.status + " " + xhr.statusText);
         });
     });
 
-    $('#btnFadeOddCities').click(function() {
-        $('#cityList li:odd').fadeOut();
+    // Highlight book titles with more than three words
+    $('#btnHighlightBooks').click(function() {
+        $('#bookList li').each(function() {
+            if ($(this).text().split(' ').length > 3) {
+                $(this).addClass('highlighted');
+            }
+        });
     });
 });

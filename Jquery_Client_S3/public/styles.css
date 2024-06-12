@@ -1,89 +1,29 @@
-/* General styles */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-  color: #333;
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Heading styles */
-h1 {
-  color: #444;
-  text-align: center;
-  margin-top: 50px;
-  margin-bottom: 30px;
-  font-size: 2.5em;
-}
-
-/* Button styles */
 button {
-  display: block;
-  width: 200px;
-  margin: 20px auto;
-  padding: 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  margin: 10px 0;
+  padding: 10px 15px;
+  font-size: 16px;
 }
 
-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+#bookContainer p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
-/* Weather container styles */
-#weatherContainer {
-  margin: 20px 0;
-  text-align: center;
-}
-
-/* City list styles */
-#cityList {
+ul {
   list-style-type: none;
   padding: 0;
 }
 
-#cityList li {
-  background-color: white;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, transform 0.3s;
-  text-align: center;
+ul li {
+  padding: 5px;
+  font-size: 16px;
 }
 
-/* Hover effect for city list */
-#cityList li:hover {
-  background-color: lightblue;
-  transform: scale(1.02);
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2em;
-  }
-
-  button {
-    width: 100%;
-    padding: 10px;
-    font-size: 0.9em;
-  }
-
-  #cityList li {
-    font-size: 1em;
-  }
+.highlighted {
+  background-color: yellow;
 }
