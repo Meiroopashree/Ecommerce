@@ -1,6 +1,4 @@
-To Kill a Mockingbird by Harper Lee
-1984 by George Orwell
-The Great Gatsby by F. Scott Fitzgerald
-One Hundred Years of Solitude by Gabriel Garcia Marquez
-Moby Dick by Herman Melville
-
+John Doe, 25
+Jane Smith, 35
+Alice Johnson, 29
+Bob Brown, 40

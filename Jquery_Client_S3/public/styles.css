@@ -21,7 +21,7 @@ button:hover {
   background-color: #45a049; /* Darker green on hover */
 }
 
-#bookContainer p {
+#userContainer p {
   margin: 5px 0;
   font-size: 14px;
   padding: 10px;
@@ -30,42 +30,23 @@ button:hover {
   border-radius: 3px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  padding: 10px;
-  font-size: 16px;
-  margin: 5px 0;
-  background-color: #fff3cd; /* Light yellow background */
-  border: 1px solid #ffeeba; /* Yellow border */
-  border-radius: 5px;
-}
-
-ul li:hover {
-  background-color: #ffeeba; /* Darker yellow on hover */
-}
-
 .highlighted {
   background-color: #ffeb3b; /* Bright yellow for highlighting */
   color: #333; /* Dark text color for contrast */
 }
 
-#btnLoadBooks {
+#btnLoadUsers {
   background-color: #2196F3; /* Blue background */
 }
 
-#btnLoadBooks:hover {
+#btnLoadUsers:hover {
   background-color: #1e88e5; /* Darker blue on hover */
 }
 
-#btnHighlightBooks {
+#btnHighlightUsers {
   background-color: #ff9800; /* Orange background */
 }
 
-#btnHighlightBooks:hover {
+#btnHighlightUsers:hover {
   background-color: #fb8c00; /* Darker orange on hover */
 }
-  

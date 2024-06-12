@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Library</title>
+    <title>User Information</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <button id="btnLoadBooks">Load Books</button>
-    <div id="bookContainer"></div>
-    <ul id="bookList">
-        <li>To Kill a Mockingbird</li>
-        <li>1984</li>
-        <li>The Great Gatsby</li>
-        <li>One Hundred Years of Solitude</li>
-        <li>Moby Dick</li>
-    </ul>
-    <button id="btnHighlightBooks">Highlight Books</button>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>User Information</h1>
+        <button id="btnLoadUsers">Load User Data</button>
+        <div id="userContainer"></div>
+        <ul id="userList">
+            <!-- Users will be loaded here -->
+            <li>John Doe, 25</li>
+            <li>Jane Smith, 35</li>
+            <li>Michael Johnson, 40</li>
+            <li>Emily Brown, 28</li>
+            <li>David Wilson, 32</li>
+        </ul>
+        <button id="btnHighlightAdults">Highlight Adults</button>
+    </div>
 </body>
 </html>
