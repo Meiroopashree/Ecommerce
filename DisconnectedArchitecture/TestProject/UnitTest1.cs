@@ -219,14 +219,13 @@ namespace DisconnectedArchitecture.Tests
         {
             MethodInfo addCustomerMethod = programType.GetMethod("AddCustomer", BindingFlags.Public | BindingFlags.Static);
             MethodInfo updateCustomerMethod1 = programType.GetMethod("UpdateCustomerEmail", BindingFlags.Public | BindingFlags.Static);
-            if (addCustomerMethod == null && updateCustomerMethod1 == null)
+            if (addCustomerMethod == null || updateCustomerMethod1 == null)
             {
-                Assert.Fail("AddCustomer & UpdateCustomerEmail methods not found.");
+                Assert.Fail("AddCustomer or UpdateCustomerEmail methods not found.");
             }
             else
             {
                 // Arrange
-                //InstrumentService instrumentService = new InstrumentService(connectionString);
                 Customer testCustomer = new Customer
                 {
                     CustomerID = 999, // Replace with a unique ID that doesn't already exist in the database
@@ -241,10 +240,10 @@ namespace DisconnectedArchitecture.Tests
                 addCustomerMethod.Invoke(null, new object[] { testCustomer });
 
                 // Modify the testCustomer with updated values
-                testCustomer.Email = "jan.smith@example.com";
-
+                string newEmail = "new.email@example.com";
+                
                 // Act
-                updateCustomerMethod1.Invoke(null, new object[] { testCustomer.CustomerID, testCustomer.Email });
+                updateCustomerMethod1.Invoke(null, new object[] { testCustomer.CustomerID, newEmail });
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -253,15 +252,16 @@ namespace DisconnectedArchitecture.Tests
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@CustomerID", testCustomer.CustomerID);
-                    decimal updatedEmail = (decimal)command.ExecuteScalar();
+                    string updatedEmail = (string)command.ExecuteScalar();
 
                     // Assert
-                    Assert.AreEqual(testCustomer.Email, updatedEmail, "Customer Email should be updated in the database.");
+                    Assert.AreEqual(newEmail, updatedEmail, "Customer Email should be updated in the database.");
                 }
 
                 DeleteCustomer1(testCustomer.CustomerID);
             }
         }
+
 
 
 
