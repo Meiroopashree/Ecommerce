@@ -16,17 +16,17 @@ namespace DisconnectedArchitecture
         // Replace with your actual connection string
         static string connectionString = ConnectionStringProvider.ConnectionString;
 
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             try
             {
                 while (true)
                 {
                     Console.WriteLine("\nMenu:");
-                    Console.WriteLine("1. Add Employee");
-                    Console.WriteLine("2. List Employees");
-                    Console.WriteLine("3. Update Employee Salary");
-                    Console.WriteLine("4. Delete Employee");
+                    Console.WriteLine("1. Add Customer");
+                    Console.WriteLine("2. List Customers");
+                    Console.WriteLine("3. Update Customer Email");
+                    Console.WriteLine("4. Delete Customer");
                     Console.WriteLine("5. Exit");
                     Console.Write("Enter your choice (1-5): ");
                     int choice = int.Parse(Console.ReadLine());
@@ -34,38 +34,38 @@ namespace DisconnectedArchitecture
                     switch (choice)
                     {
                         case 1:
-                            Employee newEmployee = new Employee();
-                            Console.WriteLine("Enter the details for the new employee:");
-                            Console.Write("EmployeeID: ");
-                            newEmployee.EmployeeID = int.Parse(Console.ReadLine());
+                            Customer newCustomer = new Customer();
+                            Console.WriteLine("Enter the details for the new customer:");
+                            Console.Write("CustomerID: ");
+                            newCustomer.CustomerID = int.Parse(Console.ReadLine());
                             Console.Write("FirstName: ");
-                            newEmployee.FirstName = Console.ReadLine();
+                            newCustomer.FirstName = Console.ReadLine();
                             Console.Write("LastName: ");
-                            newEmployee.LastName = Console.ReadLine();
-                            Console.Write("Department: ");
-                            newEmployee.Department = Console.ReadLine();
-                            Console.Write("Salary: ");
-                            newEmployee.Salary = decimal.Parse(Console.ReadLine());
-                            AddEmployee(newEmployee);
+                            newCustomer.LastName = Console.ReadLine();
+                            Console.Write("Email: ");
+                            newCustomer.Email = Console.ReadLine();
+                            Console.Write("PhoneNumber: ");
+                            newCustomer.PhoneNumber = Console.ReadLine();
+                            AddCustomer(newCustomer);
                             break;
 
                         case 2:
-                            Console.WriteLine("List of Employees:");
-                            ListEmployees();
+                            Console.WriteLine("List of Customers:");
+                            ListCustomers();
                             break;
 
                         case 3:
-                            Console.Write("Enter the EmployeeID of the employee to update salary: ");
-                            int employeeIDToUpdate = int.Parse(Console.ReadLine());
-                            Console.Write("Enter the new salary: ");
-                            decimal newSalary = decimal.Parse(Console.ReadLine());
-                            UpdateEmployeeSalary(employeeIDToUpdate, newSalary);
+                            Console.Write("Enter the CustomerID of the customer to update email: ");
+                            int customerIDToUpdate = int.Parse(Console.ReadLine());
+                            Console.Write("Enter the new email: ");
+                            string newEmail = Console.ReadLine();
+                            UpdateCustomerEmail(customerIDToUpdate, newEmail);
                             break;
 
                         case 4:
-                            Console.Write("Enter the EmployeeID of the employee to delete: ");
-                            int employeeIDToDelete = int.Parse(Console.ReadLine());
-                            DeleteEmployee(employeeIDToDelete);
+                            Console.Write("Enter the CustomerID of the customer to delete: ");
+                            int customerIDToDelete = int.Parse(Console.ReadLine());
+                            DeleteCustomer(customerIDToDelete);
                             break;
 
                         case 5:
@@ -85,14 +85,14 @@ namespace DisconnectedArchitecture
             }
         }
 
-        private static DataSet GetEmployeesDataSet()
+        private static DataSet GetCustomersDataSet()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Employees";
+                string query = "SELECT * FROM Customers";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet, "Employees");
+                adapter.Fill(dataSet, "Customers");
                 return dataSet;
             }
         }
@@ -101,77 +101,82 @@ namespace DisconnectedArchitecture
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Employees";
+                string query = "SELECT * FROM Customers";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
 
                 SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
 
                 connection.Open();
 
-                adapter.Update(dataSet, "Employees");
+                adapter.Update(dataSet, "Customers");
             }
         }
 
-        public static void AddEmployee(Employee employee)
+        // Change your method names (xyz) to appropriate name
+        public static void AddCustomer(Customer customer)
         {
-            DataSet dataSet = GetEmployeesDataSet();
+            // Write your code to add new customer
+            DataSet dataSet = GetCustomersDataSet();
 
-            DataRow newRow = dataSet.Tables["Employees"].NewRow();
-            newRow["EmployeeID"] = employee.EmployeeID;
-            newRow["FirstName"] = employee.FirstName;
-            newRow["LastName"] = employee.LastName;
-            newRow["Department"] = employee.Department;
-            newRow["Salary"] = employee.Salary;
+            DataRow newRow = dataSet.Tables["Customers"].NewRow();
+            newRow["CustomerID"] = customer.CustomerID;
+            newRow["FirstName"] = customer.FirstName;
+            newRow["LastName"] = customer.LastName;
+            newRow["Email"] = customer.Email;
+            newRow["PhoneNumber"] = customer.PhoneNumber;
 
-            dataSet.Tables["Employees"].Rows.Add(newRow);
+            dataSet.Tables["Customers"].Rows.Add(newRow);
 
             UpdateDatabase(dataSet);
 
-            Console.WriteLine("Employee added successfully.");
+            Console.WriteLine("Customer added successfully.");
         }
 
-        public static void ListEmployees()
+        public static void ListCustomers()
         {
-            DataSet dataSet = GetEmployeesDataSet();
+            // Write your code to list customers
+            DataSet dataSet = GetCustomersDataSet();
 
-            foreach (DataRow row in dataSet.Tables["Employees"].Rows)
+            foreach (DataRow row in dataSet.Tables["Customers"].Rows)
             {
-                Console.WriteLine($"EmployeeID: {row["EmployeeID"]}, Name: {row["FirstName"]} {row["LastName"]}, " +
-                                  $"Department: {row["Department"]}, Salary: {row["Salary"]}");
+                Console.WriteLine($"CustomerID: {row["CustomerID"]}, Name: {row["FirstName"]} {row["LastName"]}, " +
+                                  $"Email: {row["Email"]}, PhoneNumber: {row["PhoneNumber"]}");
             }
         }
 
-        public static void UpdateEmployeeSalary(int employeeID, decimal newSalary)
+        public static void UpdateCustomerEmail(int customerID, string newEmail)
         {
-            DataSet dataSet = GetEmployeesDataSet();
+            // Write your code here to update the email of a customer
+            DataSet dataSet = GetCustomersDataSet();
 
-            DataRow[] rows = dataSet.Tables["Employees"].Select($"EmployeeID = {employeeID}");
+            DataRow[] rows = dataSet.Tables["Customers"].Select($"CustomerID = {customerID}");
             if (rows.Length == 1)
             {
-                rows[0]["Salary"] = newSalary;
+                rows[0]["Email"] = newEmail;
                 UpdateDatabase(dataSet);
-                Console.WriteLine("Employee salary updated successfully.");
+                Console.WriteLine("Customer email updated successfully.");
             }
             else
             {
-                Console.WriteLine("Employee not found or multiple employees with the same ID found.");
+                Console.WriteLine("Customer not found or multiple customers with the same ID found.");
             }
         }
 
-        public static void DeleteEmployee(int employeeID)
+        public static void DeleteCustomer(int customerID)
         {
-            DataSet dataSet = GetEmployeesDataSet();
+            // Write your code to delete the customer using CustomerID
+            DataSet dataSet = GetCustomersDataSet();
 
-            DataRow[] rows = dataSet.Tables["Employees"].Select($"EmployeeID = {employeeID}");
+            DataRow[] rows = dataSet.Tables["Customers"].Select($"CustomerID = {customerID}");
             if (rows.Length == 1)
             {
                 rows[0].Delete();
                 UpdateDatabase(dataSet);
-                Console.WriteLine("Employee deleted successfully.");
+                Console.WriteLine("Customer deleted successfully.");
             }
             else
             {
-                Console.WriteLine("Employee not found or multiple employees with the same ID found.");
+                Console.WriteLine("Customer not found or multiple customers with the same ID found.");
             }
         }
     }
