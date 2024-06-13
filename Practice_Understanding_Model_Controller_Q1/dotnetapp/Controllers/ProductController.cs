@@ -6,18 +6,18 @@ using dotnetapp.Models;
 
 namespace dotnetapp.Controllers
 {
-    public class FeedbackController : Controller
+    public class ProductController : Controller
     {
-        private static List<Feedback> _feedbackList = new List<Feedback>
+        private static List<Product> _productList = new List<Product>
         {
-            new Feedback { Id = 1, StudentName = "John Doe", Course = "Mathematics", Feedbacks = "Great course!", Rating = 5, DateSubmitted = DateTime.Now.AddDays(-5) },
-            new Feedback { Id = 2, StudentName = "Alice Johnson", Course = "Physics", Feedbacks = "Enjoyed the lectures.", Rating = 4, DateSubmitted = DateTime.Now.AddDays(-3) },
-            new Feedback { Id = 3, StudentName = "Bob Smith", Course = "Biology", Feedbacks = "Needs more interactive sessions.", Rating = 3, DateSubmitted = DateTime.Now.AddDays(-2) }
+            new Product { Id = 1, Name = "Laptop", Category = "Electronics", Price = 999.99m, Quantity = 10, Manufacturer = "Tech Corp" },
+            new Product { Id = 2, Name = "Chair", Category = "Furniture", Price = 49.99m, Quantity = 50, Manufacturer = "Furniture Inc." },
+            new Product { Id = 3, Name = "Smartphone", Category = "Electronics", Price = 699.99m, Quantity = 25, Manufacturer = "Mobile World" }
         };
 
         public IActionResult Index()
         {
-            return View(_feedbackList);
+            return View(_productList);
         }
 
         [HttpGet]
@@ -27,82 +27,83 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Feedback feedback)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
                 // Assign a simple incremental ID
-                feedback.Id = _feedbackList.Count + 1;
-                
-                // Add the feedback to the static list
-                _feedbackList.Add(feedback);
+                product.Id = _productList.Count + 1;
 
-                // Redirect to the feedback list or another action
+                // Add the product to the static list
+                _productList.Add(product);
+
+                // Redirect to the product list or another action
                 return RedirectToAction("Index");
             }
 
             // If the model state is not valid, return to the create view with validation errors
-            return View(feedback);
+            return View(product);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var feedback = _feedbackList.FirstOrDefault(f => f.Id == id);
+            var product = _productList.FirstOrDefault(p => p.Id == id);
 
-            if (feedback == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(feedback);
+            return View(product);
         }
 
         [HttpPost]
-        public IActionResult Edit(Feedback feedback)
+        public IActionResult Edit(Product product)
         {
-            var existingFeedback = _feedbackList.FirstOrDefault(f => f.Id == feedback.Id);
-            if (existingFeedback == null)
+            var existingProduct = _productList.FirstOrDefault(p => p.Id == product.Id);
+            if (existingProduct == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                // Update the existing feedback
-                existingFeedback.StudentName = feedback.StudentName;
-                existingFeedback.Course = feedback.Course;
-                existingFeedback.Feedbacks = feedback.Feedbacks;
-                existingFeedback.Rating = feedback.Rating;
+                // Update the existing product
+                existingProduct.Name = product.Name;
+                existingProduct.Category = product.Category;
+                existingProduct.Price = product.Price;
+                existingProduct.Quantity = product.Quantity;
+                existingProduct.Manufacturer = product.Manufacturer;
 
                 return RedirectToAction("Index");
             }
 
-            return View(feedback);
+            return View(product);
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var feedback = _feedbackList.FirstOrDefault(f => f.Id == id);
+            var product = _productList.FirstOrDefault(p => p.Id == id);
 
-            if (feedback == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(feedback);
+            return View(product);
         }
 
         [HttpPost, ActionName("DeleteConfirmed")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var feedback = _feedbackList.FirstOrDefault(f => f.Id == id);
+            var product = _productList.FirstOrDefault(p => p.Id == id);
 
-            if (feedback != null)
+            if (product != null)
             {
-                // Remove the feedback from the static list
-                _feedbackList.Remove(feedback);
+                // Remove the product from the static list
+                _productList.Remove(product);
             }
 
             return RedirectToAction("Index");
