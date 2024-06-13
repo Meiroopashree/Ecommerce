@@ -1,15 +1,15 @@
 using NUnit.Framework;
 
 
-namespace Employees.Tests
+namespace Products.Tests
 {
     [TestFixture]
-    public class EmployeeTest
+    public class ProductTest
     {
         [Test]
-        public void Test_Employee_Create_File_Exists()
+        public void Test_Product_Create_File_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/Employees/Views/Employee/", "Create.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/Products/Views/Product/", "Create.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
             Assert.IsTrue(indexViewExists, "Create.cshtml view file does not exist.");
