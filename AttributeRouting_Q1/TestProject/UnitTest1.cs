@@ -1,132 +1,111 @@
-using dotnetapp.Controllers;
-using RazorLight;
-using Microsoft.AspNetCore.Html;
-using System;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using System.Text.Encodings.Web;
-using System.Xml.Linq;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Microsoft.AspNetCore.Hosting.Server;
-using dotnetapp;
-using System.Net;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Dynamic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.WebEncoders.Testing;
+using NUnit.Framework;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class MenuControllerTests
+    public class BlogControllerTests
     {
-
-        private IHtmlHelper _htmlHelper;
-        
-        [Test]
-        public void Test_Products_Route_Attribute()
-        {
-            // Arrange
-            var controller = CreateMenuController();
-            var method = GetActionMethod1(controller, "Products");
-
-            // Act
-            var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
-
-            // Assert
-            Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("menu/products", routeAttribute.Template);
-        }
-
-        [Test]
-        public void Test_Customers_Route_Attribute()
-        {
-            // Arrange
-            var controller = CreateMenuController();
-            var method = GetActionMethod1(controller, "Customers");
-
-            // Act
-            var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
-
-            // Assert
-            Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("menu/customers", routeAttribute.Template);
-        }
-
         [Test]
         public void Test_Home_Route_Attribute()
         {
             // Arrange
-            var controller = CreateMenuController();
-            var method = GetActionMethod1(controller, "Home");
+            var controller = CreateBlogController();
+            var method = GetActionMethod(controller, "Index");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("menu/home", routeAttribute.Template);
+            Assert.AreEqual("blog/index", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Orders_Route_Attribute()
+        public void Test_Posts_Route_Attribute()
         {
             // Arrange
-            var controller = CreateMenuController();
-            var method = GetActionMethod1(controller, "Orders");
+            var controller = CreateBlogController();
+            var method = GetActionMethod(controller, "Posts");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("menu/orders", routeAttribute.Template);
+            Assert.AreEqual("blog/posts", routeAttribute.Template);
         }
+
+        [Test]
+        public void Test_Authors_Route_Attribute()
+        {
+            // Arrange
+            var controller = CreateBlogController();
+            var method = GetActionMethod(controller, "Authors");
+
+            // Act
+            var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
+
+            // Assert
+            Assert.IsNotNull(routeAttribute);
+            Assert.AreEqual("blog/authors", routeAttribute.Template);
+        }
+
+        [Test]
+        public void Test_Categories_Route_Attribute()
+        {
+            // Arrange
+            var controller = CreateBlogController();
+            var method = GetActionMethod(controller, "Categories");
+
+            // Act
+            var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
+
+            // Assert
+            Assert.IsNotNull(routeAttribute);
+            Assert.AreEqual("blog/categories", routeAttribute.Template);
+        }
+
         [Test]
         public void Test_HomeViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Home.cshtml");
-            bool indexViewExists = File.Exists(indexPath);
+            string homePath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Home.cshtml");
+            bool homeViewExists = File.Exists(homePath);
 
-            Assert.IsTrue(indexViewExists, "Home.cshtml view file does not exist.");
+            Assert.IsTrue(homeViewExists, "Home.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_ProductsViewFile_Exists()
+        public void Test_PostsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Products.cshtml");
-            bool indexViewExists = File.Exists(indexPath);
+            string postsPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Posts.cshtml");
+            bool postsViewExists = File.Exists(postsPath);
 
-            Assert.IsTrue(indexViewExists, "Products.cshtml view file does not exist.");
+            Assert.IsTrue(postsViewExists, "Posts.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_CustomersViewFile_Exists()
+        public void Test_AuthorsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Customers.cshtml");
-            bool indexViewExists = File.Exists(indexPath);
+            string authorsPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Authors.cshtml");
+            bool authorsViewExists = File.Exists(authorsPath);
 
-            Assert.IsTrue(indexViewExists, "Customers.cshtml view file does not exist.");
+            Assert.IsTrue(authorsViewExists, "Authors.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_OrdersViewFile_Exists()
+        public void Test_CategoriesViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Orders.cshtml");
-            bool indexViewExists = File.Exists(indexPath);
+            string categoriesPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Categories.cshtml");
+            bool categoriesViewExists = File.Exists(categoriesPath);
 
-            Assert.IsTrue(indexViewExists, "Orders.cshtml view file does not exist.");
+            Assert.IsTrue(categoriesViewExists, "Categories.cshtml view file does not exist.");
         }
-         private MethodInfo GetActionMethod1(MenuController controller, string methodName)
+
+        private MethodInfo GetActionMethod(BlogController controller, string methodName)
         {
             // Use reflection to get the method by name
             MethodInfo method = controller.GetType().GetMethod(methodName);
@@ -142,10 +121,10 @@ namespace dotnetapp.Tests
             }
         }
 
-        private MenuController CreateMenuController()
+        private BlogController CreateBlogController()
         {
-            // Fully-qualified name of the MenuController class
-            string controllerTypeName = "dotnetapp.Controllers.MenuController, dotnetapp";
+            // Fully-qualified name of the BlogController class
+            string controllerTypeName = "dotnetapp.Controllers.BlogController, dotnetapp";
 
             // Get the type using Type.GetType
             Type controllerType = Type.GetType(controllerTypeName);
@@ -154,10 +133,10 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(controllerType);
 
             // Create an instance of the controller using reflection
-            return (MenuController)Activator.CreateInstance(controllerType);
+            return (BlogController)Activator.CreateInstance(controllerType);
         }
 
-        private IActionResult GetActionMethod(MenuController controller, string methodName)
+        private IActionResult GetActionMethod(BlogController controller, string methodName)
         {
             // Use reflection to get the method by name
             MethodInfo method = controller.GetType().GetMethod(methodName);
@@ -179,6 +158,5 @@ namespace dotnetapp.Tests
             ViewResult viewResult = (ViewResult)result;
             Assert.AreEqual(expectedViewName, viewResult.ViewName);
         }
-
     }
 }
