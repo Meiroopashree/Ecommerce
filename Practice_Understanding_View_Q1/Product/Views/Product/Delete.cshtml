@@ -1,0 +1,16 @@
+@model Employees.Models.Employee
+
+<h1>Delete Employee</h1>
+
+<div>
+    <h4>Id: @Model.Id</h4>
+    <h4>Name: @Model.Name</h4>
+    <h4>Email: @Model.Email</h4>
+    <h4>Date of Birth: @Model.Dob.ToShortDateString()</h4>
+    <h4>Department: @Model.Dept</h4>
+    <h4>Salary: @Model.Salary</h4>
+</div>
+
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Delete</button> | <a asp-action="Index">Back to List</a>
+</form>

@@ -1,0 +1,13 @@
+@model Employees.Models.Employee
+
+<h1>Employee Details</h1>
+
+<div>
+    <h4>Id: @Model.Id</h4>
+    <h4>Name: @Model.Name</h4>
+    <h4>Email: @Model.Email</h4>
+    <h4>Date of Birth: @Model.Dob.ToShortDateString()</h4>
+    <h4>Department: @Model.Dept</h4>
+    <h4>Salary: @Model.Salary</h4>
+</div>
+<a asp-action="Index">Back to List</a>
