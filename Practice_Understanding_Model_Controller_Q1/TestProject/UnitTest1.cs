@@ -9,22 +9,22 @@ using Microsoft.AspNetCore.Mvc;
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class FeedbackControllerTests
+    public class ProductControllerTests
     {
-        private Type _feedbackControllerType;
+        private Type _productControllerType;
 
         [SetUp]
         public void Setup()
         {
             Assembly assembly = Assembly.Load("dotnetapp");
-            _feedbackControllerType = assembly.GetType("dotnetapp.Controllers.FeedbackController");
+            _productControllerType = assembly.GetType("dotnetapp.Controllers.ProductController");
         }
 
         [Test]
         public void Test_Index_Action()
         {
-            var indexMethod = _feedbackControllerType.GetMethod("Index");
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
+            var indexMethod = _productControllerType.GetMethod("Index");
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
 
             var result = indexMethod.Invoke(controllerInstance, null) as IActionResult;
 
@@ -35,8 +35,8 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_Create_Get_Action()
         {
-            var createGetMethod = _feedbackControllerType.GetMethod("Create", new Type[] { });
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
+            var createGetMethod = _productControllerType.GetMethod("Create", new Type[] { });
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
 
             var result = createGetMethod.Invoke(controllerInstance, null) as IActionResult;
 
@@ -47,11 +47,11 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_Create_Post_Action()
         {
-            var createPostMethod = _feedbackControllerType.GetMethod("Create", new Type[] { typeof(Feedback) });
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
-            var feedback = new Feedback();
+            var createPostMethod = _productControllerType.GetMethod("Create", new Type[] { typeof(Product) });
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
+            var product = new Product();
 
-            var result = createPostMethod.Invoke(controllerInstance, new object[] { feedback }) as IActionResult;
+            var result = createPostMethod.Invoke(controllerInstance, new object[] { product }) as IActionResult;
 
             Assert.NotNull(result);
             Assert.IsInstanceOf<RedirectToActionResult>(result);
@@ -62,12 +62,12 @@ namespace dotnetapp.Tests
         public void Test_Edit_Post_Action_Exists()
         {
             // Arrange
-            var editPostMethod = _feedbackControllerType.GetMethod("Edit", new Type[] { typeof(Feedback) });
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
-            var feedback = new Feedback(); // Assuming a Feedback object is required as parameter
+            var editPostMethod = _productControllerType.GetMethod("Edit", new Type[] { typeof(Product) });
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
+            var product = new Product(); // Assuming a Product object is required as parameter
 
             // Act
-            var result = editPostMethod.Invoke(controllerInstance, new object[] { feedback }) as IActionResult;
+            var result = editPostMethod.Invoke(controllerInstance, new object[] { product }) as IActionResult;
 
             // Assert
             Assert.NotNull(editPostMethod);
@@ -78,8 +78,8 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_Delete_Get_Action()
         {
-            var deleteGetMethod = _feedbackControllerType.GetMethod("Delete", new Type[] { typeof(int) });
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
+            var deleteGetMethod = _productControllerType.GetMethod("Delete", new Type[] { typeof(int) });
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
 
             var result = deleteGetMethod.Invoke(controllerInstance, new object[] { 1 }) as IActionResult;
 
@@ -90,8 +90,8 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_DeleteConfirmed_Post_Action()
         {
-            var deleteConfirmedPostMethod = _feedbackControllerType.GetMethod("DeleteConfirmed", new Type[] { typeof(int) });
-            var controllerInstance = Activator.CreateInstance(_feedbackControllerType);
+            var deleteConfirmedPostMethod = _productControllerType.GetMethod("DeleteConfirmed", new Type[] { typeof(int) });
+            var controllerInstance = Activator.CreateInstance(_productControllerType);
 
             var result = deleteConfirmedPostMethod.Invoke(controllerInstance, new object[] { 1 }) as IActionResult;
 
