@@ -1,0 +1,31 @@
+@model dotnetapp.Models.Feedback
+
+<h2>Create Feedback</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="StudentName">Student Name:</label>
+        <input asp-for="StudentName" class="form-control" />
+        <span asp-validation-for="StudentName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Course">Course:</label>
+        <input asp-for="Course" class="form-control" />
+        <span asp-validation-for="Course" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Feedbacks">Feedback:</label>
+        <textarea asp-for="Feedbacks" class="form-control"></textarea>
+        <span asp-validation-for="Feedbacks" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Rating">Rating (1-5):</label>
+        <input asp-for="Rating" type="number" class="form-control" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+</form>
