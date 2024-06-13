@@ -1,0 +1,13 @@
+@model Products.Models.Product
+
+<h1>Product Details</h1>
+
+<div>
+    <h4>Id: @Model.Id</h4>
+    <h4>Name: @Model.Name</h4>
+    <h4>Category: @Model.Category</h4>
+    <h4>Price: @Model.Price</h4>
+    <h4>Stock Quantity: @Model.StockQuantity</h4>
+    <h4>Manufacturer: @Model.Manufacturer</h4>
+</div>
+<a asp-action="Index">Back to List</a>
