@@ -14,14 +14,14 @@ namespace dotnetapp.Tests
         {
             // Arrange
             var controller = CreateBlogController();
-            var method = GetActionMethod(controller, "Index");
+            var method = GetActionMethod(controller, "Home");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("blog/index", routeAttribute.Template);
+            Assert.AreEqual("blog/home", routeAttribute.Template);
         }
 
         [Test]
