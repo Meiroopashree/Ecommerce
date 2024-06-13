@@ -1,20 +1,20 @@
+using dotnetapp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Reflection;
-using dotnetapp.Controllers;
 
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class BlogControllerTests
+    public class BookControllerTests
     {
         [Test]
         public void Test_Home_Route_Attribute()
         {
             // Arrange
-            var controller = CreateBlogController();
+            var controller = CreateBookController();
             var method = GetActionMethod(controller, "Home");
 
             // Act
@@ -22,29 +22,29 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("blog/home", routeAttribute.Template);
+            Assert.AreEqual("book/home", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Posts_Route_Attribute()
+        public void Test_Books_Route_Attribute()
         {
             // Arrange
-            var controller = CreateBlogController();
-            var method = GetActionMethod(controller, "Posts");
+            var controller = CreateBookController();
+            var method = GetActionMethod(controller, "Books");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("blog/posts", routeAttribute.Template);
+            Assert.AreEqual("book/books", routeAttribute.Template);
         }
 
         [Test]
         public void Test_Authors_Route_Attribute()
         {
             // Arrange
-            var controller = CreateBlogController();
+            var controller = CreateBookController();
             var method = GetActionMethod(controller, "Authors");
 
             // Act
@@ -52,15 +52,14 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("blog/authors", routeAttribute.Template);
+            Assert.AreEqual("book/authors", routeAttribute.Template);
         }
-
 
         [Test]
         public void Test_Categories_Route_Attribute()
         {
             // Arrange
-            var controller = CreateBlogController();
+            var controller = CreateBookController();
             var method = GetActionMethod(controller, "Categories");
 
             // Act
@@ -68,46 +67,46 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("blog/categories", routeAttribute.Template);
+            Assert.AreEqual("book/categories", routeAttribute.Template);
         }
 
         [Test]
         public void Test_HomeViewFile_Exists()
         {
-            string homePath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Home.cshtml");
+            string homePath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/", "Home.cshtml");
             bool homeViewExists = File.Exists(homePath);
 
             Assert.IsTrue(homeViewExists, "Home.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_PostsViewFile_Exists()
+        public void Test_BooksViewFile_Exists()
         {
-            string postsPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Posts.cshtml");
-            bool postsViewExists = File.Exists(postsPath);
+            string booksPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/", "Books.cshtml");
+            bool booksViewExists = File.Exists(booksPath);
 
-            Assert.IsTrue(postsViewExists, "Posts.cshtml view file does not exist.");
+            Assert.IsTrue(booksViewExists, "Books.cshtml view file does not exist.");
         }
 
         [Test]
         public void Test_AuthorsViewFile_Exists()
         {
-            string authorsPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Authors.cshtml");
+            string authorsPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/", "Authors.cshtml");
             bool authorsViewExists = File.Exists(authorsPath);
 
             Assert.IsTrue(authorsViewExists, "Authors.cshtml view file does not exist.");
         }
 
-        [Test]
+        [Test]        
         public void Test_CategoriesViewFile_Exists()
         {
-            string categoriesPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Blog/", "Categories.cshtml");
+            string categoriesPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/", "Categories.cshtml");
             bool categoriesViewExists = File.Exists(categoriesPath);
 
             Assert.IsTrue(categoriesViewExists, "Categories.cshtml view file does not exist.");
         }
 
-        private MethodInfo GetActionMethod(BlogController controller, string methodName)
+        private MethodInfo GetActionMethod(BookController controller, string methodName)
         {
             // Use reflection to get the method by name
             MethodInfo method = controller.GetType().GetMethod(methodName);
@@ -123,10 +122,10 @@ namespace dotnetapp.Tests
             }
         }
 
-        private BlogController CreateBlogController()
+        private BookController CreateBookController()
         {
-            // Fully-qualified name of the BlogController class
-            string controllerTypeName = "dotnetapp.Controllers.BlogController, dotnetapp";
+            // Fully-qualified name of the BookController class
+            string controllerTypeName = "dotnetapp.Controllers.BookController, dotnetapp";
 
             // Get the type using Type.GetType
             Type controllerType = Type.GetType(controllerTypeName);
@@ -135,7 +134,15 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(controllerType);
 
             // Create an instance of the controller using reflection
-            return (BlogController)Activator.CreateInstance(controllerType);
+            return (BookController)Activator.CreateInstance(controllerType);
+        }
+
+
+        private void AssertIsViewResultWithCorrectViewName(IActionResult result, string expectedViewName)
+        {
+            Assert.IsInstanceOf<ViewResult>(result);
+            ViewResult viewResult = (ViewResult)result;
+            Assert.AreEqual(expectedViewName, viewResult.ViewName);
         }
     }
 }
