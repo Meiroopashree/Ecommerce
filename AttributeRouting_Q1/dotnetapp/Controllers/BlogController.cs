@@ -5,7 +5,7 @@ namespace dotnetapp.Controllers
     public class BlogController : Controller
     {
         [Route("blog/home")]
-        public IActionResult Index()
+        public IActionResult Home()
         {
             return View("Home");
         }

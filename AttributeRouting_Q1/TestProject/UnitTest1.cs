@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Reflection;
+using dotnetapp.Controllers;
 
 namespace dotnetapp.Tests
 {
@@ -53,6 +54,7 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(routeAttribute);
             Assert.AreEqual("blog/authors", routeAttribute.Template);
         }
+
 
         [Test]
         public void Test_Categories_Route_Attribute()
@@ -134,29 +136,6 @@ namespace dotnetapp.Tests
 
             // Create an instance of the controller using reflection
             return (BlogController)Activator.CreateInstance(controllerType);
-        }
-
-        private IActionResult GetActionMethod(BlogController controller, string methodName)
-        {
-            // Use reflection to get the method by name
-            MethodInfo method = controller.GetType().GetMethod(methodName);
-
-            if (method != null && method.ReturnType == typeof(IActionResult))
-            {
-                return (IActionResult)method.Invoke(controller, null);
-            }
-            else
-            {
-                // Handle the case where the method doesn't exist or doesn't return IActionResult
-                throw new Exception("Action method not found or doesn't return IActionResult.");
-            }
-        }
-
-        private void AssertIsViewResultWithCorrectViewName(IActionResult result, string expectedViewName)
-        {
-            Assert.IsInstanceOf<ViewResult>(result);
-            ViewResult viewResult = (ViewResult)result;
-            Assert.AreEqual(expectedViewName, viewResult.ViewName);
         }
     }
 }
