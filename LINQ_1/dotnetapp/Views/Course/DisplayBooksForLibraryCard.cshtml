@@ -1,0 +1,17 @@
+@model List<dotnetapp.Models.Book>
+
+<h2>Books Associated with Library Card</h2>
+
+
+<ul>
+    @foreach (var book in Model)
+    {
+        <div>
+        <li>Title: @book.Title</li>
+        <li>Author: @book.Author</li>
+        <li>Published Year: @book.PublishedYear</li>
+        </div>
+    }
+</ul>
+
+    <a asp-action="DisplayAllBooks" class="btn btn-primary">Back</a>
