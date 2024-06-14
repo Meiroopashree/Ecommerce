@@ -23,7 +23,7 @@ namespace dotnetapp.Models
          modelBuilder.Entity<Book>()
                 .HasOne(b => b.Student)
                 .WithMany(lc => lc.Courses)
-                .HasForeignKey(b => b.Id);
+                .HasForeignKey(b => b.StudentId);
 
             modelBuilder.Entity<Student>().HasData(
                 new Student
