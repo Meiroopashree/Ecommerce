@@ -13,6 +13,5 @@ namespace dotnetapp.Models
         // Foreign key for the Course
         public int? CourseId { get; set; }
         public Course? Course { get; set; } // Navigation property
-
     }
 }

@@ -13,7 +13,7 @@ namespace dotnetapp.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    CourseId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Instructor = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -21,7 +21,7 @@ namespace dotnetapp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.CourseId);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,7 +42,8 @@ namespace dotnetapp.Migrations
                         name: "FK_Students_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "CourseId");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(

@@ -12,7 +12,7 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240614065504_initialsetup")]
+    [Migration("20240614071135_initialsetup")]
     partial class initialsetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,11 @@ namespace dotnetapp.Migrations
 
             modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Credits")
                         .HasColumnType("int");
@@ -43,7 +43,7 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CourseId");
+                    b.HasKey("Id");
 
                     b.ToTable("Courses");
                 });
@@ -99,7 +99,8 @@ namespace dotnetapp.Migrations
                 {
                     b.HasOne("dotnetapp.Models.Course", "Course")
                         .WithMany("Students")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Course");
                 });

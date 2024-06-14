@@ -30,7 +30,6 @@ namespace dotnetapp.Models
                     StudentNumber = "ST-12345",
                     Name = "Alice Johnson",
                     EnrollmentDate = new DateTime(2022, 9, 1),
-                    CourseId = 1 // Assuming CourseId here, adjust if different
                 },
                 new Student
                 {
@@ -38,11 +37,11 @@ namespace dotnetapp.Models
                     StudentNumber = "ST-54321",
                     Name = "Bob Brown",
                     EnrollmentDate = new DateTime(2021, 9, 1),
-                    CourseId = 2 // Assuming CourseId here, adjust if different
                 }
             );
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }

@@ -24,11 +24,11 @@ namespace dotnetapp.Migrations
 
             modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Credits")
                         .HasColumnType("int");
@@ -41,7 +41,7 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CourseId");
+                    b.HasKey("Id");
 
                     b.ToTable("Courses");
                 });
@@ -97,7 +97,8 @@ namespace dotnetapp.Migrations
                 {
                     b.HasOne("dotnetapp.Models.Course", "Course")
                         .WithMany("Students")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Course");
                 });

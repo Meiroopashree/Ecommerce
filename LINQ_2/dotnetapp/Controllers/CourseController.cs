@@ -18,7 +18,7 @@ namespace dotnetapp.Controllers
         // Display students associated with a course.
         public IActionResult DisplayStudentsForCourse(int courseId)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.CourseId == courseId);
+            var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
 
             if (course == null)
             {
