@@ -5,10 +5,6 @@ namespace dotnetapp.Models
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext()
-        {
-        }
-
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -23,7 +19,8 @@ namespace dotnetapp.Models
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Course)
                 .WithMany(c => c.Students)
-                .HasForeignKey(s => s.CourseId);
+                .HasForeignKey(s => s.CourseId)
+                .OnDelete(DeleteBehavior.Restrict); // Ensure deletion is restricted, change it if necessary
 
             // Seed initial data
             modelBuilder.Entity<Student>().HasData(
@@ -49,5 +46,3 @@ namespace dotnetapp.Models
         }
     }
 }
-
-

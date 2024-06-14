@@ -18,7 +18,7 @@ namespace dotnetapp.Controllers
         // Display students associated with a course.
         public IActionResult DisplayStudentsForCourse(int courseId)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
+            var course = _context.Courses.FirstOrDefault(c => c.CourseId == courseId);
 
             if (course == null)
             {
@@ -44,10 +44,14 @@ namespace dotnetapp.Controllers
             {
                 _context.Courses.Add(course);
                 _context.SaveChanges();
+
                 return RedirectToAction("DisplayAllCourses");
             }
-            return View(course); // Return the view with validation errors if the model is not valid
+
+            // If ModelState is not valid, return the view with validation errors
+            return View(course);
         }
+
 
         // Display all courses in the system.
         public IActionResult DisplayAllCourses()
