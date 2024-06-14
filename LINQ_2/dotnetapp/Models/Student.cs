@@ -1,26 +1,16 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace dotnetapp.Models
 {
-    public class Student
+public class Student
 {
-    [Key]
-    public int Id { get; set; }
+    public int StudentId { get; set; } // Primary Key
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
 
-    [Required]
-    [RegularExpression(@"^ST-\d{5}$", ErrorMessage = "Student number must follow the format 'ST-XXXXX'.")]
-    public string StudentNumber { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    public string Name { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateTime EnrollmentDate { get; set; }
-
-     public ICollection<Course> Courses { get; set; }
+    // Foreign key for the Course
+    public int? CourseId { get; set; }
+    public Course? Course { get; set; } // Navigation property
 }
-
 }
