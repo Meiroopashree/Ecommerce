@@ -1,0 +1,52 @@
+@model List<dotnetapp.Models.Book>
+
+<p>
+    <a asp-action="AddBook" class="btn btn-primary">Add Book</a>
+</p>
+
+<form asp-controller="Library" asp-action="SearchBooksByTitle" method="post" >
+    <div class="form-group">
+        <label for="searchQuery">Search by Title:</label>
+        <div class="button-container">
+            <input type="text" id="searchQuery" name="query" class="form-control textfield" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<div class="button-containers">
+<form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+    <input type="hidden" name="libraryCardId" value="1" />
+    <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 1</button>
+</form>
+<form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+    <input type="hidden" name="libraryCardId" value="2" />
+    <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 2</button>
+</form>
+</div>
+
+<h2>All Books in the Library</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.PublishedYear</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* <p>
+    <a asp-action="GetAvailableBooks" class="btn btn-primary">Available Books</a>
+</p> *@

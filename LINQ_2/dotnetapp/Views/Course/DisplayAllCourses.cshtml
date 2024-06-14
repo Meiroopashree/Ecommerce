@@ -1,0 +1,48 @@
+@model List<dotnetapp.Models.Student>
+
+
+<h2>Add New Course</h2>
+
+<form asp-action="AddCourse" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Instructor" class="control-label"></label>
+        <input asp-for="Instructor" class="form-control" />
+        <span asp-validation-for="Instructor" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Credits" class="control-label"></label>
+        <input asp-for="Credits" class="form-control" />
+        <span asp-validation-for="Credits" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add Course" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<h2>Students Enrolled in the Course</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student Number</th>
+            <th>Name</th>
+            <th>Enrollment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentNumber</td>
+                <td>@student.Name</td>
+                <td>@student.EnrollmentDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>

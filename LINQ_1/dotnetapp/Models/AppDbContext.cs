@@ -1,4 +1,39 @@
+// using Microsoft.EntityFrameworkCore;
+// using dotnetapp.Models;
+
+// namespace dotnetapp.Models
+// {
+//     public class AppDbContext : DbContext
+//     {
+//         public DbSet<Book> Books { get; set; }
+//         public DbSet<LibraryCard> LibraryCards { get; set; }
+
+//         public AppDbContext(DbContextOptions<AppDbContext> options)
+//             : base(options)
+//         {
+//         }
+
+//         protected override void OnModelCreating(ModelBuilder modelBuilder)
+//         {
+//             modelBuilder.Entity<Book>()
+//                 .HasOne(b => b.LibraryCard)
+//                 .WithOne(lc => lc.Book)
+//                 .HasForeignKey<Book>(b => b.LibraryCardId); // Use the appropriate property name
+
+//             modelBuilder.Entity<LibraryCard>()
+//                 .HasOne(lc => lc.Book)
+//                 .WithOne(b => b.LibraryCard)
+//                 .HasForeignKey<LibraryCard>(lc => lc.BookId); // Use the appropriate property name
+
+//             // Other configurations
+
+//             base.OnModelCreating(modelBuilder);
+//         }
+//     }
+// }
+
 using Microsoft.EntityFrameworkCore;
+using dotnetapp.Models;
 
 namespace dotnetapp.Models
 {
@@ -13,35 +48,50 @@ namespace dotnetapp.Models
         {
         }
 
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Student> Students { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<LibraryCard> LibraryCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>()
-                .HasOne(s => s.Course)
-                .WithMany(c => c.Students)
-                .HasForeignKey(s => s.CourseId);
+            // modelBuilder.Entity<Book>()
+            //     .HasOne(b => b.LibraryCard)
+            //     .WithOne(lc => lc.Book)
+            //     .HasForeignKey<Book>(b => b.LibraryCardId)
+            //     .IsRequired(false);
 
-            modelBuilder.Entity<Student>().HasData(
-                new Student
+         modelBuilder.Entity<Book>()
+                .HasOne(b => b.LibraryCard)
+                .WithMany(lc => lc.Books)
+                .HasForeignKey(b => b.LibraryCardId);
+
+            modelBuilder.Entity<LibraryCard>().HasData(
+                new LibraryCard
                 {
                     Id = 1,
-                    StudentNumber = "ST-12345",
-                    Name = "Alice Johnson",
-                    EnrollmentDate = new DateTime(2022, 9, 1),
-                    CourseId = 1
+                    CardNumber = "LC-12345",
+                    MemberName = "John Doe",
+                    ExpiryDate = new DateTime(2025, 12, 31)
                 },
-                new Student
+                new LibraryCard
                 {
                     Id = 2,
-                    StudentNumber = "ST-54321",
-                    Name = "Bob Brown",
-                    EnrollmentDate = new DateTime(2021, 9, 1),
-                    CourseId = 2
-                });
+                    CardNumber = "LC-54321",
+                    MemberName = "Jane Smith",
+                    ExpiryDate = new DateTime(2024, 10, 15)
+                }
+            );
+
+            // modelBuilder.Entity<LibraryCard>()
+            //     .HasOne(lc => lc.Book)
+            //     .WithOne(b => b.LibraryCard)
+            //     .HasForeignKey<LibraryCard>(lc => lc.BookId); // Use the appropriate property name
+
+
+            // Other configurations
 
             base.OnModelCreating(modelBuilder);
         }
     }
 }
+
+
