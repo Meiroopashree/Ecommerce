@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using System;
+using dotnetapp.Models;
 
 namespace dotnetapp.Models
 {
@@ -19,29 +19,12 @@ namespace dotnetapp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>()
-                .HasOne(s => s.Course)
-                .WithMany(c => c.Students)
-                .HasForeignKey(s => s.CourseId);
 
-            // Seed data for Courses
-            modelBuilder.Entity<Course>().HasData(
-                new Course
-                {
-                    Id = 1,
-                    Name = "Computer Science 101",
-                    Instructor = "Dr. Smith",
-                    Credits = 3
-                },
-                new Course
-                {
-                    Id = 2,
-                    Name = "Mathematics 201",
-                    Instructor = "Dr. Johnson",
-                    Credits = 4
-                });
+         modelBuilder.Entity<Book>()
+                .HasOne(b => b.Student)
+                .WithMany(lc => lc.Courses)
+                .HasForeignKey(b => b.Id);
 
-            // Seed data for Students
             modelBuilder.Entity<Student>().HasData(
                 new Student
                 {
@@ -58,9 +41,12 @@ namespace dotnetapp.Models
                     Name = "Bob Brown",
                     EnrollmentDate = new DateTime(2021, 9, 1),
                     CourseId = 2
-                });
+                }
+            );
 
             base.OnModelCreating(modelBuilder);
         }
     }
 }
+
+

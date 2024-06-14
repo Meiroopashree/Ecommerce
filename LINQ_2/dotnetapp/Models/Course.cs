@@ -19,7 +19,10 @@ public class Course
     [Range(1, 10)]
     public int Credits { get; set; }
 
+    public int? Id { get; set; }
+
     // Navigation property
-    public ICollection<Student> Students { get; set; }
+    [ForeignKey("CourseId")]
+    public Student? Student { get; set; }
 }
 }

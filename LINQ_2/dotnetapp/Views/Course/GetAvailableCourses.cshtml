@@ -1,17 +1,12 @@
-@model IEnumerable<dotnetapp.Models.Course>
+@model List<dotnetapp.Models.Course>
 
 <h2>Available Courses</h2>
 
-@if (!Model.Any())
-{
-    <p>No available courses.</p>
-}
-else
+@if (Model.Any())
 {
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Instructor</th>
                 <th>Credits</th>
@@ -21,7 +16,6 @@ else
             @foreach (var course in Model)
             {
                 <tr>
-                    <td>@course.Id</td>
                     <td>@course.Name</td>
                     <td>@course.Instructor</td>
                     <td>@course.Credits</td>
@@ -29,4 +23,8 @@ else
             }
         </tbody>
     </table>
+}
+else
+{
+    <p>No available courses found.</p>
 }

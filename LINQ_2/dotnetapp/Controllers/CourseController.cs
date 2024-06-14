@@ -15,10 +15,9 @@ namespace dotnetapp.Controllers
             _context = context;
         }
 
-        // Implement a method to display students associated with a course.
+        // Display students associated with a course.
         public IActionResult DisplayStudentsForCourse(int courseId)
         {
-            Console.WriteLine(courseId);
             var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
 
             if (course == null)
@@ -50,7 +49,7 @@ namespace dotnetapp.Controllers
             return View(course); // Return the view with validation errors if the model is not valid
         }
 
-        // Implement a method to display all courses in the system.
+        // Display all courses in the system.
         public IActionResult DisplayAllCourses()
         {
             var courses = _context.Courses.ToList();
@@ -59,7 +58,7 @@ namespace dotnetapp.Controllers
 
         [HttpGet]
         [HttpPost]
-        // Method to search for courses by title
+        // Method to search for courses by name
         public IActionResult SearchCoursesByName(string query)
         {
             // If query is null or empty, return all courses
@@ -78,7 +77,7 @@ namespace dotnetapp.Controllers
             return View("DisplayAllCourses", filteredCourses);
         }
 
-        // Implement a method to get courses with no enrolled students.
+        // Get courses with no enrolled students.
         public IActionResult GetAvailableCourses()
         {
             var availableCourses = _context.Courses
@@ -88,7 +87,7 @@ namespace dotnetapp.Controllers
             return View(availableCourses);
         }
 
-        // Implement a method to get courses with enrolled students.
+        // Get courses with enrolled students.
         public IActionResult GetCoursesWithStudents()
         {
             var coursesWithStudents = _context.Courses
