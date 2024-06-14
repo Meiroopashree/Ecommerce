@@ -2,7 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Student
+namespace dotnetapp.Models
+{
+    public class Student
 {
     [Key]
     public int Id { get; set; }
@@ -24,4 +26,6 @@ public class Student
     // Navigation property
     [ForeignKey("CourseId")]
     public Course? Course { get; set; }
+}
+
 }

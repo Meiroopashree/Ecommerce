@@ -22,7 +22,7 @@ namespace dotnetapp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("dotnetapp.Models.Book", b =>
+            modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,30 +30,25 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Author")
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Instructor")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PublishedYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LibraryCardId");
-
-                    b.ToTable("Books");
+                    b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.LibraryCard", b =>
+            modelBuilder.Entity("dotnetapp.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,51 +56,60 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CardNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("ExpiryDate")
+                    b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MemberName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("StudentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("LibraryCards");
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Students");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CardNumber = "LC-12345",
-                            ExpiryDate = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MemberName = "John Doe"
+                            CourseId = 1,
+                            EnrollmentDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Alice Johnson",
+                            StudentNumber = "ST-12345"
                         },
                         new
                         {
                             Id = 2,
-                            CardNumber = "LC-54321",
-                            ExpiryDate = new DateTime(2024, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MemberName = "Jane Smith"
+                            CourseId = 2,
+                            EnrollmentDate = new DateTime(2021, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bob Brown",
+                            StudentNumber = "ST-54321"
                         });
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Book", b =>
+            modelBuilder.Entity("dotnetapp.Models.Student", b =>
                 {
-                    b.HasOne("dotnetapp.Models.LibraryCard", "LibraryCard")
-                        .WithMany("Books")
-                        .HasForeignKey("LibraryCardId");
+                    b.HasOne("dotnetapp.Models.Course", "Course")
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("LibraryCard");
+                    b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.LibraryCard", b =>
+            modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

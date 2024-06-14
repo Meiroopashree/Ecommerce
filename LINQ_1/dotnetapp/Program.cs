@@ -31,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Library}/{action=DisplayAllBooks}/{id?}");
+    pattern: "{controller=Course}/{action=DisplayAllCourses}/{id?}");
 
 app.Run();

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+namespace dotnetapp.Models
+{
 public class Course
 {
     [Key]
@@ -19,4 +21,5 @@ public class Course
 
     // Navigation property
     public ICollection<Student> Students { get; set; }
+}
 }

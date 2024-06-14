@@ -1,0 +1,23 @@
+@model IEnumerable<dotnetapp.Models.Course>
+
+<h2>All Courses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Instructor</th>
+            <th>Credits</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.Instructor</td>
+                <td>@course.Credits</td>
+            </tr>
+        }
+    </tbody>
+</table>
