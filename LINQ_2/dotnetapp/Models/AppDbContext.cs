@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using dotnetapp.Models;
 using System.Collections.Generic;
 
-
 namespace dotnetapp.Models
 {
     public class AppDbContext : DbContext
@@ -16,7 +15,7 @@ namespace dotnetapp.Models
         {
             modelBuilder.Entity<Enrollment>()
                 .HasOne(e => e.Course)
-                .WithMany(c => c.Enrollments)
+                .WithMany(c => c.Enrollments) // Corrected the navigation property name
                 .HasForeignKey(e => e.CourseId);
 
             modelBuilder.Entity<Course>().HasData(

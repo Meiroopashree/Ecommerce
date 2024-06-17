@@ -19,6 +19,6 @@ namespace dotnetapp.Models
         public int Duration { get; set; }
         
         public int EnrollmentId { get; set; } // Foreign key property
-        public Enrollment Enrollment { get; set; } // Navigation property
+        public ICollection<Enrollment> Enrollments { get; set; } // Navigation property
     }
 }

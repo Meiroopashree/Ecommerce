@@ -15,6 +15,7 @@ namespace dotnetapp.Models
         [DataType(DataType.Date)]
         public DateTime EnrollmentDate { get; set; }
 
-        public ICollection<Course> Courses { get; set; } // Navigation property
+        public int CourseId { get; set; } // Foreign key property
+        public Course Course { get; set; } // Navigation property
     }
 }
