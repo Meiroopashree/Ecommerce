@@ -2,24 +2,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace dotnetapp.Models
 {
-    public class Book
+    public class Course
     {
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Title { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string Author { get; set; }
+        [StringLength(500)]
+        public string Description { get; set; }
 
-        [Required]
-        [Range(1000, 2024)]
-        public int PublishedYear { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Duration must be a positive integer.")]
+        public int Duration { get; set; }
 
-        public int? LibraryCardId { get; set; }
+        public int? EnrollmentId { get; set; }
 
-        public LibraryCard? LibraryCard { get; set; } // Navigation property
+        public Enrollment? Enrollment { get; set; } // Navigation property
     }
 }

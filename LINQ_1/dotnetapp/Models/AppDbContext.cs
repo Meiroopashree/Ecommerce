@@ -14,26 +14,26 @@ namespace dotnetapp.Models
         {
         }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<LibraryCard> LibraryCards { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-         modelBuilder.Entity<Book>()
-                .HasOne(b => b.LibraryCard)
-                .WithMany(lc => lc.Books)
-                .HasForeignKey(b => b.LibraryCardId);
+         modelBuilder.Entity<Course>()
+                .HasOne(b => b.Enrollment)
+                .WithMany(lc => lc.Courses)
+                .HasForeignKey(b => b.EnrollmentId);
 
-            modelBuilder.Entity<LibraryCard>().HasData(
-                new LibraryCard
+            modelBuilder.Entity<Enrollment>().HasData(
+                new Enrollment
                 {
                     Id = 1,
                     CardNumber = "LC-12345",
                     MemberName = "John Doe",
                     ExpiryDate = new DateTime(2025, 12, 31)
                 },
-                new LibraryCard
+                new Enrollment
                 {
                     Id = 2,
                     CardNumber = "LC-54321",
@@ -42,10 +42,10 @@ namespace dotnetapp.Models
                 }
             );
 
-            // modelBuilder.Entity<LibraryCard>()
-            //     .HasOne(lc => lc.Book)
-            //     .WithOne(b => b.LibraryCard)
-            //     .HasForeignKey<LibraryCard>(lc => lc.BookId); // Use the appropriate property name
+            // modelBuilder.Entity<Enrollment>()
+            //     .HasOne(lc => lc.Course)
+            //     .WithOne(b => b.Enrollment)
+            //     .HasForeignKey<Enrollment>(lc => lc.Id); // Use the appropriate property name
 
 
             // Other configurations

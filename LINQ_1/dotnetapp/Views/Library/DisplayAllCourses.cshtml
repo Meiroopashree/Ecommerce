@@ -1,0 +1,48 @@
+@model List<dotnetapp.Models.Course>
+
+<p>
+    <a asp-action="AddCourse" class="btn btn-primary">Add Course</a>
+</p>
+
+<form asp-controller="Course" asp-action="SearchCoursesByTitle" method="post">
+    <div class="form-group">
+        <label for="searchQuery">Search by Title:</label>
+        <div class="button-container">
+            <input type="text" id="searchQuery" name="query" class="form-control textfield" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<div class="button-containers">
+    <form asp-controller="Course" asp-action="DisplayCoursesForEnrollment" method="get">
+        <input type="hidden" name="enrollmentId" value="1" />
+        <button type="submit" class="btn btn-primary">Display Courses of EnrollmentId 1</button>
+    </form>
+    <form asp-controller="Course" asp-action="DisplayCoursesForEnrollment" method="get">
+        <input type="hidden" name="enrollmentId" value="2" />
+        <button type="submit" class="btn btn-primary">Display Courses of EnrollmentId 2</button>
+    </form>
+</div>
+
+<h2>All Courses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Duration (hours)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Description</td>
+                <td>@course.Duration</td>
+            </tr>
+        }
+    </tbody>
+</table>

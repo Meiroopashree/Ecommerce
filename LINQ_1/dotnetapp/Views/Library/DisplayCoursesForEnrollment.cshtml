@@ -1,0 +1,16 @@
+@model List<dotnetapp.Models.Course>
+
+<h2>Courses Associated with Enrollment</h2>
+
+<ul>
+    @foreach (var course in Model)
+    {
+        <div>
+            <li>Title: @course.Title</li>
+            <li>Description: @course.Description</li>
+            <li>Duration: @course.Duration hours</li>
+        </div>
+    }
+</ul>
+
+<a asp-action="DisplayAllCourses" class="btn btn-primary">Back</a>
