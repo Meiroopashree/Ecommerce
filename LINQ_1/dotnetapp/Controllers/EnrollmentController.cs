@@ -15,20 +15,21 @@ namespace dotnetapp.Controllers
             _context = context;
         }
         public IActionResult DisplayCoursesForEnrollment(int enrollmentId)
-    {
-        var enrollment = _context.Enrollments.FirstOrDefault(e => e.Id == enrollmentId);
-
-        if (enrollment == null)
         {
-            return NotFound();
+            var enrollment = _context.Enrollments.FirstOrDefault(e => e.Id == enrollmentId);
+
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+
+            var courses = _context.Courses
+                .Where(c => c.EnrollmentId == enrollmentId)
+                .ToList();
+
+            return View(courses);
         }
 
-        var courses = _context.Courses
-            .Where(c => c.EnrollmentId == enrollmentId)
-            .ToList();
-
-        return View(courses);
-    }
 
         public IActionResult AddCourse()
         {
