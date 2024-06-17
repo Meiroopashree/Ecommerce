@@ -5,35 +5,48 @@ namespace dotnetapp.Models
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext()
+        {
+        }
+
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<LibraryCard> LibraryCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>()
-                .HasOne(c => c.Enrollment)
-                .WithMany(e => e.Courses)
-                .HasForeignKey(c => c.EnrollmentId);
 
-            modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment
+         modelBuilder.Entity<Book>()
+                .HasOne(b => b.LibraryCard)
+                .WithMany(lc => lc.Books)
+                .HasForeignKey(b => b.LibraryCardId);
+
+            modelBuilder.Entity<LibraryCard>().HasData(
+                new LibraryCard
                 {
                     Id = 1,
-                    StudentName = "John Doe",
-                    EnrollmentDate = new DateTime(2024, 6, 15)
+                    CardNumber = "LC-12345",
+                    MemberName = "John Doe",
+                    ExpiryDate = new DateTime(2025, 12, 31)
                 },
-                new Enrollment
+                new LibraryCard
                 {
                     Id = 2,
-                    StudentName = "Jane Smith",
-                    EnrollmentDate = new DateTime(2023, 8, 20)
+                    CardNumber = "LC-54321",
+                    MemberName = "Jane Smith",
+                    ExpiryDate = new DateTime(2024, 10, 15)
                 }
             );
+
+            // modelBuilder.Entity<LibraryCard>()
+            //     .HasOne(lc => lc.Book)
+            //     .WithOne(b => b.LibraryCard)
+            //     .HasForeignKey<LibraryCard>(lc => lc.BookId); // Use the appropriate property name
+
 
             // Other configurations
 
@@ -41,3 +54,5 @@ namespace dotnetapp.Models
         }
     }
 }
+
+
