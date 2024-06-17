@@ -14,6 +14,9 @@ namespace dotnetapp.Controllers
         {
             _context = context;
         }
+        
+        // Route for DisplayCoursesForEnrollment
+        [Route("Enrollment/DisplayCoursesForEnrollment/{enrollmentId}")]
         public IActionResult DisplayCoursesForEnrollment(int enrollmentId)
         {
             var enrollment = _context.Enrollments.FirstOrDefault(e => e.Id == enrollmentId);
@@ -30,12 +33,10 @@ namespace dotnetapp.Controllers
             return View(courses);
         }
 
-
         public IActionResult AddCourse()
         {
             return View(); // Return the view with validation errors if the model is not valid
         }
-
 
         [HttpPost]
         public IActionResult AddCourse(Course course)
@@ -49,8 +50,6 @@ namespace dotnetapp.Controllers
             return View(course); // Return the view with validation errors if the model is not valid
         }
 
-
-        // Implement a method to display all courses in the library.
         public IActionResult DisplayAllCourses()
         {
             var courses = _context.Courses.ToList();
@@ -59,7 +58,7 @@ namespace dotnetapp.Controllers
 
         [HttpGet]
         [HttpPost]
-                // Method to search for courses by title
+        // Method to search for courses by title
         public IActionResult SearchCoursesByTitle(string query)
         {
             // If query is null or empty, return all courses
@@ -78,11 +77,11 @@ namespace dotnetapp.Controllers
             return View("DisplayAllCourses", filteredCourses);
         }
 
-        // Implement a method to get available Courses.
+        // Method to get available Courses.
         public IActionResult GetAvailableCourses()
         {
             var availableCourses = _context.Courses
-                .Where(b => b.EnrollmentId == null) // Courses that are not borrowed
+                .Where(b => b.EnrollmentId == null) // Courses that are not enrolled
                 .ToList();
 
             return View(availableCourses);

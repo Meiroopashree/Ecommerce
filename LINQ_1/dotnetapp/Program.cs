@@ -34,6 +34,6 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Enrollment}/{action=DisplayAllCourses}/{id?}");
+    pattern: "{controller=Enrollment}/{action=DisplayAllCourses}/{id?}"); 
 
 app.Run();
