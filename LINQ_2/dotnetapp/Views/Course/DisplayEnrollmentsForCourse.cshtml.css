@@ -1,0 +1,14 @@
+li{
+    list-style-type: none;
+}
+
+div{
+    border:1px solid black;
+    padding:10px;
+    border-radius: 3px;
+    margin: 20px;
+}
+
+ul{
+    display: flex;
+}

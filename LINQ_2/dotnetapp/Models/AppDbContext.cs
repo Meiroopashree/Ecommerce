@@ -5,43 +5,22 @@ namespace dotnetapp.Models
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Student> Students { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure one-to-many relationship between Course and Student
-            modelBuilder.Entity<Student>()
-                .HasOne(s => s.Course)
-                .WithMany(c => c.Students)
-                .HasForeignKey(s => s.CourseId)
-                .OnDelete(DeleteBehavior.Restrict); // Ensure deletion is restricted, change it if necessary
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Course)
+                .WithMany(c => c.Enrollments)
+                .HasForeignKey(e => e.CourseId);
 
-            // Seed initial data
-            modelBuilder.Entity<Student>().HasData(
-                new Student
-                {
-                    Id = 1,
-                    StudentNumber = "ST-12345",
-                    Name = "Alice Johnson",
-                    EnrollmentDate = new DateTime(2022, 9, 1),
-                },
-                new Student
-                {
-                    Id = 2,
-                    StudentNumber = "ST-54321",
-                    Name = "Bob Brown",
-                    EnrollmentDate = new DateTime(2021, 9, 1),
-                }
+            modelBuilder.Entity<Course>().HasData(
+                new Course { Id = 1, Title = "Introduction to Programming", Description = "Learn the basics of programming.", Duration = 40 },
+                new Course { Id = 2, Title = "Advanced Databases", Description = "Deep dive into database management systems.", Duration = 60 }
             );
-
-            base.OnModelCreating(modelBuilder);
         }
-
     }
 }

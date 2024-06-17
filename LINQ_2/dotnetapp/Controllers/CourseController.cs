@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Data;
 using dotnetapp.Models;
 
 namespace dotnetapp.Controllers
@@ -15,8 +15,8 @@ namespace dotnetapp.Controllers
             _context = context;
         }
 
-        // Display students associated with a course.
-        public IActionResult DisplayStudentsForCourse(int courseId)
+        // Implement a method to display enrollments associated with a course.
+        public IActionResult DisplayEnrollmentsForCourse(int courseId)
         {
             var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
 
@@ -25,11 +25,11 @@ namespace dotnetapp.Controllers
                 return NotFound(); // Handle the case where the course with the given ID doesn't exist
             }
 
-            var students = _context.Students
-                .Where(s => s.CourseId == courseId)
+            var enrollments = _context.Enrollments
+                .Where(e => e.CourseId == courseId)
                 .ToList();
 
-            return View(students);
+            return View(enrollments);
         }
 
         public IActionResult AddCourse()
@@ -44,26 +44,22 @@ namespace dotnetapp.Controllers
             {
                 _context.Courses.Add(course);
                 _context.SaveChanges();
-
                 return RedirectToAction("DisplayAllCourses");
             }
-
-            // If ModelState is not valid, return the view with validation errors
-            return View(course);
+            return View(course); // Return the view with validation errors if the model is not valid
         }
 
-
-        // Display all courses in the system.
+        // Implement a method to display all courses.
         public IActionResult DisplayAllCourses()
         {
             var courses = _context.Courses.ToList();
             return View(courses);
         }
 
+        // Method to search for courses by title
         [HttpGet]
         [HttpPost]
-        // Method to search for courses by name
-        public IActionResult SearchCoursesByName(string query)
+        public IActionResult SearchCoursesByTitle(string query)
         {
             // If query is null or empty, return all courses
             if (string.IsNullOrEmpty(query))
@@ -72,33 +68,32 @@ namespace dotnetapp.Controllers
                 return View("DisplayAllCourses", allCourses);
             }
 
-            // Otherwise, filter courses by name
+            // Otherwise, filter courses by title
             var filteredCourses = _context.Courses
-                .ToList() // Materialize the query
-                .Where(c => c.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                .Where(c => c.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             return View("DisplayAllCourses", filteredCourses);
         }
 
-        // Get courses with no enrolled students.
+        // Implement a method to get available courses.
         public IActionResult GetAvailableCourses()
         {
             var availableCourses = _context.Courses
-                .Where(c => !c.Students.Any()) // Courses that have no students enrolled
+                .Where(c => !_context.Enrollments.Any(e => e.CourseId == c.Id)) // Courses that have no enrollments
                 .ToList();
 
             return View(availableCourses);
         }
 
-        // Get courses with enrolled students.
-        public IActionResult GetCoursesWithStudents()
+        // Implement a method to get enrolled courses.
+        public IActionResult GetEnrolledCourses()
         {
-            var coursesWithStudents = _context.Courses
-                .Where(c => c.Students.Any()) // Courses that have students enrolled
+            var enrolledCourses = _context.Courses
+                .Where(c => _context.Enrollments.Any(e => e.CourseId == c.Id)) // Courses that have enrollments
                 .ToList();
 
-            return View(coursesWithStudents);
+            return View(enrolledCourses);
         }
     }
 }
