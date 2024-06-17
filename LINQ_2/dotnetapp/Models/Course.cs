@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,16 +9,16 @@ namespace dotnetapp.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The title must be less than 100 characters.")]
+        [StringLength(100)]
         public string Title { get; set; }
 
-        [StringLength(500, ErrorMessage = "The description must be less than 500 characters.")]
+        [StringLength(500)]
         public string Description { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "The duration must be a positive integer.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Duration must be a positive integer.")]
         public int Duration { get; set; }
-
-        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        
+        public int EnrollmentId { get; set; } // Foreign key property
+        public Enrollment Enrollment { get; set; } // Navigation property
     }
 }

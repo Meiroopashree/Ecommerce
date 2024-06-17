@@ -12,7 +12,7 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240614071135_initialsetup")]
+    [Migration("20240617054956_initialsetup")]
     partial class initialsetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,23 +32,41 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Credits")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<string>("Instructor")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Learn the basics of programming.",
+                            Duration = 40,
+                            Title = "Introduction to Programming"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Deep dive into database management systems.",
+                            Duration = 60,
+                            Title = "Advanced Databases"
+                        });
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Student", b =>
+            modelBuilder.Entity("dotnetapp.Models.Enrollment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,58 +74,38 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("StudentName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CourseId = 1,
-                            EnrollmentDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Alice Johnson",
-                            StudentNumber = "ST-12345"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CourseId = 2,
-                            EnrollmentDate = new DateTime(2021, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Bob Brown",
-                            StudentNumber = "ST-54321"
-                        });
+                    b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Student", b =>
+            modelBuilder.Entity("dotnetapp.Models.Enrollment", b =>
                 {
                     b.HasOne("dotnetapp.Models.Course", "Course")
-                        .WithMany("Students")
+                        .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }

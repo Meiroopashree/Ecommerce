@@ -7,18 +7,18 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Instructor</th>
-                <th>Credits</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Duration (hours)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var course in Model)
             {
                 <tr>
-                    <td>@course.Name</td>
-                    <td>@course.Instructor</td>
-                    <td>@course.Credits</td>
+                    <td>@course.Title</td>
+                    <td>@course.Description</td>
+                    <td>@course.Duration</td>
                 </tr>
             }
         </tbody>

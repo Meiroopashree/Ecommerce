@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using dotnetapp.Data;
 using dotnetapp.Models;
 
 namespace dotnetapp.Controllers
@@ -46,7 +45,7 @@ namespace dotnetapp.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("DisplayAllCourses");
             }
-            return View(course); // Return the view with validation errors if the model is not valid
+            return View(course);
         }
 
         // Implement a method to display all courses.

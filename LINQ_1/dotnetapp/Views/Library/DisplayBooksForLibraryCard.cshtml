@@ -1,17 +1,15 @@
-@model List<dotnetapp.Models.Book>
+@model List<dotnetapp.Models.Enrollment>
 
-<h2>Books Associated with Library Card</h2>
-
+<h2>Enrollments for the Course</h2>
 
 <ul>
-    @foreach (var book in Model)
+    @foreach (var enrollment in Model)
     {
         <div>
-        <li>Title: @book.Title</li>
-        <li>Author: @book.Author</li>
-        <li>Published Year: @book.PublishedYear</li>
+            <li>Student Name: @enrollment.StudentName</li>
+            <li>Enrollment Date: @enrollment.EnrollmentDate.ToShortDateString()</li>
         </div>
     }
 </ul>
 
-    <a asp-action="DisplayAllBooks" class="btn btn-primary">Back</a>
+<a asp-action="DisplayAllCourses" class="btn btn-primary">Back</a>

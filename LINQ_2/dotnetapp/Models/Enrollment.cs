@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace dotnetapp.Models
@@ -8,15 +9,12 @@ namespace dotnetapp.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The student's name must be less than 100 characters.")]
+        [StringLength(100)]
         public string StudentName { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime EnrollmentDate { get; set; }
 
-        [Required]
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
+        public ICollection<Course> Courses { get; set; } // Navigation property
     }
 }

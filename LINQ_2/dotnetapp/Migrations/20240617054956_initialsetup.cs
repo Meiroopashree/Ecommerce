@@ -15,9 +15,9 @@ namespace dotnetapp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Instructor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Credits = table.Column<int>(type: "int", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,47 +25,46 @@ namespace dotnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Enrollments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: true)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Enrollments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_Courses_CourseId",
+                        name: "FK_Enrollments_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Students",
-                columns: new[] { "Id", "CourseId", "EnrollmentDate", "Name", "StudentNumber" },
-                values: new object[] { 1, 1, new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alice Johnson", "ST-12345" });
+                table: "Courses",
+                columns: new[] { "Id", "Description", "Duration", "Title" },
+                values: new object[] { 1, "Learn the basics of programming.", 40, "Introduction to Programming" });
 
             migrationBuilder.InsertData(
-                table: "Students",
-                columns: new[] { "Id", "CourseId", "EnrollmentDate", "Name", "StudentNumber" },
-                values: new object[] { 2, 2, new DateTime(2021, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bob Brown", "ST-54321" });
+                table: "Courses",
+                columns: new[] { "Id", "Description", "Duration", "Title" },
+                values: new object[] { 2, "Deep dive into database management systems.", 60, "Advanced Databases" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_CourseId",
-                table: "Students",
+                name: "IX_Enrollments_CourseId",
+                table: "Enrollments",
                 column: "CourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Enrollments");
 
             migrationBuilder.DropTable(
                 name: "Courses");
