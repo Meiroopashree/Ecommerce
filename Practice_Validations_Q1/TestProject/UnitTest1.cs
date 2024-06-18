@@ -18,7 +18,7 @@ namespace dotnetapp.Tests
     public class CustomerTests
     {
         [Test]
-        public void Customer_Properties_Have_RequiredAttribute()
+        public void Customer_FirstName_Have_RequiredAttribute()
         {
             var count = 0;
 
@@ -27,7 +27,31 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "Name")
+                if (property.Name == "FirstName")
+                {
+                    var requiredAttribute = property.GetCustomAttribute<RequiredAttribute>();
+                    Assert.NotNull(requiredAttribute, $"{property.Name} should have a RequiredAttribute.");
+                    count++;
+                    break;
+                }
+            }
+            if (count == 0)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [Test]
+        public void Customer_LastName_Have_RequiredAttribute()
+        {
+            var count = 0;
+
+            Type customerType = typeof(Customer);
+            PropertyInfo[] properties = customerType.GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (property.Name == "LastName")
                 {
                     var requiredAttribute = property.GetCustomAttribute<RequiredAttribute>();
                     Assert.NotNull(requiredAttribute, $"{property.Name} should have a RequiredAttribute.");
@@ -66,7 +90,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void Customer_Properties_Have_RangeAttribute()
+        public void Customer_Properties_Have_RegularExpressionAttribute()
         {
             var count = 0;
 
@@ -75,10 +99,10 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "Salary")
+                if (property.Name == "PhoneNumber")
                 {
                     var rangeAttribute = property.GetCustomAttribute<System.ComponentModel.DataAnnotations.RangeAttribute>();
-                    Assert.NotNull(rangeAttribute, $"{property.Name} should have a RangeAttribute.");
+                    Assert.NotNull(rangeAttribute, $"{property.Name} should have a RegularExpressionAttribute.");
                     count++;
                     break;
                 }
@@ -98,7 +122,7 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "Dob")
+                if (property.Name == "BirthDate")
                 {
                     var dataTypeAttribute = property.GetCustomAttribute<DataTypeAttribute>();
                     Assert.NotNull(dataTypeAttribute, $"{property.Name} should have a DataTypeAttribute.");
@@ -114,30 +138,73 @@ namespace dotnetapp.Tests
 
         
         [Test]
-        public void Customer_Property_Name_Validation()
+        public void Customer_Property_FirstName_Validation()
         {
             var customer1 = new Dictionary<string, object>
             {
-                { "Name", "" },
+                { "FirstName", "" },
+                { "LastName", "" },
                 { "Email", "a@gmail.com" },
-                { "Salary", 1500 },
-                { "Dob", DateTime.Parse("1990-01-01") },
-                { "Dept", "HR" }
+                { "PhoneNumber", 976543210 },
+                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "Address", "123 Main Street, Anytown, USA" }
             };
             var customer = CreateEmpFromDictionary(customer1);
-            string expectedErrorMessage = "The Name field is required.";
+            string expectedErrorMessage = "First name is required";
             var context = new ValidationContext(customer, null, null);
             var results = new List<ValidationResult>();
 
-            var validationContext = new ValidationContext(customer) { MemberName = "Name" };
+            var validationContext = new ValidationContext(customer) { MemberName = "FirstName" };
             var requiredAttribute = new RequiredAttribute();
 
             // Act
-            var validationResult = requiredAttribute.GetValidationResult(customer.Name, validationContext);
+            var validationResult = requiredAttribute.GetValidationResult(customer.FirstName, validationContext);
 
             // Assert
-            Assert.IsNotNull(validationResult, "Validation should fail for null Name.");
-            Assert.AreEqual("The Name field is required.", validationResult.ErrorMessage, "Error message should match.");
+            Assert.IsNotNull(validationResult, "Validation should fail for null FirstName.");
+            Assert.AreEqual("First name is required", validationResult.ErrorMessage, "Error message should match.");
+
+
+            bool isValid = Validator.TryValidateObject(customer, context, results);
+
+            if (expectedErrorMessage == null)
+            {
+                Assert.IsTrue(isValid);
+            }
+            else
+            {
+                Assert.IsFalse(isValid);
+                var errorMessages = results.Select(result => result.ErrorMessage).ToList();
+                Assert.Contains(expectedErrorMessage, errorMessages);
+            }
+        }
+
+        [Test]
+        public void Customer_Property_LastName_Validation()
+        {
+            var customer1 = new Dictionary<string, object>
+            {
+                { "FirstName", "" },
+                { "LastName", "" },
+                { "Email", "a@gmail.com" },
+                { "PhoneNumber", 976543210 },
+                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "Address", "123 Main Street, Anytown, USA" }
+            };
+            var customer = CreateEmpFromDictionary(customer1);
+            string expectedErrorMessage = "Last name is required";
+            var context = new ValidationContext(customer, null, null);
+            var results = new List<ValidationResult>();
+
+            var validationContext = new ValidationContext(customer) { MemberName = "LastName" };
+            var requiredAttribute = new RequiredAttribute();
+
+            // Act
+            var validationResult = requiredAttribute.GetValidationResult(customer.LastName, validationContext);
+
+            // Assert
+            Assert.IsNotNull(validationResult, "Validation should fail for null LastName.");
+            Assert.AreEqual("Last name is required", validationResult.ErrorMessage, "Error message should match.");
 
 
             bool isValid = Validator.TryValidateObject(customer, context, results);
@@ -182,14 +249,15 @@ namespace dotnetapp.Tests
            
             var customer1 = new Dictionary<string, object>
             {
-                { "Name", "asd" },
-                { "Email", "" },
-                { "Salary", 1500 },
-                { "Dob", DateTime.Parse("1990-01-01") },
-                { "Dept", "HR" }
+                { "FirstName", "" },
+                { "LastName", "" },
+                { "Email", "a@gmail.com" },
+                { "PhoneNumber", 976543210 },
+                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "Address", "123 Main Street, Anytown, USA" }
             };
             var customer = CreateEmpFromDictionary(customer1);
-            string expectedErrorMessage = "The Email field is required.";
+            string expectedErrorMessage = "Email is required";
             var context = new ValidationContext(customer, null, null);
             var results = new List<ValidationResult>();
 
@@ -258,14 +326,14 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type emailType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = emailType.GetProperty("Name");
+            PropertyInfo propertyInfo = emailType.GetProperty("Email");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
         }
 
         [Test]
-        public void CustomerClass_HasSalaryProperty()
+        public void CustomerClass_HasPhoneNumberProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Customer";
@@ -273,14 +341,14 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type salaryType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = salaryType.GetProperty("Salary");
+            PropertyInfo propertyInfo = salaryType.GetProperty("PhoneNumber");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(decimal), propertyInfo.PropertyType);
         }
 
         [Test]
-        public void CustomerClass_HasDobProperty()
+        public void CustomerClass_HasBirthDateProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Customer";
@@ -288,15 +356,15 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type customerType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = customerType.GetProperty("Dob");
+            PropertyInfo propertyInfo = customerType.GetProperty("BirthDate");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(DateTime), propertyInfo.PropertyType);
         }
 
-        // Test case for Dept property
+        // Test case for Address property
         [Test]
-        public void CustomerClass_HasDeptProperty()
+        public void CustomerClass_HasAddressProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Customer";
@@ -304,7 +372,7 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type customerType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = customerType.GetProperty("Dept");
+            PropertyInfo propertyInfo = customerType.GetProperty("Address");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
@@ -408,13 +476,13 @@ namespace dotnetapp.Tests
         {
             // Arrange
             Type customerType = typeof(Customer);
-            PropertyInfo dobProperty = customerType.GetProperty("Dob");
+            PropertyInfo dobProperty = customerType.GetProperty("BirthDate");
 
             // Act
             var minAgeAttribute = dobProperty.GetCustomAttribute<MinAgeAttribute>();
 
             // Assert
-            Assert.IsNotNull(minAgeAttribute, "MinAge attribute should be applied to the Dob property");
+            Assert.IsNotNull(minAgeAttribute, "MinAge attribute should be applied to the BirthDate property");
         }
 
         [Test]
@@ -422,18 +490,19 @@ namespace dotnetapp.Tests
         {
             var customer1 = new Dictionary<string, object>
             {
-                { "Name", "asd" },
-                { "Email", "" },
-                { "Salary", 1500 },
-                { "Dob", DateTime.Now.AddYears(-30) },
-                { "Dept", "HR" }
+                { "FirstName", "" },
+                { "LastName", "" },
+                { "Email", "a@gmail.com" },
+                { "PhoneNumber", 976543210 },
+                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "Address", "123 Main Street, Anytown, USA" }
             };
             var customer = CreateEmpFromDictionary(customer1);
-            var validationContext = new ValidationContext(customer) { MemberName = "Dob" };
+            var validationContext = new ValidationContext(customer) { MemberName = "BirthDate" };
             var minAgeAttribute = new MinAgeAttribute(25);
 
             // Act
-            var validationResult = minAgeAttribute.GetValidationResult(employee.Dob, validationContext);
+            var validationResult = minAgeAttribute.GetValidationResult(customer.BirthDate, validationContext);
             // Assert
             Assert.IsNull(validationResult, "Validation should pass for valid age.");
         }
@@ -441,21 +510,22 @@ namespace dotnetapp.Tests
          [Test]
         public void MinAgeAttribute_InvalidAge_ShouldFail()
         {
-            var employee1 = new Dictionary<string, object>
+            var customer1 = new Dictionary<string, object>
             {
-                { "Name", "asd" },
-                { "Email", "" },
-                { "Salary", 1500 },
-                { "Dob", DateTime.Now.AddYears(-20) },
-                { "Dept", "HR" }
+               { "FirstName", "" },
+                { "LastName", "" },
+                { "Email", "a@gmail.com" },
+                { "PhoneNumber", 976543210 },
+                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "Address", "123 Main Street, Anytown, USA" }
             };
-            var employee = CreateEmpFromDictionary(employee1);
-            // var employee = new Employee { Dob = DateTime.Now.AddYears(-20) }; // Assuming employee is 20 years old
-            var validationContext = new ValidationContext(employee) { MemberName = "Dob" };
-            var minAgeAttribute = new MinAgeAttribute(25);
+            var customer = CreateEmpFromDictionary(customer1);
+            
+            var validationContext = new ValidationContext(customer) { MemberName = "BirthDate" };
+            var minAgeAttribute = new MinAgeAttribute(18);
 
             // Act
-            var validationResult = minAgeAttribute.GetValidationResult(employee.Dob, validationContext);
+            var validationResult = minAgeAttribute.GetValidationResult(customer.BirthDate, validationContext);
 
             // Assert
             Assert.IsNotNull(validationResult, "Validation should fail for invalid age.");
