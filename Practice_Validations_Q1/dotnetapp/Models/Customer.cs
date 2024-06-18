@@ -27,7 +27,7 @@ namespace dotnetapp.Models
         [MinAge(18, ErrorMessage = "Customer must be 18 years or older")]
         public DateTime BirthDate { get; set; }
 
-        [MaxLength(100, ErrorMessage = "Address cannot exceed 100 characters")]
+        [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; }
     }
 }
