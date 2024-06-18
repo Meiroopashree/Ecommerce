@@ -56,14 +56,14 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/overview", routeAttribute.Template);
+            Assert.AreEqual("service/overview", routeAttribute.Template);
         }
 
         [Test]
         public void Test_Pricing_Route_Attribute()
         {
             // Arrange
-            var controller = CreateProductController();
+            var controller = CreateServiceController();
             var method = GetActionMethod(controller, "Pricing");
 
             // Act
@@ -71,14 +71,14 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/pricing", routeAttribute.Template);
+            Assert.AreEqual("service/pricing", routeAttribute.Template);
         }
 
         [Test]
         public void Test_Testimonials_Route_Attribute()
         {
             // Arrange
-            var controller = CreateProductController();
+            var controller = CreateServiceController();
             var method = GetActionMethod(controller, "Testimonials");
 
             // Act
@@ -86,13 +86,13 @@ namespace dotnetapp.Tests
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/testimonials", routeAttribute.Template);
+            Assert.AreEqual("service/testimonials", routeAttribute.Template);
         }
 
         [Test]
         public void Test_DetailsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Details.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Service/", "Details.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
             Assert.IsTrue(indexViewExists, "Details.cshtml view file does not exist.");
@@ -101,7 +101,7 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_OverviewViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Overview.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Service/", "Overview.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
             Assert.IsTrue(indexViewExists, "Overview.cshtml view file does not exist.");
@@ -110,7 +110,7 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_PricingViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Pricing.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Service/", "Pricing.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
             Assert.IsTrue(indexViewExists, "Pricing.cshtml view file does not exist.");
@@ -119,14 +119,14 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_TestimonialsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Testimonials.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Service/", "Testimonials.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
             Assert.IsTrue(indexViewExists, "Testimonials.cshtml view file does not exist.");
         }
         
 
-        private MethodInfo GetActionMethod(ProductController controller, string methodName)
+        private MethodInfo GetActionMethod(ServiceController controller, string methodName)
         {
             // Use reflection to get the method by name
             MethodInfo method = controller.GetType().GetMethod(methodName);
@@ -142,10 +142,10 @@ namespace dotnetapp.Tests
             }
         }
 
-        private ProductController CreateProductController()
+        private ServiceController CreateServiceController()
         {
-            // Fully-qualified name of the ProductController class
-            string controllerTypeName = "dotnetapp.Controllers.ProductController, dotnetapp";
+            // Fully-qualified name of the ServiceController class
+            string controllerTypeName = "dotnetapp.Controllers.ServiceController, dotnetapp";
 
             // Get the type using Type.GetType
             Type controllerType = Type.GetType(controllerTypeName);
@@ -154,7 +154,7 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(controllerType);
 
             // Create an instance of the controller using reflection
-            return (ProductController)Activator.CreateInstance(controllerType);
+            return (ServiceController)Activator.CreateInstance(controllerType);
         }
     }
 }
