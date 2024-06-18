@@ -101,17 +101,18 @@ namespace dotnetapp.Tests
             {
                 if (property.Name == "PhoneNumber")
                 {
-                    var rangeAttribute = property.GetCustomAttribute<System.ComponentModel.DataAnnotations.RangeAttribute>();
-                    Assert.NotNull(rangeAttribute, $"{property.Name} should have a RegularExpressionAttribute.");
+                    var regexAttribute = property.GetCustomAttribute<RegularExpressionAttribute>();
+                    Assert.NotNull(regexAttribute, $"{property.Name} should have a RegularExpressionAttribute.");
                     count++;
                     break;
                 }
             }
             if (count == 0)
             {
-                Assert.Fail();
+                Assert.Fail("PhoneNumber property does not have a RegularExpressionAttribute.");
             }
         }
+
 
         [Test]
         public void Customer_Properties_Have_DataTypeAttribute()
@@ -310,7 +311,7 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type idType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = idType.GetProperty("Id");
+            PropertyInfo propertyInfo = idType.GetProperty("CustomerId");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(int), propertyInfo.PropertyType);
@@ -344,7 +345,7 @@ namespace dotnetapp.Tests
             PropertyInfo propertyInfo = salaryType.GetProperty("PhoneNumber");
 
             Assert.IsNotNull(propertyInfo);
-            Assert.AreEqual(typeof(decimal), propertyInfo.PropertyType);
+            Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
         }
 
         [Test]
@@ -499,7 +500,7 @@ namespace dotnetapp.Tests
             };
             var customer = CreateEmpFromDictionary(customer1);
             var validationContext = new ValidationContext(customer) { MemberName = "BirthDate" };
-            var minAgeAttribute = new MinAgeAttribute(25);
+            var minAgeAttribute = new MinAgeAttribute(18);
 
             // Act
             var validationResult = minAgeAttribute.GetValidationResult(customer.BirthDate, validationContext);
