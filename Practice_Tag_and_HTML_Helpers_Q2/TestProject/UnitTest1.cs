@@ -27,106 +27,106 @@ using Microsoft.Extensions.WebEncoders.Testing;
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class EmployeeControllerTests
+    public class ProductControllerTests
     {
         [Test]
-        public void Test_Home_Route_Attribute()
+        public void Test_Reviews_Route_Attribute()
         {
             // Arrange
-            var controller = CreateEmployeeController();
-            var method = GetActionMethod(controller, "Home");
+            var controller = CreateProductController();
+            var method = GetActionMethod(controller, "Reviews");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("employee/home", routeAttribute.Template);
+            Assert.AreEqual("product/reviews", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Details_Route_Attribute()
+        public void Test_List_Route_Attribute()
         {
             // Arrange
-            var controller = CreateEmployeeController();
-            var method = GetActionMethod(controller, "Details");
+            var controller = CreateProductController();
+            var method = GetActionMethod(controller, "List");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("employee/details", routeAttribute.Template);
+            Assert.AreEqual("product/list", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Departments_Route_Attribute()
+        public void Test_Info_Route_Attribute()
         {
             // Arrange
-            var controller = CreateEmployeeController();
-            var method = GetActionMethod(controller, "Departments");
+            var controller = CreateProductController();
+            var method = GetActionMethod(controller, "Info");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("employee/departments", routeAttribute.Template);
+            Assert.AreEqual("product/info", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Attendance_Route_Attribute()
+        public void Test_Category_Route_Attribute()
         {
             // Arrange
-            var controller = CreateEmployeeController();
-            var method = GetActionMethod(controller, "Attendance");
+            var controller = CreateProductController();
+            var method = GetActionMethod(controller, "Category");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("employee/attendance", routeAttribute.Template);
+            Assert.AreEqual("product/category", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_HomeViewFile_Exists()
+        public void Test_ReviewsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Employee/", "Home.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Reviews.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Home.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Reviews.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_DetailsViewFile_Exists()
+        public void Test_ListViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Employee/", "Details.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "List.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Details.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "List.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_DepartmentsViewFile_Exists()
+        public void Test_InfoViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Employee/", "Departments.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Info.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Departments.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Info.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_AttendanceViewFile_Exists()
+        public void Test_CategoryViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Employee/", "Attendance.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Category.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Attendance.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Category.cshtml view file does not exist.");
         }
         
 
-        private MethodInfo GetActionMethod(EmployeeController controller, string methodName)
+        private MethodInfo GetActionMethod(ProductController controller, string methodName)
         {
             // Use reflection to get the method by name
             MethodInfo method = controller.GetType().GetMethod(methodName);
@@ -142,10 +142,10 @@ namespace dotnetapp.Tests
             }
         }
 
-        private EmployeeController CreateEmployeeController()
+        private ProductController CreateProductController()
         {
-            // Fully-qualified name of the EmployeeController class
-            string controllerTypeName = "dotnetapp.Controllers.EmployeeController, dotnetapp";
+            // Fully-qualified name of the ProductController class
+            string controllerTypeName = "dotnetapp.Controllers.ProductController, dotnetapp";
 
             // Get the type using Type.GetType
             Type controllerType = Type.GetType(controllerTypeName);
@@ -154,7 +154,7 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(controllerType);
 
             // Create an instance of the controller using reflection
-            return (EmployeeController)Activator.CreateInstance(controllerType);
+            return (ProductController)Activator.CreateInstance(controllerType);
         }
     }
 }
