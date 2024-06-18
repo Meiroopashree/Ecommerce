@@ -144,9 +144,9 @@ namespace dotnetapp.Tests
             var customer1 = new Dictionary<string, object>
             {
                 { "FirstName", "" },
-                { "LastName", "" },
+                { "LastName", "Doe" },
                 { "Email", "a@gmail.com" },
-                { "PhoneNumber", 976543210 },
+                { "PhoneNumber", "9876543210" },
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
@@ -155,18 +155,7 @@ namespace dotnetapp.Tests
             var context = new ValidationContext(customer, null, null);
             var results = new List<ValidationResult>();
 
-            var validationContext = new ValidationContext(customer) { MemberName = "FirstName" };
-            var requiredAttribute = new RequiredAttribute();
-
-            // Act
-            var validationResult = requiredAttribute.GetValidationResult(customer.FirstName, validationContext);
-
-            // Assert
-            Assert.IsNotNull(validationResult, "Validation should fail for null FirstName.");
-            Assert.AreEqual("First name is required", validationResult.ErrorMessage, "Error message should match.");
-
-
-            bool isValid = Validator.TryValidateObject(customer, context, results);
+            bool isValid = Validator.TryValidateObject(customer, context, results, true);
 
             if (expectedErrorMessage == null)
             {
@@ -180,15 +169,16 @@ namespace dotnetapp.Tests
             }
         }
 
+
         [Test]
         public void Customer_Property_LastName_Validation()
         {
             var customer1 = new Dictionary<string, object>
             {
-                { "FirstName", "" },
+                { "FirstName", "John" },
                 { "LastName", "" },
                 { "Email", "a@gmail.com" },
-                { "PhoneNumber", 976543210 },
+                { "PhoneNumber", "9876543210" },
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
@@ -197,18 +187,7 @@ namespace dotnetapp.Tests
             var context = new ValidationContext(customer, null, null);
             var results = new List<ValidationResult>();
 
-            var validationContext = new ValidationContext(customer) { MemberName = "LastName" };
-            var requiredAttribute = new RequiredAttribute();
-
-            // Act
-            var validationResult = requiredAttribute.GetValidationResult(customer.LastName, validationContext);
-
-            // Assert
-            Assert.IsNotNull(validationResult, "Validation should fail for null LastName.");
-            Assert.AreEqual("Last name is required", validationResult.ErrorMessage, "Error message should match.");
-
-
-            bool isValid = Validator.TryValidateObject(customer, context, results);
+            bool isValid = Validator.TryValidateObject(customer, context, results, true);
 
             if (expectedErrorMessage == null)
             {
@@ -221,6 +200,7 @@ namespace dotnetapp.Tests
                 Assert.Contains(expectedErrorMessage, errorMessages);
             }
         }
+
 
         public Customer CreateEmpFromDictionary(Dictionary<string, object> data)
         {
@@ -250,10 +230,10 @@ namespace dotnetapp.Tests
            
             var customer1 = new Dictionary<string, object>
             {
-                { "FirstName", "" },
-                { "LastName", "" },
-                { "Email", "a@gmail.com" },
-                { "PhoneNumber", 976543210 },
+                { "FirstName", "john" },
+                { "LastName", "doe" },
+                { "Email", "" },
+                { "PhoneNumber", "9876543210" },
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
@@ -440,27 +420,8 @@ namespace dotnetapp.Tests
             Assert.IsTrue(successViewExists, "Success.cshtml view file does not exist.");
         }
 
+        
 
-         private Customer CreateCustomerFromDictionary(Dictionary<string, object> data)
-        {
-            var customer = new Customer();
-            foreach (var kvp in data)
-            {
-                var propertyInfo = typeof(Customer).GetProperty(kvp.Key);
-                if (propertyInfo != null)
-                {
-                    if (propertyInfo.PropertyType == typeof(decimal) && kvp.Value is int intValue)
-                    {
-                        propertyInfo.SetValue(customer, (decimal)intValue);
-                    }
-                    else
-                    {
-                        propertyInfo.SetValue(customer, kvp.Value);
-                    }
-                }
-            }
-            return customer;
-        }
         [Test]
         public void Customer_Properties_Have_UniqueEmailAttribute()
         {
@@ -491,10 +452,10 @@ namespace dotnetapp.Tests
         {
             var customer1 = new Dictionary<string, object>
             {
-                { "FirstName", "" },
-                { "LastName", "" },
+                { "FirstName", "john" },
+                { "LastName", "doe" },
                 { "Email", "a@gmail.com" },
-                { "PhoneNumber", 976543210 },
+                { "PhoneNumber", "9876543210" },
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
@@ -508,16 +469,16 @@ namespace dotnetapp.Tests
             Assert.IsNull(validationResult, "Validation should pass for valid age.");
         }
 
-         [Test]
+        [Test]
         public void MinAgeAttribute_InvalidAge_ShouldFail()
         {
             var customer1 = new Dictionary<string, object>
             {
-               { "FirstName", "" },
-                { "LastName", "" },
+                { "FirstName", "john" },
+                { "LastName", "doe" },
                 { "Email", "a@gmail.com" },
-                { "PhoneNumber", 976543210 },
-                { "BirthDate", DateTime.Parse("1990-01-01") },
+                { "PhoneNumber", "9876543210" },
+                { "BirthDate", DateTime.Now.AddYears(-17) }, // Set birthdate to less than 18 years ago
                 { "Address", "123 Main Street, Anytown, USA" }
             };
             var customer = CreateEmpFromDictionary(customer1);
