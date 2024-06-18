@@ -27,102 +27,102 @@ using Microsoft.Extensions.WebEncoders.Testing;
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class ProductControllerTests
+    public class ServiceControllerTests
     {
         [Test]
-        public void Test_Reviews_Route_Attribute()
+        public void Test_Details_Route_Attribute()
         {
             // Arrange
-            var controller = CreateProductController();
-            var method = GetActionMethod(controller, "Reviews");
+            var controller = CreateServiceController();
+            var method = GetActionMethod(controller, "Details");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/reviews", routeAttribute.Template);
+            Assert.AreEqual("service/details", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_List_Route_Attribute()
+        public void Test_Overview_Route_Attribute()
         {
             // Arrange
-            var controller = CreateProductController();
-            var method = GetActionMethod(controller, "List");
+            var controller = CreateServiceController();
+            var method = GetActionMethod(controller, "Overview");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/list", routeAttribute.Template);
+            Assert.AreEqual("product/overview", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Info_Route_Attribute()
+        public void Test_Pricing_Route_Attribute()
         {
             // Arrange
             var controller = CreateProductController();
-            var method = GetActionMethod(controller, "Info");
+            var method = GetActionMethod(controller, "Pricing");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/info", routeAttribute.Template);
+            Assert.AreEqual("product/pricing", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_Category_Route_Attribute()
+        public void Test_Testimonials_Route_Attribute()
         {
             // Arrange
             var controller = CreateProductController();
-            var method = GetActionMethod(controller, "Category");
+            var method = GetActionMethod(controller, "Testimonials");
 
             // Act
             var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
 
             // Assert
             Assert.IsNotNull(routeAttribute);
-            Assert.AreEqual("product/category", routeAttribute.Template);
+            Assert.AreEqual("product/testimonials", routeAttribute.Template);
         }
 
         [Test]
-        public void Test_ReviewsViewFile_Exists()
+        public void Test_DetailsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Reviews.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Details.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Reviews.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Details.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_ListViewFile_Exists()
+        public void Test_OverviewViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "List.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Overview.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "List.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Overview.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_InfoViewFile_Exists()
+        public void Test_PricingViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Info.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Pricing.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Info.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Pricing.cshtml view file does not exist.");
         }
 
         [Test]
-        public void Test_CategoryViewFile_Exists()
+        public void Test_TestimonialsViewFile_Exists()
         {
-            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Category.cshtml");
+            string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Product/", "Testimonials.cshtml");
             bool indexViewExists = File.Exists(indexPath);
 
-            Assert.IsTrue(indexViewExists, "Category.cshtml view file does not exist.");
+            Assert.IsTrue(indexViewExists, "Testimonials.cshtml view file does not exist.");
         }
         
 
