@@ -26,19 +26,18 @@ namespace dotnetapp.Services
             _configuration = configuration;
             _context = context;
         }
-public async Task<bool> RegisterAsync(User user)
+
+        public async Task<bool> RegisterAsync(User user)
 {
     try
     {
-        Console.WriteLine("Register");
+        Console.WriteLine($"Attempting to register user with email: {user.EmailID}");
         var userExists = await _userManager.FindByEmailAsync(user.EmailID);
         
         if (userExists != null)
         {
-            Console.WriteLine("User with that Email already exists");
-            return false; // User with the same email already exists
-            // return (false, "User with that Email already exists");
-
+            Console.WriteLine($"User with email '{user.EmailID}' already exists.");
+            return false;
         }
 
         var identityUser = new IdentityUser
@@ -51,25 +50,35 @@ public async Task<bool> RegisterAsync(User user)
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(identityUser, user.UserRole);
-            Console.WriteLine($"Registration successful for user with email '{user.EmailID}'.");
-            return true;
+            var roleResult = await _userManager.AddToRoleAsync(identityUser, user.UserRole);
+            if (roleResult.Succeeded)
+            {
+                Console.WriteLine($"User '{user.EmailID}' successfully registered with role '{user.UserRole}'.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to add role '{user.UserRole}' to user '{user.EmailID}'. Errors:");
+                foreach (var error in roleResult.Errors)
+                {
+                    Console.WriteLine($"- {error.Description}");
+                }
+                return false;
+            }
         }
         else
         {
             Console.WriteLine($"Registration failed for user with email '{user.EmailID}'. Errors:");
-
             foreach (var error in result.Errors)
             {
                 Console.WriteLine($"- {error.Description}");
             }
-
             return false;
         }
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error during registration: {ex.Message}");
+        Console.WriteLine($"Exception during registration: {ex.Message}");
         return false;
     }
 }

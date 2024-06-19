@@ -27,19 +27,18 @@ namespace dotnetapp.Controllers
 
 
 [HttpPost("/auth/register")]
-public async Task<bool> Register([FromBody] User user)
+public async Task<IActionResult> Register([FromBody] User user)
 {
     if (user == null)
     {
         Console.WriteLine("Invalid user data");
-        return false;
+        return BadRequest("Invalid user data");
     }
 
     if (user.UserRole == "ADMIN" || user.UserRole == "USER")
     {
         Console.WriteLine("Role: " + user.UserRole);
-
-       var isRegistered = await _userService.RegisterAsync(user);
+        var isRegistered = await _userService.RegisterAsync(user);
         Console.WriteLine("Registration status: " + isRegistered);
 
         if (isRegistered)
@@ -53,17 +52,17 @@ public async Task<bool> Register([FromBody] User user)
                 MobileNumber = user.MobileNumber
             };
 
-            // Add the customUser to the DbSet and save it
             _context.Users.Add(customUser);
             await _context.SaveChangesAsync();
 
-            return true; // Registration was successful
+            return Ok(true); // Registration was successful
         }
     }
 
     Console.WriteLine("Registration failed. Email may already exist.");
-    return false; // Registration failed
+    return BadRequest("Registration failed. Email may already exist.");
 }
+
 
         [HttpPost("/auth/login")]
 public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
