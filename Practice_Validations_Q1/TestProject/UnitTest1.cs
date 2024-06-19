@@ -129,11 +129,23 @@ namespace dotnetapp.Tests
             foreach (var entry in data)
             {
                 PropertyInfo prop = book.GetType().GetProperty(entry.Key);
-                prop.SetValue(book, entry.Value);
+
+                if (prop != null)
+                {
+                    if (prop.PropertyType == typeof(decimal) && entry.Value is double doubleValue)
+                    {
+                        prop.SetValue(book, (decimal)doubleValue);
+                    }
+                    else
+                    {
+                        prop.SetValue(book, entry.Value);
+                    }
+                }
             }
 
             return book;
         }
+
 
 
 
@@ -142,14 +154,14 @@ namespace dotnetapp.Tests
         {
             var Book1 = new Dictionary<string, object>
             {
-                { "Title", "" }, // Empty title to trigger validation error
-                { "Author", "J.K. Rowling" },
+                { "Title", "Harry Potter and the Sorcerer's Stone" }, // Empty title to trigger validation error
+                { "Author", "" },
                 { "Genre", "Fantasy" },
                 { "PublishedDate", DateTime.Parse("2023-01-01") }, // Future date to trigger PastDate validation error
                 { "Price", 19.99 } // Valid price
             };
             var Book = CreateBookFromDictionary(Book1);
-            string expectedErrorMessage = "Last name is required";
+            string expectedErrorMessage = "Author is required";
             var context = new ValidationContext(Book, null, null);
             var results = new List<ValidationResult>();
 
@@ -167,44 +179,51 @@ namespace dotnetapp.Tests
             }
         }
 
-
-        public Book CreateBookFromDictionary(Dictionary<string, object> data)
-        {
-            var player = new Book();
-            foreach (var kvp in data)
-            {
-                var propertyInfo = typeof(Book).GetProperty(kvp.Key);
-                if (propertyInfo != null)
-                {
-                    if (propertyInfo.PropertyType == typeof(decimal) && kvp.Value is int intValue)
-                    {
-                        propertyInfo.SetValue(player, (decimal)intValue);
-                    }
-                    else
-                    {
-                        propertyInfo.SetValue(player, kvp.Value);
-                    }
-                }
-            }
-            return player;
-        }
-
-
         [Test]
-        public void Book_Property_Email_Validation()
+        public void Book_Property_Genre_Validation()
         {
            
             var Book1 = new Dictionary<string, object>
             {
-                { "Title", "john" },
-                { "LastName", "doe" },
-                { "Email", "" },
-                { "PhoneNumber", "9876543210" },
-                { "BirthDate", DateTime.Parse("1990-01-01") },
-                { "Address", "123 Main Street, Anytown, USA" }
+                { "Title", "Harry Potter and the Sorcerer's Stone" }, // Empty title to trigger validation error
+                { "Author", "J.K. Rowling" },
+                { "Genre", "" },
+                { "PublishedDate", DateTime.Parse("2023-01-01") }, // Future date to trigger PastDate validation error
+                { "Price", 19.99 } // Valid price
             };
             var Book = CreateBookFromDictionary(Book1);
-            string expectedErrorMessage = "Email is required";
+            string expectedErrorMessage = "Genre is required";
+            var context = new ValidationContext(Book, null, null);
+            var results = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(Book, context, results);
+
+            if (expectedErrorMessage == null)
+            {
+                Assert.IsTrue(isValid);
+            }
+            else
+            {
+                Assert.IsFalse(isValid);
+                var errorMessages = results.Select(result => result.ErrorMessage).ToList();
+                Assert.Contains(expectedErrorMessage, errorMessages);
+            }   
+        }
+
+        [Test]
+        public void Book_Property_PublishedDate_Validation()
+        {
+           
+            var Book1 = new Dictionary<string, object>
+            {
+                { "Title", "Harry Potter and the Sorcerer's Stone" }, // Empty title to trigger validation error
+                { "Author", "J.K. Rowling" },
+                { "Genre", "Fantasy" },
+                { "PublishedDate", DateTime.MinValue }, // Future date to trigger PastDate validation error
+                { "Price", 19.99 } // Valid price
+            };
+            var Book = CreateBookFromDictionary(Book1);
+            string expectedErrorMessage = "PublishedDate is required";
             var context = new ValidationContext(Book, null, null);
             var results = new List<ValidationResult>();
 
@@ -235,16 +254,16 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(EmpControllerType, "BookController does not exist in the assembly.");
         }
 
-        //Checking if UniqueEmailAttribute class exists
+        //Checking if PastDateAttribute class exists
         [Test]
-        public void UniqueEmailAttributeModelExists()
+        public void PastDateAttributeModelExists()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.UniqueEmailAttribute";
+            string typeName = "dotnetapp.Models.PastDateAttribute";
             Assembly assembly = Assembly.Load(assemblyName);
-            Type uniqueemailType = assembly.GetType(typeName);
-            Assert.IsNotNull(uniqueemailType);
-            var unique = Activator.CreateInstance(uniqueemailType);
+            Type uniquetitleType = assembly.GetType(typeName);
+            Assert.IsNotNull(uniquetitleType);
+            var unique = Activator.CreateInstance(uniquetitleType);
             Assert.IsNotNull(unique);
         }
 
@@ -263,47 +282,62 @@ namespace dotnetapp.Tests
             Assert.AreEqual(typeof(int), propertyInfo.PropertyType);
         }
 
-        //Test if Email property is present
+        //Test if Title property is present
         [Test]
-        public void BookClass_HasEmailProperty()
+        public void BookClass_HasTitleProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
-            Type emailType = assembly.GetType(typeName);
+            Type titleType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = emailType.GetProperty("Email");
+            PropertyInfo propertyInfo = titleType.GetProperty("Title");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
         }
 
         [Test]
-        public void BookClass_HasPhoneNumberProperty()
+        public void BookClass_HasAuthorProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
-            Type salaryType = assembly.GetType(typeName);
+            Type authorType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = salaryType.GetProperty("PhoneNumber");
+            PropertyInfo propertyInfo = authorType.GetProperty("Author");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
         }
 
         [Test]
-        public void BookClass_HasBirthDateProperty()
+        public void BookClass_HasGenreProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
-            Type BookType = assembly.GetType(typeName);
+            Type genreType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = BookType.GetProperty("BirthDate");
+            PropertyInfo propertyInfo = genreType.GetProperty("Genre");
+
+            Assert.IsNotNull(propertyInfo);
+            Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
+        }
+
+        [Test]
+        public void BookClass_HasPublishedDateProperty()
+        {
+            string assemblyName = "dotnetapp";
+            string typeName = "dotnetapp.Models.Book";
+
+            Assembly assembly = Assembly.Load(assemblyName);
+            Type publishedType = assembly.GetType(typeName);
+
+            PropertyInfo propertyInfo = publishedType.GetProperty("PublishedDate");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(DateTime), propertyInfo.PropertyType);
@@ -311,7 +345,7 @@ namespace dotnetapp.Tests
 
         // Test case for Address property
         [Test]
-        public void BookClass_HasAddressProperty()
+        public void BookClass_HasPriceProperty()
         {
             string assemblyName = "dotnetapp";
             string typeName = "dotnetapp.Models.Book";
@@ -319,10 +353,10 @@ namespace dotnetapp.Tests
             Assembly assembly = Assembly.Load(assemblyName);
             Type BookType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = BookType.GetProperty("Address");
+            PropertyInfo propertyInfo = BookType.GetProperty("Price");
 
             Assert.IsNotNull(propertyInfo);
-            Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
+            Assert.AreEqual(typeof(decimal), propertyInfo.PropertyType);
         }
 
         [Test]
