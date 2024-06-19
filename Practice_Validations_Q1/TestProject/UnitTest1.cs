@@ -15,15 +15,15 @@ using dotnetapp.Data;
 namespace dotnetapp.Tests
 {
     [TestFixture]
-    public class CustomerTests
+    public class BookTests
     {
         [Test]
-        public void Customer_FirstName_Have_RequiredAttribute()
+        public void Book_FirstName_Have_RequiredAttribute()
         {
             var count = 0;
 
-            Type customerType = typeof(Customer);
-            PropertyInfo[] properties = customerType.GetProperties();
+            Type BookType = typeof(Book);
+            PropertyInfo[] properties = BookType.GetProperties();
 
             foreach (var property in properties)
             {
@@ -42,11 +42,11 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void Customer_Properties_Have_EmailAddressAttribute()
+        public void Book_Properties_Have_EmailAddressAttribute()
         {
             var count = 0;
-            Type customerType = typeof(Customer);
-            PropertyInfo[] properties = customerType.GetProperties();
+            Type BookType = typeof(Book);
+            PropertyInfo[] properties = BookType.GetProperties();
 
             foreach (var property in properties)
             {
@@ -66,12 +66,12 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void Customer_Properties_Have_RegularExpressionAttribute()
+        public void Book_Properties_Have_RegularExpressionAttribute()
         {
             var count = 0;
 
-            Type customerType = typeof(Customer);
-            PropertyInfo[] properties = customerType.GetProperties();
+            Type BookType = typeof(Book);
+            PropertyInfo[] properties = BookType.GetProperties();
 
             foreach (var property in properties)
             {
@@ -91,11 +91,11 @@ namespace dotnetapp.Tests
 
 
         [Test]
-        public void Customer_Properties_Have_DataTypeAttribute()
+        public void Book_Properties_Have_DataTypeAttribute()
         {
             var count = 0;
-            Type customerType = typeof(Customer);
-            PropertyInfo[] properties = customerType.GetProperties();
+            Type BookType = typeof(Book);
+            PropertyInfo[] properties = BookType.GetProperties();
 
             foreach (var property in properties)
             {
@@ -115,9 +115,9 @@ namespace dotnetapp.Tests
 
         
         [Test]
-        public void Customer_Property_FirstName_Validation()
+        public void Book_Property_FirstName_Validation()
         {
-            var customer1 = new Dictionary<string, object>
+            var Book1 = new Dictionary<string, object>
             {
                 { "FirstName", "" },
                 { "LastName", "Doe" },
@@ -126,12 +126,12 @@ namespace dotnetapp.Tests
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
-            var customer = CreateCustomerFromDictionary(customer1);
+            var Book = CreateBookFromDictionary(Book1);
             string expectedErrorMessage = "First name is required";
-            var context = new ValidationContext(customer, null, null);
+            var context = new ValidationContext(Book, null, null);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(customer, context, results, true);
+            bool isValid = Validator.TryValidateObject(Book, context, results, true);
 
             if (expectedErrorMessage == null)
             {
@@ -147,9 +147,9 @@ namespace dotnetapp.Tests
 
 
         [Test]
-        public void Customer_Property_LastName_Validation()
+        public void Book_Property_LastName_Validation()
         {
-            var customer1 = new Dictionary<string, object>
+            var Book1 = new Dictionary<string, object>
             {
                 { "FirstName", "John" },
                 { "LastName", "" },
@@ -158,12 +158,12 @@ namespace dotnetapp.Tests
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
-            var customer = CreateCustomerFromDictionary(customer1);
+            var Book = CreateBookFromDictionary(Book1);
             string expectedErrorMessage = "Last name is required";
-            var context = new ValidationContext(customer, null, null);
+            var context = new ValidationContext(Book, null, null);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(customer, context, results, true);
+            bool isValid = Validator.TryValidateObject(Book, context, results, true);
 
             if (expectedErrorMessage == null)
             {
@@ -178,12 +178,12 @@ namespace dotnetapp.Tests
         }
 
 
-        public Customer CreateCustomerFromDictionary(Dictionary<string, object> data)
+        public Book CreateBookFromDictionary(Dictionary<string, object> data)
         {
-            var player = new Customer();
+            var player = new Book();
             foreach (var kvp in data)
             {
-                var propertyInfo = typeof(Customer).GetProperty(kvp.Key);
+                var propertyInfo = typeof(Book).GetProperty(kvp.Key);
                 if (propertyInfo != null)
                 {
                     if (propertyInfo.PropertyType == typeof(decimal) && kvp.Value is int intValue)
@@ -201,10 +201,10 @@ namespace dotnetapp.Tests
 
 
         [Test]
-        public void Customer_Property_Email_Validation()
+        public void Book_Property_Email_Validation()
         {
            
-            var customer1 = new Dictionary<string, object>
+            var Book1 = new Dictionary<string, object>
             {
                 { "FirstName", "john" },
                 { "LastName", "doe" },
@@ -213,12 +213,12 @@ namespace dotnetapp.Tests
                 { "BirthDate", DateTime.Parse("1990-01-01") },
                 { "Address", "123 Main Street, Anytown, USA" }
             };
-            var customer = CreateCustomerFromDictionary(customer1);
+            var Book = CreateBookFromDictionary(Book1);
             string expectedErrorMessage = "Email is required";
-            var context = new ValidationContext(customer, null, null);
+            var context = new ValidationContext(Book, null, null);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(customer, context, results);
+            bool isValid = Validator.TryValidateObject(Book, context, results);
 
             if (expectedErrorMessage == null)
             {
@@ -232,17 +232,17 @@ namespace dotnetapp.Tests
             }   
         }
 
-        //Checking if CustomerController exists
+        //Checking if BookController exists
         [Test]
-        public void CustomerControllerExists()
+        public void BookControllerExists()
         {
             string assemblyName = "dotnetapp"; // Your project assembly name
-            string typeName = "dotnetapp.Controllers.CustomerController";
+            string typeName = "dotnetapp.Controllers.BookController";
 
             Assembly assembly = Assembly.Load(assemblyName);
             Type EmpControllerType = assembly.GetType(typeName);
 
-            Assert.IsNotNull(EmpControllerType, "CustomerController does not exist in the assembly.");
+            Assert.IsNotNull(EmpControllerType, "BookController does not exist in the assembly.");
         }
 
         //Checking if UniqueEmailAttribute class exists
@@ -250,7 +250,7 @@ namespace dotnetapp.Tests
         public void UniqueEmailAttributeModelExists()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.UniqueEmailAttribute";`
+            string typeName = "dotnetapp.Models.UniqueEmailAttribute";
             Assembly assembly = Assembly.Load(assemblyName);
             Type uniqueemailType = assembly.GetType(typeName);
             Assert.IsNotNull(uniqueemailType);
@@ -259,15 +259,15 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void CustomerClass_HasIDProperty()
+        public void BookClass_HasIDProperty()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.Customer";
+            string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
             Type idType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = idType.GetProperty("CustomerId");
+            PropertyInfo propertyInfo = idType.GetProperty("BookId");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(int), propertyInfo.PropertyType);
@@ -275,10 +275,10 @@ namespace dotnetapp.Tests
 
         //Test if Email property is present
         [Test]
-        public void CustomerClass_HasEmailProperty()
+        public void BookClass_HasEmailProperty()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.Customer";
+            string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
             Type emailType = assembly.GetType(typeName);
@@ -290,10 +290,10 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void CustomerClass_HasPhoneNumberProperty()
+        public void BookClass_HasPhoneNumberProperty()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.Customer";
+            string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
             Type salaryType = assembly.GetType(typeName);
@@ -305,15 +305,15 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void CustomerClass_HasBirthDateProperty()
+        public void BookClass_HasBirthDateProperty()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.Customer";
+            string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
-            Type customerType = assembly.GetType(typeName);
+            Type BookType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = customerType.GetProperty("BirthDate");
+            PropertyInfo propertyInfo = BookType.GetProperty("BirthDate");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(DateTime), propertyInfo.PropertyType);
@@ -321,30 +321,30 @@ namespace dotnetapp.Tests
 
         // Test case for Address property
         [Test]
-        public void CustomerClass_HasAddressProperty()
+        public void BookClass_HasAddressProperty()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.Customer";
+            string typeName = "dotnetapp.Models.Book";
 
             Assembly assembly = Assembly.Load(assemblyName);
-            Type customerType = assembly.GetType(typeName);
+            Type BookType = assembly.GetType(typeName);
 
-            PropertyInfo propertyInfo = customerType.GetProperty("Address");
+            PropertyInfo propertyInfo = BookType.GetProperty("Address");
 
             Assert.IsNotNull(propertyInfo);
             Assert.AreEqual(typeof(string), propertyInfo.PropertyType);
         }
 
         [Test]
-        public void CustomerController_CreateMethodExists()
+        public void BookController_CreateMethodExists()
         {
             string assemblyName = "dotnetapp"; // Your project assembly name
-            string typeName = "dotnetapp.Controllers.CustomerController";
+            string typeName = "dotnetapp.Controllers.BookController";
             Assembly assembly = Assembly.Load(assemblyName);
             Type controllerType = assembly.GetType(typeName);
 
             // Specify the parameter types for the search method
-            Type[] parameterTypes = new Type[] { typeof(Customer) }; // Adjust based on your method signature
+            Type[] parameterTypes = new Type[] { typeof(Book) }; // Adjust based on your method signature
 
             // Find the Create method with the specified parameter types
             MethodInfo createMethod = controllerType.GetMethod("Create", parameterTypes);
@@ -352,10 +352,10 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void CustomerController_SuccessMethodExists()
+        public void BookController_SuccessMethodExists()
         {
             string assemblyName = "dotnetapp"; // Your project assembly name
-            string typeName = "dotnetapp.Controllers.CustomerController";
+            string typeName = "dotnetapp.Controllers.BookController";
             Assembly assembly = Assembly.Load(assemblyName);
             Type controllerType = assembly.GetType(typeName);
 
@@ -365,10 +365,10 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void CustomerController_Constructor_InjectsDbContext()
+        public void BookController_Constructor_InjectsDbContext()
         {
             string assemblyName = "dotnetapp"; // Your project assembly name
-            string typeName = "dotnetapp.Controllers.CustomerController";
+            string typeName = "dotnetapp.Controllers.BookController";
             Assembly assembly = Assembly.Load(assemblyName);
             Type controllerType = assembly.GetType(typeName);
 
@@ -382,7 +382,7 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_CreateViewFile_Exists()
         {
-            string createPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Customer/Create.cshtml");
+            string createPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/Create.cshtml");
             bool createViewExists = File.Exists(createPath);
 
             Assert.IsTrue(createViewExists, "Create.cshtml view file does not exist.");
@@ -390,7 +390,7 @@ namespace dotnetapp.Tests
         [Test]
         public void Test_SuccessViewFile_Exists()
         {
-            string successPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Customer/Success.cshtml");
+            string successPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Book/Success.cshtml");
             bool successViewExists = File.Exists(successPath);
 
             Assert.IsTrue(successViewExists, "Success.cshtml view file does not exist.");
@@ -399,10 +399,10 @@ namespace dotnetapp.Tests
         
 
         // [Test]
-        // public void Customer_Properties_Have_UniqueEmailAttribute()
+        // public void Book_Properties_Have_UniqueEmailAttribute()
         // {
-        //     Type customerType = typeof(Customer);
-        //     PropertyInfo emailProperty = customerType.GetProperty("Email");
+        //     Type BookType = typeof(Book);
+        //     PropertyInfo emailProperty = BookType.GetProperty("Email");
 
         //     var uniqueEmailAttribute = emailProperty.GetCustomAttribute<UniqueEmailAttribute>();
 
@@ -410,11 +410,11 @@ namespace dotnetapp.Tests
         // }
 
         // [Test]
-        // public void Customer_Properties_Have_MinAgeAttribute()
+        // public void Book_Properties_Have_MinAgeAttribute()
         // {
         //     // Arrange
-        //     Type customerType = typeof(Customer);
-        //     PropertyInfo dobProperty = customerType.GetProperty("BirthDate");
+        //     Type BookType = typeof(Book);
+        //     PropertyInfo dobProperty = BookType.GetProperty("BirthDate");
 
         //     // Act
         //     var minAgeAttribute = dobProperty.GetCustomAttribute<MinAgeAttribute>();
@@ -426,7 +426,7 @@ namespace dotnetapp.Tests
         // [Test]
         // public void MinAgeAttribute_ValidAge_ShouldPass()
         // {
-        //     var customer1 = new Dictionary<string, object>
+        //     var Book1 = new Dictionary<string, object>
         //     {
         //         { "FirstName", "john" },
         //         { "LastName", "doe" },
@@ -435,12 +435,12 @@ namespace dotnetapp.Tests
         //         { "BirthDate", DateTime.Parse("1990-01-01") },
         //         { "Address", "123 Main Street, Anytown, USA" }
         //     };
-        //     var customer = CreateCustomerFromDictionary(customer1);
-        //     var validationContext = new ValidationContext(customer) { MemberName = "BirthDate" };
+        //     var Book = CreateBookFromDictionary(Book1);
+        //     var validationContext = new ValidationContext(Book) { MemberName = "BirthDate" };
         //     var minAgeAttribute = new MinAgeAttribute(18);
 
         //     // Act
-        //     var validationResult = minAgeAttribute.GetValidationResult(customer.BirthDate, validationContext);
+        //     var validationResult = minAgeAttribute.GetValidationResult(Book.BirthDate, validationContext);
         //     // Assert
         //     Assert.IsNull(validationResult, "Validation should pass for valid age.");
         // }
@@ -448,7 +448,7 @@ namespace dotnetapp.Tests
         // [Test]
         // public void MinAgeAttribute_InvalidAge_ShouldFail()
         // {
-        //     var customer1 = new Dictionary<string, object>
+        //     var Book1 = new Dictionary<string, object>
         //     {
         //         { "FirstName", "john" },
         //         { "LastName", "doe" },
@@ -457,13 +457,13 @@ namespace dotnetapp.Tests
         //         { "BirthDate", DateTime.Now.AddYears(-17) }, // Set birthdate to less than 18 years ago
         //         { "Address", "123 Main Street, Anytown, USA" }
         //     };
-        //     var customer = CreateCustomerFromDictionary(customer1);
+        //     var Book = CreateBookFromDictionary(Book1);
             
-        //     var validationContext = new ValidationContext(customer) { MemberName = "BirthDate" };
+        //     var validationContext = new ValidationContext(Book) { MemberName = "BirthDate" };
         //     var minAgeAttribute = new MinAgeAttribute(18);
 
         //     // Act
-        //     var validationResult = minAgeAttribute.GetValidationResult(customer.BirthDate, validationContext);
+        //     var validationResult = minAgeAttribute.GetValidationResult(Book.BirthDate, validationContext);
 
         //     // Assert
         //     Assert.IsNotNull(validationResult, "Validation should fail for invalid age.");
