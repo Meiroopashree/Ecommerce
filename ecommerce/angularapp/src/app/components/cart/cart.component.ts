@@ -1,44 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CartService } from '../../services/cart.service';
-// import { Cart } from 'src/app/models/cart';
-// import { CartProduct } from 'src/app/models/cart-product';
-
-
-// @Component({
-//   selector: 'app-cart',
-//   templateUrl: './cart.component.html',
-//   styleUrls: ['./cart.component.css']
-// })
-// export class CartComponent implements OnInit {
-//   cart: Cart | undefined;
-
-//   constructor(private cartService: CartService) {}
-
-//   ngOnInit(): void {
-//     // Replace '1' with the actual cart ID
-//     this.cartService.getCart(1).subscribe(
-//       (data) => {
-//         this.cart = data;
-//       },
-//       (error) => {
-//         console.error('Error fetching cart', error);
-//       }
-//     );
-//   }
-
-//   addToCart(product: CartProduct): void {
-//     this.cartService.addToCart(product).subscribe(
-//       (data) => {
-//         this.cart = data;
-//       },
-//       (error) => {
-//         console.error('Error adding to cart', error);
-//       }
-//     );
-//   }
-// }
-
-
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Cart } from 'src/app/models/cart';
@@ -91,8 +50,8 @@ export class CartComponent implements OnInit {
   }
 
   removeFromCart(item: CartProduct): void {
-    // Call cartService to remove item from the cart
-    this.cartService.removeFromCart(item).subscribe(
+    // Call cartService to remove item from the cart by passing productId
+    this.cartService.removeFromCart(item.product.productId).subscribe(
       (data) => {
         // Update cart after successful removal
         this.cart = data;
