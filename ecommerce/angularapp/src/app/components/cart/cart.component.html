@@ -9,13 +9,20 @@
           <p><strong>Description:</strong> {{ item.product.description }}</p>
           <p><strong>Category:</strong> {{ item.product.category }}</p>
           <p><strong>Price:</strong> ${{ item.product.price }}</p>
-          <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+          <p><strong>Quantity:</strong>
+            <select [(ngModel)]="item.quantity" (change)="updateQuantity(item, $event.target.value)">
+              <option *ngFor="let quantity of quantityOptions(item.product.stockQuantity)" [value]="quantity">
+                {{ quantity }}
+              </option>
+            </select>
+          </p>
           <p><strong>Total:</strong> ${{ item.quantity * item.product.price }}</p>
+          <button (click)="removeFromCart(item)">Remove</button>
         </div>
       </div>
     </li>
   </ul>
-  <p>Total: ${{ cart.totalPrice }}</p>
+  <p class="total-price">Total: <span>${{ cart.totalPrice }}</span></p>
 </div>
 
 <div class="loading-message" *ngIf="!cart">

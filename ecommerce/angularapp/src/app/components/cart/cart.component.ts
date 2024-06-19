@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Cart } from 'src/app/models/cart';
 import { CartProduct } from 'src/app/models/cart-product';
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,28 +12,45 @@ import { CartProduct } from 'src/app/models/cart-product';
 export class CartComponent implements OnInit {
   cart: Cart | undefined;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    // Replace '1' with the actual cart ID
-    this.cartService.getCart(1).subscribe(
-      (data) => {
-        this.cart = data;
-      },
-      (error) => {
-        console.error('Error fetching cart', error);
+    if (this.authService.isAuthenticated()) {
+      const userId = this.authService.getUserId();
+      if (userId) {
+        this.cartService.getCart(userId).subscribe(
+          (data) => {
+            this.cart = data;
+          },
+          (error) => {
+            console.error('Error fetching cart', error);
+          }
+        );
       }
-    );
+    } else {
+      console.error('User not authenticated');
+    }
   }
 
   addToCart(product: CartProduct): void {
-    this.cartService.addToCart(product).subscribe(
-      (data) => {
-        this.cart = data;
-      },
-      (error) => {
-        console.error('Error adding to cart', error);
+    if (this.authService.isAuthenticated()) {
+      const userId = this.authService.getUserId();
+      if (userId) {
+        product.userId = userId; // Assuming userId needs to be sent with the product
+        this.cartService.addToCart(product).subscribe(
+          (data) => {
+            this.cart = data;
+          },
+          (error) => {
+            console.error('Error adding to cart', error);
+          }
+        );
       }
-    );
+    } else {
+      console.error('User not authenticated');
+    }
   }
 }
