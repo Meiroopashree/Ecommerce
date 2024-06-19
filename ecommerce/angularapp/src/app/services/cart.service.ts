@@ -20,4 +20,14 @@ export class CartService {
   addToCart(cartProduct: CartProduct): Observable<Cart> {
     return this.http.post<Cart>(`${this.baseUrl}/add`, cartProduct);
   }
+
+  updateCartItem(item: CartProduct): Observable<Cart> {
+    const url = `${this.baseUrl}/update/${item.product.productId}`; // Adjust endpoint as per your API
+    return this.http.put<Cart>(url, item);
+  }
+
+  removeFromCart(item: CartProduct): Observable<Cart> {
+    const url = `${this.baseUrl}/remove/${item.product.productId}`; // Adjust endpoint as per your API
+    return this.http.delete<Cart>(url);
+  }
 }

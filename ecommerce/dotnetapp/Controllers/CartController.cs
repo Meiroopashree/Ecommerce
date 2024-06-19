@@ -11,7 +11,6 @@ namespace dotnetapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
     public class CartController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -26,7 +25,6 @@ namespace dotnetapp.Controllers
         [HttpGet("{id}")]
         public ActionResult<Cart> GetCart(int id)
         {
-            // Get userId from token
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var cart = carts.FirstOrDefault(c => c.CartId == id && c.UserId == userId);
@@ -43,13 +41,11 @@ namespace dotnetapp.Controllers
         [HttpPost("add")]
         public ActionResult AddToCart([FromBody] CartProduct cartProduct)
         {
-            // Validate quantity
             if (cartProduct.Quantity <= 0)
             {
                 return BadRequest("Quantity must be greater than zero.");
             }
 
-            // Get userId from token
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var cart = carts.FirstOrDefault(c => c.UserId == userId);
@@ -58,7 +54,7 @@ namespace dotnetapp.Controllers
             {
                 cart = new Cart
                 {
-                    CartId = GenerateUniqueCartId(), // Generate a unique cartId
+                    CartId = GenerateUniqueCartId(),
                     UserId = userId,
                     Items = new List<CartProduct>()
                 };
@@ -75,6 +71,61 @@ namespace dotnetapp.Controllers
             {
                 cart.Items.Add(cartProduct);
             }
+
+            return Ok(cart);
+        }
+
+        // PUT api/cart/update/{productId}
+        [HttpPut("update/{productId}")]
+        public ActionResult UpdateCartItem(int productId, [FromBody] CartProduct updatedCartItem)
+        {
+            if (updatedCartItem.Quantity <= 0)
+            {
+                return BadRequest("Quantity must be greater than zero.");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+
+            if (cart == null)
+            {
+                return NotFound("Cart not found.");
+            }
+
+            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
+
+            if (existingProduct == null)
+            {
+                return NotFound("Product not found in cart.");
+            }
+
+            existingProduct.Quantity = updatedCartItem.Quantity;
+
+            return Ok(cart);
+        }
+
+        // DELETE api/cart/remove/{productId}
+        [HttpDelete("remove/{productId}")]
+        public ActionResult RemoveCartItem(int productId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+
+            if (cart == null)
+            {
+                return NotFound("Cart not found.");
+            }
+
+            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
+
+            if (existingProduct == null)
+            {
+                return NotFound("Product not found in cart.");
+            }
+
+            cart.Items.Remove(existingProduct);
 
             return Ok(cart);
         }
