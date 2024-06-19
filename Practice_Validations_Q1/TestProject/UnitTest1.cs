@@ -90,23 +90,24 @@ namespace dotnetapp.Tests
 
         
         [Test]
-        public void Book_Property_FirstName_Validation()
+        public void Book_Property_Title_Validation()
         {
-            var Book1 = new Dictionary<string, object>
+            var bookData = new Dictionary<string, object>
             {
-                { "FirstName", "" },
-                { "LastName", "Doe" },
-                { "Email", "a@gmail.com" },
-                { "PhoneNumber", "9876543210" },
-                { "BirthDate", DateTime.Parse("1990-01-01") },
-                { "Address", "123 Main Street, Anytown, USA" }
+                { "Title", "" }, // Empty title to trigger validation error
+                { "Author", "J.K. Rowling" },
+                { "Genre", "Fantasy" },
+                { "PublishedDate", DateTime.Parse("2023-01-01") }, // Future date to trigger PastDate validation error
+                { "Price", 19.99 } // Valid price
             };
-            var Book = CreateBookFromDictionary(Book1);
-            string expectedErrorMessage = "First name is required";
-            var context = new ValidationContext(Book, null, null);
+
+            var book = CreateBookFromDictionary(bookData);
+            string expectedErrorMessage = "Title is required"; // Expected error message for Title validation
+
+            var context = new ValidationContext(book, null, null);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(Book, context, results, true);
+            bool isValid = Validator.TryValidateObject(book, context, results, true);
 
             if (expectedErrorMessage == null)
             {
@@ -120,18 +121,32 @@ namespace dotnetapp.Tests
             }
         }
 
+        // Helper method to create a Book object from dictionary data
+        private Book CreateBookFromDictionary(Dictionary<string, object> data)
+        {
+            var book = new Book();
+
+            foreach (var entry in data)
+            {
+                PropertyInfo prop = book.GetType().GetProperty(entry.Key);
+                prop.SetValue(book, entry.Value);
+            }
+
+            return book;
+        }
+
+
 
         [Test]
-        public void Book_Property_LastName_Validation()
+        public void Book_Property_Author_Validation()
         {
             var Book1 = new Dictionary<string, object>
             {
-                { "FirstName", "John" },
-                { "LastName", "" },
-                { "Email", "a@gmail.com" },
-                { "PhoneNumber", "9876543210" },
-                { "BirthDate", DateTime.Parse("1990-01-01") },
-                { "Address", "123 Main Street, Anytown, USA" }
+                { "Title", "" }, // Empty title to trigger validation error
+                { "Author", "J.K. Rowling" },
+                { "Genre", "Fantasy" },
+                { "PublishedDate", DateTime.Parse("2023-01-01") }, // Future date to trigger PastDate validation error
+                { "Price", 19.99 } // Valid price
             };
             var Book = CreateBookFromDictionary(Book1);
             string expectedErrorMessage = "Last name is required";
@@ -181,7 +196,7 @@ namespace dotnetapp.Tests
            
             var Book1 = new Dictionary<string, object>
             {
-                { "FirstName", "john" },
+                { "Title", "john" },
                 { "LastName", "doe" },
                 { "Email", "" },
                 { "PhoneNumber", "9876543210" },
@@ -370,80 +385,5 @@ namespace dotnetapp.Tests
 
             Assert.IsTrue(successViewExists, "Success.cshtml view file does not exist.");
         }
-
-        
-
-        // [Test]
-        // public void Book_Properties_Have_UniqueEmailAttribute()
-        // {
-        //     Type BookType = typeof(Book);
-        //     PropertyInfo emailProperty = BookType.GetProperty("Email");
-
-        //     var uniqueEmailAttribute = emailProperty.GetCustomAttribute<UniqueEmailAttribute>();
-
-        //     Assert.IsNotNull(uniqueEmailAttribute, "UniqueEmail attribute should be applied to the Email property");
-        // }
-
-        // [Test]
-        // public void Book_Properties_Have_MinAgeAttribute()
-        // {
-        //     // Arrange
-        //     Type BookType = typeof(Book);
-        //     PropertyInfo dobProperty = BookType.GetProperty("BirthDate");
-
-        //     // Act
-        //     var minAgeAttribute = dobProperty.GetCustomAttribute<MinAgeAttribute>();
-
-        //     // Assert
-        //     Assert.IsNotNull(minAgeAttribute, "MinAge attribute should be applied to the BirthDate property");
-        // }
-
-        // [Test]
-        // public void MinAgeAttribute_ValidAge_ShouldPass()
-        // {
-        //     var Book1 = new Dictionary<string, object>
-        //     {
-        //         { "FirstName", "john" },
-        //         { "LastName", "doe" },
-        //         { "Email", "a@gmail.com" },
-        //         { "PhoneNumber", "9876543210" },
-        //         { "BirthDate", DateTime.Parse("1990-01-01") },
-        //         { "Address", "123 Main Street, Anytown, USA" }
-        //     };
-        //     var Book = CreateBookFromDictionary(Book1);
-        //     var validationContext = new ValidationContext(Book) { MemberName = "BirthDate" };
-        //     var minAgeAttribute = new MinAgeAttribute(18);
-
-        //     // Act
-        //     var validationResult = minAgeAttribute.GetValidationResult(Book.BirthDate, validationContext);
-        //     // Assert
-        //     Assert.IsNull(validationResult, "Validation should pass for valid age.");
-        // }
-
-        // [Test]
-        // public void MinAgeAttribute_InvalidAge_ShouldFail()
-        // {
-        //     var Book1 = new Dictionary<string, object>
-        //     {
-        //         { "FirstName", "john" },
-        //         { "LastName", "doe" },
-        //         { "Email", "a@gmail.com" },
-        //         { "PhoneNumber", "9876543210" },
-        //         { "BirthDate", DateTime.Now.AddYears(-17) }, // Set birthdate to less than 18 years ago
-        //         { "Address", "123 Main Street, Anytown, USA" }
-        //     };
-        //     var Book = CreateBookFromDictionary(Book1);
-            
-        //     var validationContext = new ValidationContext(Book) { MemberName = "BirthDate" };
-        //     var minAgeAttribute = new MinAgeAttribute(18);
-
-        //     // Act
-        //     var validationResult = minAgeAttribute.GetValidationResult(Book.BirthDate, validationContext);
-
-        //     // Assert
-        //     Assert.IsNotNull(validationResult, "Validation should fail for invalid age.");
-        // }
-
-        
     }
 }
