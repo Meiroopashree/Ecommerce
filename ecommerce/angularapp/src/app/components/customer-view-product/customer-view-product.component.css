@@ -66,4 +66,18 @@
   .btn-edit:hover, .btn-delete:hover {
     filter: brightness(90%);
   }
+
+  .btn-add-to-cart {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-add-to-cart:hover {
+    filter: brightness(90%);
+  }
+  
   
