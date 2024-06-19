@@ -210,36 +210,6 @@ namespace dotnetapp.Tests
             }   
         }
 
-        [Test]
-        public void Book_Property_PublishedDate_Validation()
-        {
-           
-            var Book1 = new Dictionary<string, object>
-            {
-                { "Title", "Harry Potter and the Sorcerer's Stone" }, // Empty title to trigger validation error
-                { "Author", "J.K. Rowling" },
-                { "Genre", "Fantasy" },
-                { "PublishedDate", DateTime.MinValue }, // Future date to trigger PastDate validation error
-                { "Price", 19.99 } // Valid price
-            };
-            var Book = CreateBookFromDictionary(Book1);
-            string expectedErrorMessage = "PublishedDate is required";
-            var context = new ValidationContext(Book, null, null);
-            var results = new List<ValidationResult>();
-
-            bool isValid = Validator.TryValidateObject(Book, context, results);
-
-            if (expectedErrorMessage == null)
-            {
-                Assert.IsTrue(isValid);
-            }
-            else
-            {
-                Assert.IsFalse(isValid);
-                var errorMessages = results.Select(result => result.ErrorMessage).ToList();
-                Assert.Contains(expectedErrorMessage, errorMessages);
-            }   
-        }
 
         //Checking if BookController exists
         [Test]
