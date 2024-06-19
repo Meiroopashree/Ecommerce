@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using dotnetapp.Data;
 
 namespace dotnetapp.Services
 {
@@ -16,59 +17,62 @@ namespace dotnetapp.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
-        // private readonly CourseEnquiryDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration) 
-        // CourseEnquiryDbContext context
+        public UserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
-            // _context = context;
+            _context = context;
         }
-
 public async Task<bool> RegisterAsync(User user)
 {
     try
     {
-        // Check if a user with the provided email already exists
+        Console.WriteLine("Register");
         var userExists = await _userManager.FindByEmailAsync(user.EmailID);
         
         if (userExists != null)
         {
-            // User with the same email already exists
-            return false;
+            Console.WriteLine("User with that Email already exists");
+            return false; // User with the same email already exists
+            // return (false, "User with that Email already exists");
+
         }
 
-        // Create a new IdentityUser with the provided details
         var identityUser = new IdentityUser
         {
             UserName = user.UserName,
             Email = user.EmailID
         };
 
-        // Attempt to create the user
         var result = await _userManager.CreateAsync(identityUser, user.Password);
 
         if (result.Succeeded)
         {
-            // User creation succeeded, add the user to the specified role
             await _userManager.AddToRoleAsync(identityUser, user.UserRole);
+            Console.WriteLine($"Registration successful for user with email '{user.EmailID}'.");
             return true;
         }
         else
         {
-            // User creation failed, log the errors if needed
+            Console.WriteLine($"Registration failed for user with email '{user.EmailID}'. Errors:");
+
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"- {error.Description}");
+            }
+
             return false;
         }
     }
     catch (Exception ex)
     {
-        // An error occurred during registration, log the exception if needed
+        Console.WriteLine($"Error during registration: {ex.Message}");
         return false;
     }
 }
-
 
         public async Task<string> LoginAsync(string email, string password)
         {
