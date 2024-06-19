@@ -13,6 +13,7 @@
         <li *ngIf="isAdmin"><a routerLink="/admin/addProducts">Add Products</a></li>
         <li *ngIf="isAdmin"><a routerLink="/admin/viewProducts">View Products</a></li>
         <li *ngIf="isUser"><a routerLink="/user/viewProducts">View Products</a></li> 
+        <li *ngIf="isUser"><a routerLink="/cart">View Cart</a></li> 
         <li><a id="logout" (click)="logout()">Logout</a></li>
       </ng-container>
     </ul>

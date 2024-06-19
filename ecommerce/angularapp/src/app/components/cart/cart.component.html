@@ -1,4 +1,4 @@
-<div class="container" *ngIf="cart">
+<div class="container" *ngIf="!loading">
   <h2>Cart</h2>
   <ul>
     <li *ngFor="let item of cart.items">
@@ -25,6 +25,6 @@
   <p class="total-price">Total: <span>${{ cart.totalPrice }}</span></p>
 </div>
 
-<div class="loading-message" *ngIf="!cart">
+<div class="loading-message" *ngIf="loading">
   <p>Loading cart...</p>
 </div>
