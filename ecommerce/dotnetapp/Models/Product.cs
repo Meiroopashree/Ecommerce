@@ -1,7 +1,7 @@
 namespace dotnetapp.Models
 {
     public class Product
-    {
+    {   
         public int ProductId { get; set; } // Unique identifier for the product
         public string Name { get; set; } // Name of the product
         public string Description { get; set; } // Description of the product

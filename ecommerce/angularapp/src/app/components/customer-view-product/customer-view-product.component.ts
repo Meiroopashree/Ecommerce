@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartProduct } from 'src/app/models/cart-product';
 import { Product } from 'src/app/models/product';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -12,7 +14,7 @@ export class CustomerViewProductComponent{
 
   products: Product[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService, private router: Router,  private cartService: CartService) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -26,9 +28,20 @@ export class CustomerViewProductComponent{
     });
   }
 
+  addToCart(product: Product): void {
+    const cartProduct: CartProduct = {
+      product: product,
+      quantity: 1
+    };
 
-  onProductUpdated(): void {
-    this.loadProducts(); // Refresh the product list
+    this.cartService.addToCart(cartProduct).subscribe(
+      (data) => {
+        this.router.navigate(['/cart']); // Navigate to the cart page
+      },
+      (error) => {
+        console.error('Error adding to cart', error);
+      }
+    );
   }
 
 }
