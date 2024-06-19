@@ -250,7 +250,7 @@ namespace dotnetapp.Tests
         public void UniqueEmailAttributeModelExists()
         {
             string assemblyName = "dotnetapp";
-            string typeName = "dotnetapp.Models.UniqueEmailAttribute";
+            string typeName = "dotnetapp.Models.UniqueEmailAttribute";`
             Assembly assembly = Assembly.Load(assemblyName);
             Type uniqueemailType = assembly.GetType(typeName);
             Assert.IsNotNull(uniqueemailType);
