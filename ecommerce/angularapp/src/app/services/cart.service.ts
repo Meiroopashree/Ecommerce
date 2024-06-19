@@ -22,12 +22,12 @@ export class CartService {
   }
 
   updateCartItem(item: CartProduct): Observable<Cart> {
-    const url = `${this.baseUrl}/update/${item.product.productId}`; // Adjust endpoint as per your API
+    const url = `${this.baseUrl}/api/cart/update/${item.product.productId}`;
     return this.http.put<Cart>(url, item);
   }
 
-  removeFromCart(item: CartProduct): Observable<Cart> {
-    const url = `${this.baseUrl}/remove/${item.product.productId}`; // Adjust endpoint as per your API
+  removeFromCart(productId: number): Observable<Cart> {
+    const url = `${this.baseUrl}/api/cart/remove/${productId}`;
     return this.http.delete<Cart>(url);
   }
 }

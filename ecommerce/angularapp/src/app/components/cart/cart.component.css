@@ -1,24 +1,15 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  animation: slideInUp 0.5s ease;
-}
+/* cart.component.css */
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.container {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
 }
 
 h2 {
-  text-align: center;
-  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
 ul {
@@ -28,77 +19,80 @@ ul {
 
 .cart-item {
   display: flex;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.cart-item:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .cart-item-image {
   width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto;
+  margin-right: 20px;
 }
 
 .cart-item-details {
-  padding-left: 10px;
+  flex: 1;
 }
 
-.cart-item-details h3 {
-  margin-top: 0;
+h3 {
+  font-size: 18px;
   margin-bottom: 5px;
-  color: #333;
 }
 
-.cart-item-details p {
-  margin: 0;
-  color: #666;
+p {
+  margin: 5px 0;
 }
 
-.loading-message {
-  text-align: center;
-  padding: 20px;
-  animation: pulse 1s ease-in-out infinite;
+.price {
+  font-weight: bold;
+  color: #009688; /* or any color of your choice */
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.95);
-  }
-  50% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.95);
-  }
+.select-quantity {
+  width: 80px;
+  padding: 5px;
+  font-size: 14px;
 }
 
 .total-price {
-  text-align: right;
-  font-size: 24px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #ff2600; /* Blue color */
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-.total-price span {
-  font-weight: bold;
+.loading-message {
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #009688; /* or any color of your choice */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00796b; /* darken the background on hover */
+}
+
+@media (max-width: 768px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cart-item-details {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .cart-item-image {
+    margin-bottom: 10px;
+  }
 }

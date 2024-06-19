@@ -1,28 +1,3 @@
-<!-- <div class="container" *ngIf="cart">
-  <h2>Cart</h2>
-  <ul>
-    <li *ngFor="let item of cart.items">
-      <div class="cart-item">
-        <img [src]="item.product.imageUrl" class="cart-item-image">
-        <div class="cart-item-details">
-          <h3>{{ item.product.name }}</h3>
-          <p><strong>Description:</strong> {{ item.product.description }}</p>
-          <p><strong>Category:</strong> {{ item.product.category }}</p>
-          <p><strong>Price:</strong> ${{ item.product.price }}</p>
-          <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-          <p><strong>Total:</strong> ${{ item.quantity * item.product.price }}</p>
-        </div>
-      </div>
-    </li>
-  </ul>
-  <p class="total-price">Total: <span>${{ cart.totalPrice }}</span></p>
-</div>
-
-<div class="loading-message" *ngIf="!cart">
-  <p>Loading cart...</p>
-</div> -->
-
-
 <div class="container" *ngIf="cart">
   <h2>Cart</h2>
   <ul>
@@ -35,12 +10,9 @@
           <p><strong>Category:</strong> {{ item.product.category }}</p>
           <p><strong>Price:</strong> ${{ item.product.price }}</p>
           <p><strong>Quantity:</strong>
-            <!-- Dropdown to select quantity -->
-            <select [(ngModel)]="item.quantity" (change)="updateQuantity(item, $event.target.value)">
-              <option *ngFor="let quantity of quantityOptions(item.product.stockQuantity)" [value]="quantity">
-                {{ quantity }}
-              </option>
-            </select>
+            <!-- Input field to enter quantity manually -->
+            <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item, $event.target.value)" min="1" [max]="item.product.stockQuantity">
+            <span> / Stock: {{ item.product.stockQuantity }}</span>
           </p>
           <p><strong>Total:</strong> ${{ item.quantity * item.product.price }}</p>
           <!-- Button to remove item from cart -->
