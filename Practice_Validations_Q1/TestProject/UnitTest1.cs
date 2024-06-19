@@ -18,7 +18,7 @@ namespace dotnetapp.Tests
     public class BookTests
     {
         [Test]
-        public void Book_FirstName_Have_RequiredAttribute()
+        public void Book_Author_Have_RequiredAttribute()
         {
             var count = 0;
 
@@ -27,7 +27,7 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "FirstName")
+                if (property.Name == "Author")
                 {
                     var requiredAttribute = property.GetCustomAttribute<RequiredAttribute>();
                     Assert.NotNull(requiredAttribute, $"{property.Name} should have a RequiredAttribute.");
@@ -42,7 +42,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void Book_Properties_Have_EmailAddressAttribute()
+        public void Book_Properties_Have_UniqueTitleAttribute()
         {
             var count = 0;
             Type BookType = typeof(Book);
@@ -50,10 +50,10 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "Email")
+                if (property.Name == "Title")
                 {
-                    var emailAttribute = property.GetCustomAttribute<EmailAddressAttribute>();
-                    Assert.NotNull(emailAttribute, $"{property.Name} should have an EmailAddressAttribute.");
+                    var titleAttribute = property.GetCustomAttribute<UniqueTitleAttribute>();
+                    Assert.NotNull(titleAttribute, $"{property.Name} should have an UniqueTitleAttribute.");
                     count++;
                     break;
                 }
@@ -66,31 +66,6 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void Book_Properties_Have_RegularExpressionAttribute()
-        {
-            var count = 0;
-
-            Type BookType = typeof(Book);
-            PropertyInfo[] properties = BookType.GetProperties();
-
-            foreach (var property in properties)
-            {
-                if (property.Name == "PhoneNumber")
-                {
-                    var regexAttribute = property.GetCustomAttribute<RegularExpressionAttribute>();
-                    Assert.NotNull(regexAttribute, $"{property.Name} should have a RegularExpressionAttribute.");
-                    count++;
-                    break;
-                }
-            }
-            if (count == 0)
-            {
-                Assert.Fail("PhoneNumber property does not have a RegularExpressionAttribute.");
-            }
-        }
-
-
-        [Test]
         public void Book_Properties_Have_DataTypeAttribute()
         {
             var count = 0;
@@ -99,7 +74,7 @@ namespace dotnetapp.Tests
 
             foreach (var property in properties)
             {
-                if (property.Name == "BirthDate")
+                if (property.Name == "PublishedDate")
                 {
                     var dataTypeAttribute = property.GetCustomAttribute<DataTypeAttribute>();
                     Assert.NotNull(dataTypeAttribute, $"{property.Name} should have a DataTypeAttribute.");

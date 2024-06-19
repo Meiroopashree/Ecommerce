@@ -24,7 +24,6 @@ namespace dotnetapp.Models
         public DateTime PublishedDate { get; set; }
 
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
-        [Required(ErrorMessage = "Price is required")]
         public decimal Price { get; set; }
     }
 }
