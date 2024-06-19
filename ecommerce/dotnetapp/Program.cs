@@ -73,7 +73,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseCors();
+app.UseCors("AllowAllOrigins");
 
 
 // Add authentication and authorization middleware

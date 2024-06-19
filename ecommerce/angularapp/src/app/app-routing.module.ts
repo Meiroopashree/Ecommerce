@@ -8,6 +8,7 @@ import { ViewProductComponent } from './components/view-product/view-product.com
 import { EditProductComponent } from './components/edit-product/edit-product.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { CustomerViewProductComponent } from './components/customer-view-product/customer-view-product.component';
+import { CartComponent } from './components/cart/cart.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'admin/viewProducts', component: ViewProductComponent},
   { path: 'edit-product/:id', component: EditProductComponent },
   { path: 'confirmDelete/:id', component: DeleteConfirmComponent},
+  { path: 'cart', component: CartComponent}
 
 
 ];

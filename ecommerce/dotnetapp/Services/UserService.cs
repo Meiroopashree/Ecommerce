@@ -124,8 +124,9 @@ Console.WriteLine("Token: " + token);
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),
                 //new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 Console.WriteLine("GenerateToken -"+user.UserName);
 Console.WriteLine("GenerateToken -"+user.Email);

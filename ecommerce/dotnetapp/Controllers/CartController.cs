@@ -11,7 +11,7 @@ namespace dotnetapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Requires authentication for all actions in this controller
+    
     public class CartController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -43,6 +43,12 @@ namespace dotnetapp.Controllers
         [HttpPost("add")]
         public ActionResult AddToCart([FromBody] CartProduct cartProduct)
         {
+            // Validate quantity
+            if (cartProduct.Quantity <= 0)
+            {
+                return BadRequest("Quantity must be greater than zero.");
+            }
+
             // Get userId from token
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
