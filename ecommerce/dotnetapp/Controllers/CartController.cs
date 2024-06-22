@@ -1,14 +1,11 @@
-using System;
+// Controllers/CartController.cs
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Models;
+using dotnetapp.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using dotnetapp.Data;
-using dotnetapp.Models;
-using System.Security.Claims; 
-using Microsoft.AspNetCore.Authorization; 
-
+using System.Security.Claims;
 
 namespace dotnetapp.Controllers
 {
@@ -16,90 +13,71 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
+        private static List<Cart> carts = new List<Cart>();
 
-        public CartController(ApplicationDbContext context)
+        public CartController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
-            // GET api/cart/{id}
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Cart>> GetCart(int id)
-    {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        var cart = await _context.Carts
-            .Include(c => c.Items)
-            .ThenInclude(ci => ci.Product)
-            .FirstOrDefaultAsync(c => c.CartId == id && c.UserId == userId);
-
-        if (cart == null)
+        // GET api/cart/{id}
+        [HttpGet("{id}")]
+        public ActionResult<Cart> GetCart(int id)
         {
-            return NotFound();
-        }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        return Ok(cart);
-    }
+            var cart = carts.FirstOrDefault(c => c.CartId == id && c.UserId == userId);
 
-    // POST api/cart/add
-    [HttpPost("add")]
-    public async Task<ActionResult<Cart>> AddToCart([FromBody] CartProduct cartProduct)
-    {
-        if (cartProduct.Quantity <= 0)
-        {
-            return BadRequest("Quantity must be greater than zero.");
-        }
-
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        var cart = await _context.Carts
-            .Include(c => c.Items)
-            .FirstOrDefaultAsync(c => c.UserId == userId);
-
-        if (cart == null)
-        {
-            cart = new Cart
+            if (cart == null)
             {
-                CartId = GenerateUniqueCartId(),
-                UserId = userId,
-                Items = new List<CartProduct>()
-            };
-            _context.Carts.Add(cart);
-        }
-
-        var existingProduct = cart.Items.FirstOrDefault(item => item.ProductId == cartProduct.ProductId);
-
-        if (existingProduct != null)
-        {
-            existingProduct.Quantity += cartProduct.Quantity;
-        }
-        else
-        {
-            var product = await _context.Products.FindAsync(cartProduct.ProductId);
-            if (product == null)
-            {
-                return NotFound("Product not found.");
+                return NotFound();
             }
 
-            cart.Items.Add(new CartProduct
-            {
-                CartId = cart.CartId, // Assuming CartId is part of CartProduct model
-                ProductId = product.ProductId,
-                Quantity = cartProduct.Quantity,
-                Product = product
-            });
+            return Ok(cart);
         }
 
-        await _context.SaveChangesAsync();
+        // POST api/cart/add
+        [HttpPost("add")]
+        public ActionResult AddToCart([FromBody] CartProduct cartProduct)
+        {
+            if (cartProduct.Quantity <= 0)
+            {
+                return BadRequest("Quantity must be greater than zero.");
+            }
 
-        return Ok(cart);
-    }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+
+            if (cart == null)
+            {
+                cart = new Cart
+                {
+                    CartId = GenerateUniqueCartId(),
+                    UserId = userId,
+                    Items = new List<CartProduct>()
+                };
+                carts.Add(cart);
+            }
+
+            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == cartProduct.Product.ProductId);
+
+            if (existingProduct != null)
+            {
+                existingProduct.Quantity += cartProduct.Quantity;
+            }
+            else
+            {
+                cart.Items.Add(cartProduct);
+            }
+
+            return Ok(cart);
+        }
 
         // PUT api/cart/update/{productId}
         [HttpPut("update/{productId}")]
-        public async Task<ActionResult<Cart>> UpdateCartItem(int productId, [FromBody] CartProduct updatedCartItem)
+        public ActionResult UpdateCartItem(int productId, [FromBody] CartProduct updatedCartItem)
         {
             if (updatedCartItem.Quantity <= 0)
             {
@@ -108,16 +86,14 @@ namespace dotnetapp.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var cart = await _context.Carts
-                .Include(c => c.Items)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+            var cart = carts.FirstOrDefault(c => c.UserId == userId);
 
             if (cart == null)
             {
                 return NotFound("Cart not found.");
             }
 
-            var existingProduct = cart.Items.FirstOrDefault(item => item.ProductId == productId);
+            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
 
             if (existingProduct == null)
             {
@@ -126,36 +102,30 @@ namespace dotnetapp.Controllers
 
             existingProduct.Quantity = updatedCartItem.Quantity;
 
-            await _context.SaveChangesAsync();
-
             return Ok(cart);
         }
 
         // DELETE api/cart/remove/{productId}
         [HttpDelete("remove/{productId}")]
-        public async Task<ActionResult<Cart>> RemoveCartItem(int productId)
+        public ActionResult RemoveCartItem(int productId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var cart = await _context.Carts
-                .Include(c => c.Items)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+            var cart = carts.FirstOrDefault(c => c.UserId == userId);
 
             if (cart == null)
             {
                 return NotFound("Cart not found.");
             }
 
-            var existingProduct = cart.Items.FirstOrDefault(item => item.ProductId == productId);
+            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
 
             if (existingProduct == null)
             {
                 return NotFound("Product not found in cart.");
             }
 
-            _context.CartProducts.Remove(existingProduct);
-
-            await _context.SaveChangesAsync();
+            cart.Items.Remove(existingProduct);
 
             return Ok(cart);
         }
@@ -163,7 +133,7 @@ namespace dotnetapp.Controllers
         // Simulated method to generate a unique cartId (replace with actual logic)
         private int GenerateUniqueCartId()
         {
-            return _context.Carts.Count() + 1; // Simulated unique cartId
+            return carts.Count + 1; // Simulated unique cartId
         }
     }
 }
