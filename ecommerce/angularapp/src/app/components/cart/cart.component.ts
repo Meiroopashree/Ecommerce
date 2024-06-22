@@ -32,33 +32,37 @@ export class CartComponent implements OnInit {
     );
   }
 
+  addToCart(product: CartProduct): void {
+    this.cartService.addToCart(product).subscribe(
+      (data) => {
+        this.cart = data;
+      },
+      (error) => {
+        console.error('Error adding to cart', error);
+      }
+    );
+  }
+
   updateQuantity(item: CartProduct, newQuantity: number): void {
-    // Update quantity locally
     item.quantity = newQuantity;
 
-    // Call cartService to update quantity on the server
-    this.cartService.updateCartItem(item).subscribe(
+    this.cartService.updateCartItem(item.product.productId, item).subscribe(
       (data) => {
-        // Update cart after successful update
         this.cart = data;
       },
       (error) => {
         console.error('Error updating quantity', error);
-        // Optionally handle error
       }
     );
   }
 
   removeFromCart(item: CartProduct): void {
-    // Call cartService to remove item from the cart by passing productId
     this.cartService.removeFromCart(item.product.productId).subscribe(
       (data) => {
-        // Update cart after successful removal
         this.cart = data;
       },
       (error) => {
         console.error('Error removing item from cart', error);
-        // Optionally handle error
       }
     );
   }

@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Cart } from '../models/cart';
 import { CartProduct } from '../models/cart-product';
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class CartService {
-  private baseUrl = 'https://8080-bfdeeddcedfabcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/api/cart'; // Update this to your actual API URL
+  private baseUrl = 'https://8080-bfdeeddcedfabcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/api/cart';  // Update with your API base URL
 
   constructor(private http: HttpClient) {}
 
@@ -21,13 +21,11 @@ export class CartService {
     return this.http.post<Cart>(`${this.baseUrl}/add`, cartProduct);
   }
 
-  updateCartItem(item: CartProduct): Observable<Cart> {
-    const url = `${this.baseUrl}/api/cart/update/${item.product.productId}`;
-    return this.http.put<Cart>(url, item);
+  updateCartItem(productId: number, updatedCartItem: CartProduct): Observable<Cart> {
+    return this.http.put<Cart>(`${this.baseUrl}/update/${productId}`, updatedCartItem);
   }
 
   removeFromCart(productId: number): Observable<Cart> {
-    const url = `${this.baseUrl}/api/cart/remove/${productId}`;
-    return this.http.delete<Cart>(url);
+    return this.http.delete<Cart>(`${this.baseUrl}/remove/${productId}`);
   }
 }

@@ -2,9 +2,9 @@
 export interface Product {
     productId: number;
     name: string;
-    description: string;
+    description?: string;
     price: number;
-    imageUrl: string;
+    imageUrl?: string;
     stockQuantity: number
     category: string;
   }

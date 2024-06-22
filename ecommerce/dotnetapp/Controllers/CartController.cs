@@ -1,4 +1,3 @@
-// Controllers/CartController.cs
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
@@ -6,6 +5,7 @@ using dotnetapp.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace dotnetapp.Controllers
 {
@@ -14,11 +14,13 @@ namespace dotnetapp.Controllers
     public class CartController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ProductController _productController; // Inject ProductController
         private static List<Cart> carts = new List<Cart>();
 
-        public CartController(IUserService userService)
+        public CartController(IUserService userService, ProductController productController)
         {
             _userService = userService;
+            _productController = productController;
         }
 
         // GET api/cart/{id}
@@ -39,7 +41,7 @@ namespace dotnetapp.Controllers
 
         // POST api/cart/add
         [HttpPost("add")]
-        public ActionResult AddToCart([FromBody] CartProduct cartProduct)
+        public async Task<ActionResult> AddToCart([FromBody] CartProduct cartProduct)
         {
             if (cartProduct.Quantity <= 0)
             {
@@ -69,6 +71,12 @@ namespace dotnetapp.Controllers
             }
             else
             {
+                var productResult = await _productController.GetProduct(cartProduct.Product.ProductId);
+                if (productResult.Result is NotFoundResult)
+                {
+                    return NotFound("Product not found.");
+                }
+                cartProduct.Product = productResult.Value;
                 cart.Items.Add(cartProduct);
             }
 

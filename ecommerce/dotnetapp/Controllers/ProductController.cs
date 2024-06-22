@@ -1,3 +1,4 @@
+// ProductController.cs
 using dotnetapp.Data;
 using dotnetapp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -51,35 +52,34 @@ namespace dotnetapp.Controllers
         }
 
         // PUT: api/product/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutProduct(int id, Product product)
-{
-    if (id != product.ProductId)
-    {
-        return BadRequest();
-    }
-
-    _context.Entry(product).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!ProductExists(id))
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProduct(int id, Product product)
         {
-            return NotFound();
-        }
-        else
-        {
-            throw;
-        }
-    }
+            if (id != product.ProductId)
+            {
+                return BadRequest();
+            }
 
-    return Ok(new { message = "Product updated successfully" }); // Return success message
-}
+            _context.Entry(product).State = EntityState.Modified;
 
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(new { message = "Product updated successfully" });
+        }
 
         // DELETE: api/product/5
         [HttpDelete("{id}")]
