@@ -1,10 +1,11 @@
 ﻿// Models/User.cs
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace dotnetapp.Models
 {
 
-    public class User
+    public class User: IdentityUser
     {
         public int Id { get; set; }
 

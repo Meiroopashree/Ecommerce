@@ -45,8 +45,11 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    // var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    // var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    
+     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
     // Create roles if they don't exist
     if (!await roleManager.RoleExistsAsync("ADMIN"))
@@ -57,6 +60,14 @@ using (var scope = app.Services.CreateScope())
     if (!await roleManager.RoleExistsAsync("USER"))
     {
         await roleManager.CreateAsync(new IdentityRole("USER"));
+    }
+}
+
+async Task CreateRolesAsync(RoleManager<IdentityRole> roleManager, string roleName)
+{
+    if (!await roleManager.RoleExistsAsync(roleName))
+    {
+        await roleManager.CreateAsync(new IdentityRole(roleName));
     }
 }
 
