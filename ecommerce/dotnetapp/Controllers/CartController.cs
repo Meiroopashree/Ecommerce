@@ -1,11 +1,13 @@
-// Controllers/CartController.cs
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Services;
-using System.Collections.Generic;
+using dotnetapp.Data;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using dotnetapp.Services;
 using System.Security.Claims;
+
 
 namespace dotnetapp.Controllers
 {
@@ -13,127 +15,160 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
         private readonly IUserService _userService;
-        private static List<Cart> carts = new List<Cart>();
 
-        public CartController(IUserService userService)
+        public CartController(ApplicationDbContext context, IUserService userService)
         {
+            _context = context;
             _userService = userService;
         }
 
-        // GET api/cart/{id}
-        [HttpGet("{id}")]
-        public ActionResult<Cart> GetCart(int id)
+        /// GET api/cart/{id}
+[HttpGet("{id}")]
+public async Task<ActionResult<Cart>> GetCart(int id)
+{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    var cart = await _context.Carts
+        .Include(c => c.Items)
+        .ThenInclude(cp => cp.Product)
+        .FirstOrDefaultAsync(c => c.CartId == id && c.UserId == userId);
+
+    if (cart == null)
+    {
+        return NotFound();
+    }
+
+    return Ok(cart);
+}
+
+// POST api/cart/add
+[HttpPost("add")]
+public async Task<ActionResult> AddToCart([FromBody] CartProduct cartProduct)
+{
+    if (cartProduct.Quantity <= 0)
+    {
+        return BadRequest("Quantity must be greater than zero.");
+    }
+
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    // Find or create a cart for the current user
+    var cart = await _context.Carts
+        .Include(c => c.Items)
+        .FirstOrDefaultAsync(c => c.UserId == userId);
+
+    if (cart == null)
+    {
+        cart = new Cart
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserId = userId,
+            Items = new List<CartProduct>()
+        };
+        _context.Carts.Add(cart);
+    }
 
-            var cart = carts.FirstOrDefault(c => c.CartId == id && c.UserId == userId);
+    // Ensure the product exists in the database (check ProductId)
+    var existingProduct = await _context.Products
+        .FirstOrDefaultAsync(p => p.ProductId == cartProduct.Product.ProductId);
 
-            if (cart == null)
-            {
-                return NotFound();
-            }
+    if (existingProduct == null)
+    {
+        // If product doesn't exist, you may want to handle this case according to your application logic
+        return BadRequest("Product not found.");
+    }
 
-            return Ok(cart);
-        }
+    // Add the cart product
+    var cartItem = new CartProduct
+    {
+        Product = existingProduct,
+        Quantity = cartProduct.Quantity
+    };
 
-        // POST api/cart/add
-        [HttpPost("add")]
-        public ActionResult AddToCart([FromBody] CartProduct cartProduct)
-        {
-            if (cartProduct.Quantity <= 0)
-            {
-                return BadRequest("Quantity must be greater than zero.");
-            }
+    cart.Items.Add(cartItem);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    try
+    {
+        await _context.SaveChangesAsync();
+        return Ok(cart);
+    }
+    catch (DbUpdateException ex)
+    {
+        // Log the exception or handle it appropriately
+        return StatusCode(500, "Error saving cart.");
+    }
+}
 
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
 
-            if (cart == null)
-            {
-                cart = new Cart
-                {
-                    CartId = GenerateUniqueCartId(),
-                    UserId = userId,
-                    Items = new List<CartProduct>()
-                };
-                carts.Add(cart);
-            }
+// PUT api/cart/update/{productId}
+[HttpPut("update/{productId}")]
+public async Task<ActionResult> UpdateCartItem(int productId, [FromBody] CartProduct updatedCartItem)
+{
+    if (updatedCartItem.Quantity <= 0)
+    {
+        return BadRequest("Quantity must be greater than zero.");
+    }
 
-            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == cartProduct.Product.ProductId);
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (existingProduct != null)
-            {
-                existingProduct.Quantity += cartProduct.Quantity;
-            }
-            else
-            {
-                cart.Items.Add(cartProduct);
-            }
+    var cart = await _context.Carts
+        .Include(c => c.Items)
+        .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            return Ok(cart);
-        }
+    if (cart == null)
+    {
+        return NotFound("Cart not found.");
+    }
 
-        // PUT api/cart/update/{productId}
-        [HttpPut("update/{productId}")]
-        public ActionResult UpdateCartItem(int productId, [FromBody] CartProduct updatedCartItem)
-        {
-            if (updatedCartItem.Quantity <= 0)
-            {
-                return BadRequest("Quantity must be greater than zero.");
-            }
+    var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (existingProduct == null)
+    {
+        return NotFound("Product not found in cart.");
+    }
 
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+    existingProduct.Quantity = updatedCartItem.Quantity;
 
-            if (cart == null)
-            {
-                return NotFound("Cart not found.");
-            }
+    await _context.SaveChangesAsync();
 
-            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
+    return Ok(cart);
+}
 
-            if (existingProduct == null)
-            {
-                return NotFound("Product not found in cart.");
-            }
+// DELETE api/cart/remove/{productId}
+[HttpDelete("remove/{productId}")]
+public async Task<ActionResult> RemoveCartItem(int productId)
+{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            existingProduct.Quantity = updatedCartItem.Quantity;
+    var cart = await _context.Carts
+        .Include(c => c.Items)
+        .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            return Ok(cart);
-        }
+    if (cart == null)
+    {
+        return NotFound("Cart not found.");
+    }
 
-        // DELETE api/cart/remove/{productId}
-        [HttpDelete("remove/{productId}")]
-        public ActionResult RemoveCartItem(int productId)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
 
-            var cart = carts.FirstOrDefault(c => c.UserId == userId);
+    if (existingProduct == null)
+    {
+        return NotFound("Product not found in cart.");
+    }
 
-            if (cart == null)
-            {
-                return NotFound("Cart not found.");
-            }
+    cart.Items.Remove(existingProduct);
 
-            var existingProduct = cart.Items.FirstOrDefault(item => item.Product.ProductId == productId);
+    await _context.SaveChangesAsync();
 
-            if (existingProduct == null)
-            {
-                return NotFound("Product not found in cart.");
-            }
+    return Ok(cart);
+}
 
-            cart.Items.Remove(existingProduct);
-
-            return Ok(cart);
-        }
 
         // Simulated method to generate a unique cartId (replace with actual logic)
         private int GenerateUniqueCartId()
         {
-            return carts.Count + 1; // Simulated unique cartId
+            return _context.Carts.Count() + 1; // Generate unique cartId based on current count in database
         }
     }
 }
