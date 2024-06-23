@@ -41,54 +41,106 @@ namespace dotnetapp.Controllers
             };
         }
 
+        // // POST: api/cart/{productId}
+        // [HttpPost("{productId}")]
+        // public async Task<ActionResult<object>> AddToCart(int productId, [FromQuery] int quantity = 1)
+        // {
+        //     var product = await _context.Products.FindAsync(productId);
+
+        //     if (product == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var cart = await _context.Carts
+        //         .Include(c => c.Items)
+        //         .FirstOrDefaultAsync();
+
+        //     if (cart == null)
+        //     {
+        //         cart = new Cart();
+        //         _context.Carts.Add(cart);
+        //     }
+
+        //     var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
+
+        //     if (cartItem == null)
+        //     {
+        //         cartItem = new CartItem
+        //         {
+        //             ProductId = productId,
+        //             Quantity = quantity,
+        //             Product = product
+        //         };
+        //         cart.Items.Add(cartItem);
+        //     }
+        //     else
+        //     {
+        //         cartItem.Quantity += quantity;
+        //     }
+
+        //     await _context.SaveChangesAsync();
+
+        //     var totalPrice = cart.GetTotalPrice();
+
+        //     return new
+        //     {
+        //         Cart = cart,
+        //         TotalPrice = totalPrice
+        //     };
+        // }
+
+
         // POST: api/cart/{productId}
-        [HttpPost("{productId}")]
-        public async Task<ActionResult<object>> AddToCart(int productId, [FromQuery] int quantity = 1)
+[HttpPost("{productId}")]
+public async Task<ActionResult<object>> AddToCart(int productId, [FromQuery] int quantity = 1)
+{
+    var product = await _context.Products.FindAsync(productId);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    var cart = await _context.Carts
+        .Include(c => c.Items)
+        .ThenInclude(i => i.Product)
+        .FirstOrDefaultAsync();
+
+    if (cart == null)
+    {
+        cart = new Cart();
+        _context.Carts.Add(cart);
+    }
+
+    var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
+
+    if (cartItem == null)
+    {
+        cartItem = new CartItem
         {
-            var product = await _context.Products.FindAsync(productId);
+            ProductId = productId,
+            Quantity = quantity,
+            Product = product
+        };
+        cart.Items.Add(cartItem);
+    }
+    else
+    {
+        cartItem.Quantity += quantity;
+    }
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+    await _context.SaveChangesAsync();
 
-            var cart = await _context.Carts
-                .Include(c => c.Items)
-                .FirstOrDefaultAsync();
+    var totalPrice = cart.GetTotalPrice();
 
-            if (cart == null)
-            {
-                cart = new Cart();
-                _context.Carts.Add(cart);
-            }
+    return new
+    {
+        Cart = cart,
+        TotalPrice = totalPrice
+    };
+}
 
-            var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
-
-            if (cartItem == null)
-            {
-                cartItem = new CartItem
-                {
-                    ProductId = productId,
-                    Quantity = quantity,
-                    Product = product
-                };
-                cart.Items.Add(cartItem);
-            }
-            else
-            {
-                cartItem.Quantity += quantity;
-            }
-
-            await _context.SaveChangesAsync();
-
-            var totalPrice = cart.GetTotalPrice();
-
-            return new
-            {
-                Cart = cart,
-                TotalPrice = totalPrice
-            };
-        }
 
         // DELETE: api/cart/{productId}
         [HttpDelete("{productId}")]

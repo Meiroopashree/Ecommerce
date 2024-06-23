@@ -1,4 +1,4 @@
-/* Basic styles */
+/* General styling */
 .cart {
   padding: 16px;
   border: 1px solid #ccc;
@@ -15,6 +15,7 @@
   text-align: center;
 }
 
+/* Cart item styles */
 .cart-item {
   display: flex;
   align-items: center;
@@ -48,6 +49,7 @@
   margin: 5px 0;
 }
 
+/* Quantity controls */
 .quantity-controls {
   display: flex;
   align-items: center;
@@ -55,7 +57,7 @@
 }
 
 .quantity-controls button {
-  background-color: #007bff;
+  background-color: #dc3545;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -65,7 +67,7 @@
 }
 
 .quantity-controls button:hover {
-  background-color: #0056b3;
+  background-color: #ff0019;
   transform: scale(1.1);
 }
 
@@ -83,6 +85,7 @@
   border-color: #ffc107;
 }
 
+/* Remove button */
 button {
   background-color: #28a745;
   color: white;
@@ -98,6 +101,7 @@ button:hover {
   transform: scale(1.1);
 }
 
+/* Cart total */
 .cart-total {
   margin-top: 20px;
   text-align: right;
@@ -107,7 +111,7 @@ button:hover {
   margin: 0;
 }
 
-/* Empty cart styles */
+/* Empty cart message */
 p {
   text-align: center;
   font-size: 18px;

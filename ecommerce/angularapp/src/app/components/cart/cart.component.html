@@ -10,7 +10,7 @@
           <input type="number" [value]="item.quantity" (change)="updateQuantity(item, $event.target.value)">
           <button (click)="updateQuantity(item, item.quantity + 1)">+</button>
         </div>
-        <p>Total: {{ item.product.price * item.quantity | currency }}</p>
+        <!-- <p>Total: {{ item.product.price * item.quantity | currency }}</p> -->
         <button (click)="removeFromCart(item.productId)">Remove</button>
       </div>
     </div>
