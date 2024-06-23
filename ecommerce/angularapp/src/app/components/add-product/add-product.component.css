@@ -117,3 +117,8 @@ input:focus, textarea:focus {
     opacity: 1;
   }
 }
+
+.image-input {
+  width: 100%;
+  max-width: 500px; /* Adjust max-width according to your design */
+}
