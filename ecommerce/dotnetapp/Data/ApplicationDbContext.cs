@@ -15,8 +15,25 @@ namespace dotnetapp.Data
         
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<CartProduct> CartProducts {get;set;}
-        public DbSet<Cart> Carts {get;set;}
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cart>()
+                .Property(c => c.CartId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<CartItem>()
+                .Property(ci => ci.CartItemId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.ProductId)
+                .ValueGeneratedOnAdd();
+
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

@@ -1,31 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cart } from '../models/cart';
-import { CartProduct } from '../models/cart-product';
+import { Cart, CartItem, Product } from './models';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class CartService {
-  private baseUrl = 'https://8080-bfdeeddcedfabcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/api/cart';  // Update with your API base URL
+  private apiUrl = 'https://8080-bfdeeddcedfabcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/api/cart';
 
   constructor(private http: HttpClient) {}
 
-  getCart(cartId: number): Observable<Cart> {
-    return this.http.get<Cart>(`${this.baseUrl}/${cartId}`);
+  getCart(): Observable<{ cart: Cart; totalPrice: number }> {
+    return this.http.get<{ cart: Cart; totalPrice: number }>(this.apiUrl);
   }
 
-  addToCart(cartProduct: CartProduct): Observable<Cart> {
-    return this.http.post<Cart>(`${this.baseUrl}/add`, cartProduct);
+  addToCart(productId: number, quantity: number = 1): Observable<{ cart: Cart; totalPrice: number }> {
+    return this.http.post<{ cart: Cart; totalPrice: number }>(`${this.apiUrl}/${productId}?quantity=${quantity}`, {});
   }
 
-  updateCartItem(productId: number, updatedCartItem: CartProduct): Observable<Cart> {
-    return this.http.put<Cart>(`${this.baseUrl}/update/${productId}`, updatedCartItem);
-  }
-
-  removeFromCart(productId: number): Observable<Cart> {
-    return this.http.delete<Cart>(`${this.baseUrl}/remove/${productId}`);
+  removeFromCart(productId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${productId}`);
   }
 }

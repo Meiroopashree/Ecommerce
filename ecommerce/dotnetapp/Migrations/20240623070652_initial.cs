@@ -53,8 +53,7 @@ namespace dotnetapp.Migrations
                 columns: table => new
                 {
                     CartId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -203,10 +202,10 @@ namespace dotnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartProducts",
+                name: "CartItems",
                 columns: table => new
                 {
-                    CartProductId = table.Column<int>(type: "int", nullable: false)
+                    CartItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -214,14 +213,14 @@ namespace dotnetapp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartProducts", x => x.CartProductId);
+                    table.PrimaryKey("PK_CartItems", x => x.CartItemId);
                     table.ForeignKey(
-                        name: "FK_CartProducts_Carts_CartId",
+                        name: "FK_CartItems_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "CartId");
                     table.ForeignKey(
-                        name: "FK_CartProducts_Products_ProductId",
+                        name: "FK_CartItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -268,13 +267,13 @@ namespace dotnetapp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartProducts_CartId",
-                table: "CartProducts",
+                name: "IX_CartItems_CartId",
+                table: "CartItems",
                 column: "CartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartProducts_ProductId",
-                table: "CartProducts",
+                name: "IX_CartItems_ProductId",
+                table: "CartItems",
                 column: "ProductId");
         }
 
@@ -296,7 +295,7 @@ namespace dotnetapp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CartProducts");
+                name: "CartItems");
 
             migrationBuilder.DropTable(
                 name: "Users");

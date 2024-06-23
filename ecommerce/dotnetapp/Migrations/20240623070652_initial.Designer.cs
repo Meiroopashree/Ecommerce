@@ -12,7 +12,7 @@ using dotnetapp.Data;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240622162402_initial")]
+    [Migration("20240623070652_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,22 +32,18 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CartId");
 
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.CartProduct", b =>
+            modelBuilder.Entity("dotnetapp.Models.CartItem", b =>
                 {
-                    b.Property<int>("CartProductId")
+                    b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartProductId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"), 1L, 1);
 
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
@@ -58,13 +54,13 @@ namespace dotnetapp.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("CartProductId");
+                    b.HasKey("CartItemId");
 
                     b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartProducts");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Product", b =>
@@ -333,7 +329,7 @@ namespace dotnetapp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.CartProduct", b =>
+            modelBuilder.Entity("dotnetapp.Models.CartItem", b =>
                 {
                     b.HasOne("dotnetapp.Models.Cart", null)
                         .WithMany("Items")
