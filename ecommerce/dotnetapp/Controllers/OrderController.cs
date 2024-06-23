@@ -4,6 +4,7 @@ using dotnetapp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace dotnetapp.Controllers
@@ -25,8 +26,15 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                // Ensure the order items are attached to the context for tracking
-                _context.AttachRange(order.Items);
+                // Include product details in order items
+                foreach (var item in order.Items)
+                {
+                    item.Product = await _context.Products.FindAsync(item.ProductId);
+                    if (item.Product == null)
+                    {
+                        return NotFound($"Product with ID {item.ProductId} not found");
+                    }
+                }
 
                 // Calculate total price based on order items
                 order.TotalPrice = CalculateTotalPrice(order.Items);
@@ -53,8 +61,7 @@ namespace dotnetapp.Controllers
             decimal totalPrice = 0;
             foreach (var item in items)
             {
-                // Assuming Product has a Price property
-                totalPrice += item.Quantity * _context.Products.Find(item.ProductId).Price;
+                totalPrice += item.Quantity * item.Product.Price;
             }
             return totalPrice;
         }
