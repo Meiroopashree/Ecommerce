@@ -9,6 +9,7 @@ import { EditProductComponent } from './components/edit-product/edit-product.com
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { CustomerViewProductComponent } from './components/customer-view-product/customer-view-product.component';
 import { CartComponent } from './components/cart/cart.component';
+import { OrderComponent } from './components/order/order.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'admin/viewProducts', component: ViewProductComponent},
   { path: 'edit-product/:id', component: EditProductComponent },
   { path: 'confirmDelete/:id', component: DeleteConfirmComponent},
-  { path: 'cart', component: CartComponent}
+  { path: 'cart', component: CartComponent},
+  {path: 'order', component: OrderComponent}
 
 
 ];

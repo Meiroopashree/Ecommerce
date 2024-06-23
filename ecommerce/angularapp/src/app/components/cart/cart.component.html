@@ -17,6 +17,9 @@
     <div class="cart-total">
       <h3>Total Price: {{ totalPrice | currency }}</h3>
     </div>
+    <div>
+      <button routerLink="/order">Order</button>
+    </div>
   </div>
   <ng-template #emptyCart>
     <p>Your cart is empty.</p>

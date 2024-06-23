@@ -26,7 +26,7 @@ export class AddProductComponent {
       response => {
         console.log('Product added successfully:', response);
         this.resetForm();
-        this.router.navigate(['user/viewProducts']);
+        this.router.navigate(['admin/viewProducts']);
       },
       error => {
         console.error('Error adding product:', error);
