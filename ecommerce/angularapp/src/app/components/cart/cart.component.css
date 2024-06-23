@@ -80,11 +80,11 @@
 }
 
 .quantity-controls input:focus {
-  border-color: #007bff;
+  border-color: #ffc107;
 }
 
 button {
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
   border: none;
   padding: 10px;
@@ -94,7 +94,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
   transform: scale(1.1);
 }
 
