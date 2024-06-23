@@ -7,30 +7,35 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
+  text-align: center; /* Center align all content within the cart */
 }
 
 .cart h2 {
   font-size: 24px;
   margin-bottom: 20px;
-  text-align: center;
 }
 
 /* Cart item styles */
 .cart-item {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeIn 0.5s forwards;
+  margin-bottom: 20px; /* Adjust spacing between items if needed */
+}
+
+.cart-item-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
 }
 
 .cart-item img {
   max-width: 100px;
-  margin-right: 16px;
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
+  margin-right: 15px; /* Add space between image and details */
 }
 
 .cart-item img:hover {
@@ -38,7 +43,8 @@
 }
 
 .cart-item-details {
-  flex: 1;
+  margin-top: 10px; /* Adjust spacing if needed */
+  text-align: left; /* Adjust text alignment if necessary */
 }
 
 .cart-item-details h3 {
@@ -48,6 +54,7 @@
 .quantity-controls {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
 }
 
@@ -97,7 +104,7 @@ button:hover {
 
 .cart-total {
   margin-top: 20px;
-  text-align: right;
+  text-align: center;
 }
 
 .cart-total h3 {
@@ -127,4 +134,19 @@ p {
 .order-button:hover {
   background-color: #218838;
   transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
