@@ -1,7 +1,18 @@
+/* Basic styles */
 .cart {
   padding: 16px;
   border: 1px solid #ccc;
   margin-top: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.cart h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .cart-item {
@@ -9,11 +20,20 @@
   align-items: center;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s forwards;
 }
 
 .cart-item img {
   max-width: 100px;
   margin-right: 16px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cart-item img:hover {
+  transform: scale(1.1);
 }
 
 .cart-item-details {
@@ -31,6 +51,7 @@
 .quantity-controls {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .quantity-controls button {
@@ -39,16 +60,27 @@
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  border-radius: 4px;
 }
 
 .quantity-controls button:hover {
   background-color: #0056b3;
+  transform: scale(1.1);
 }
 
 .quantity-controls input {
   width: 50px;
   text-align: center;
   margin: 0 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.quantity-controls input:focus {
+  border-color: #007bff;
 }
 
 button {
@@ -57,10 +89,13 @@ button {
   border: none;
   padding: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  border-radius: 4px;
 }
 
 button:hover {
   background-color: #0056b3;
+  transform: scale(1.1);
 }
 
 .cart-total {
@@ -70,4 +105,25 @@ button:hover {
 
 .cart-total h3 {
   margin: 0;
+}
+
+/* Empty cart styles */
+p {
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
