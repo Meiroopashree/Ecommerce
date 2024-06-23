@@ -115,5 +115,23 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
+
+        // PUT: api/cart/item/{cartItemId}/quantity/{quantity}
+        [HttpPut("item/{cartItemId}/quantity/{quantity}")]
+        public async Task<IActionResult> UpdateCartItemQuantity(int cartItemId, int quantity)
+        {
+            var cartItem = await _context.CartItems.FindAsync(cartItemId);
+
+            if (cartItem == null)
+            {
+                return NotFound();
+            }
+
+            cartItem.Quantity = quantity;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }

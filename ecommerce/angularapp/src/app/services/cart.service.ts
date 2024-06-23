@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cart, CartItem, Product } from './models';
+import { Cart } from '../models/cart';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,11 @@ export class CartService {
   addToCart(productId: number, quantity: number = 1): Observable<{ cart: Cart; totalPrice: number }> {
     return this.http.post<{ cart: Cart; totalPrice: number }>(`${this.apiUrl}/${productId}?quantity=${quantity}`, {});
   }
+
+  updateCartItemQuantity(cartItemId: number, quantity: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/item/${cartItemId}/quantity/${quantity}`, {});
+  }
+
 
   removeFromCart(productId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${productId}`);
