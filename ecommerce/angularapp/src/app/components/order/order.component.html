@@ -6,11 +6,14 @@
         <img [src]="item.product.imageUrl" alt="{{ item.product.name }}" class="product-image">
         <div class="product-details">
           <span>{{ item.product.name }}</span>
-          <span>{{ item.quantity }} x ${{ item.product.price }}</span>
+          <span>Price: ${{ item.product.price }}</span>
+          <span>Quantity: {{ item.quantity }}</span>
         </div>
       </li>
     </ul>
     <p>Total Price: ${{ order.totalPrice }}</p>
-    <button (click)="placeOrder()" class="payment-button">Proceed to Payment</button>
-  </div>
-  
+    <p>Order Date: {{ order.orderDate | date:'medium' }}</p>
+    <div class="button-container">
+      <button (click)="placeOrder()" class="payment-button">Proceed to Payment</button>
+    </div>
+</div>

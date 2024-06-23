@@ -10,15 +10,14 @@
           <input type="number" [value]="item.quantity" (change)="updateQuantity(item, $event.target.value)">
           <button (click)="updateQuantity(item, item.quantity + 1)">+</button>
         </div>
-        <!-- <p>Total: {{ item.product.price * item.quantity | currency }}</p> -->
         <button (click)="removeFromCart(item.productId)">Remove</button>
       </div>
     </div>
     <div class="cart-total">
       <h3>Total Price: {{ totalPrice | currency }}</h3>
     </div>
-    <div>
-      <button routerLink="/order">Order</button>
+    <div class="button-container">
+      <button routerLink="/order" class="order-button">Order</button>
     </div>
   </div>
   <ng-template #emptyCart>
