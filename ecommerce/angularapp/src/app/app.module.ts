@@ -16,6 +16,7 @@ import { EditProductComponent } from './components/edit-product/edit-product.com
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { CustomerViewProductComponent } from './components/customer-view-product/customer-view-product.component';
 import { CartComponent } from './components/cart/cart.component';
+import { OrderComponent } from './components/order/order.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CartComponent } from './components/cart/cart.component';
     EditProductComponent,
     DeleteConfirmComponent,
     CustomerViewProductComponent,
-    CartComponent
+    CartComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
